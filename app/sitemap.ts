@@ -1,0 +1,43 @@
+import type { MetadataRoute } from "next";
+import { siteConfig, absoluteUrl } from "@/lib/site-config";
+import { jobAreas } from "@/lib/jobs";
+import { columnArticles } from "@/content/column";
+
+/**
+ * sitemap.xml。
+ * lastmodはビルド日時ではなく、データ上の更新日（手動管理）を使用する。
+ * /apply/thanks はnoindexのため含めない。
+ */
+export default function sitemap(): MetadataRoute.Sitemap {
+  const siteLastMod = new Date(siteConfig.siteLastModified);
+
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: absoluteUrl("/"), lastModified: siteLastMod, changeFrequency: "weekly", priority: 1 },
+    { url: absoluteUrl("/jobs"), lastModified: siteLastMod, changeFrequency: "weekly", priority: 0.9 },
+    { url: absoluteUrl("/work"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/benefits"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/beginner"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/independence-support"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.7 },
+    { url: absoluteUrl("/faq"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.7 },
+    { url: absoluteUrl("/company"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.6 },
+    { url: absoluteUrl("/apply"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.9 },
+    { url: absoluteUrl("/privacy"), lastModified: siteLastMod, changeFrequency: "yearly", priority: 0.3 },
+    { url: absoluteUrl("/column"), lastModified: siteLastMod, changeFrequency: "weekly", priority: 0.7 },
+  ];
+
+  const jobPages: MetadataRoute.Sitemap = jobAreas.map((area) => ({
+    url: absoluteUrl(`/jobs/${area.slug}`),
+    lastModified: new Date(area.dateModified),
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+
+  const columnPages: MetadataRoute.Sitemap = columnArticles.map((article) => ({
+    url: absoluteUrl(`/column/${article.slug}`),
+    lastModified: new Date(article.updatedAt),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...jobPages, ...columnPages];
+}
