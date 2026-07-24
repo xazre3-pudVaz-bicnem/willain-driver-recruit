@@ -11,18 +11,28 @@
  */
 
 /**
- * サイトURLの解決。
- * CI/Vercel等の本番ビルドで NEXT_PUBLIC_SITE_URL が未設定の場合はビルドを失敗させ、
- * canonical・sitemap・構造化データがlocalhostのまま公開される事故を防ぐ。
- * （ローカルビルドは警告なしでlocalhostにフォールバックする）
+ * サイトURLの解決（canonical・sitemap・構造化データの基点）。
+ * 優先順位:
+ *   1. NEXT_PUBLIC_SITE_URL（独自ドメイン確定後は必ずこれを設定する）
+ *   2. Vercelの本番ドメイン（VERCEL_PROJECT_PRODUCTION_URL。自動提供）
+ *   3. Vercelのデプロイ別URL（VERCEL_URL。プレビュー用）
+ *   4. localhost（ローカル開発・ローカルビルド）
+ * Vercel以外のCIで本番ビルドする場合のみ、未設定を検知してビルドを失敗させ、
+ * canonicalがlocalhostのまま公開される事故を防ぐ。
  */
 function resolveSiteUrl(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL;
   if (configured) return configured.replace(/\/+$/, "");
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
   if (
     typeof window === "undefined" &&
     process.env.NODE_ENV === "production" &&
-    (process.env.VERCEL || process.env.CI)
+    process.env.CI
   ) {
     throw new Error(
       "NEXT_PUBLIC_SITE_URL が未設定です。公開ビルドでは必ず本番URLを設定してください（README「環境変数」参照）。"
