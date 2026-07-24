@@ -87,10 +87,10 @@ export function Hero() {
 
         <div className="relative">
           {hasHeroImage ? (
-            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-card-hover md:aspect-[5/6]">
+            <div className="relative aspect-[16/11] overflow-hidden rounded-3xl shadow-card-hover md:aspect-[16/12]">
               <Image
                 src="/images/hero-driver.webp"
-                alt="白い軽バンの前に立つ株式会社ウィランの軽貨物ドライバー"
+                alt="白い軽バンの前に立つ株式会社ウィランの軽貨物ドライバーと東京の街並み"
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -100,7 +100,7 @@ export function Hero() {
           ) : (
             /* 画像追加までの仮ビジュアル（/public/images/hero-driver.webp を置くと自動で差し替わる） */
             <div
-              className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary-light to-mint shadow-card-hover md:aspect-[5/6]"
+              className="relative flex aspect-[16/11] items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary-light to-mint shadow-card-hover md:aspect-[16/12]"
               role="img"
               aria-label="軽バンで配送する軽貨物ドライバーのイメージ"
             >

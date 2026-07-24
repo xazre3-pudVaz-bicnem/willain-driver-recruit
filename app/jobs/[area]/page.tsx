@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { JobConditionsTable } from "@/components/job/JobConditionsTable";
 import { PayExamples } from "@/components/job/PayExamples";
@@ -87,7 +88,18 @@ export default async function JobAreaPage({ params }: Props) {
                 </li>
               ))}
             </ul>
-            <div className="mt-7 space-y-4 leading-loose text-ink-sub">
+          </Reveal>
+          <Reveal delay={0.1} className="mt-8">
+            <Photo
+              src={area.image}
+              alt={area.imageAlt}
+              aspect="aspect-[16/9]"
+              sizes="(max-width: 896px) 100vw, 896px"
+              priority
+            />
+          </Reveal>
+          <Reveal className="mt-8">
+            <div className="space-y-4 leading-loose text-ink-sub">
               {area.lead.map((paragraph) => (
                 <p key={paragraph.slice(0, 20)}>{paragraph}</p>
               ))}

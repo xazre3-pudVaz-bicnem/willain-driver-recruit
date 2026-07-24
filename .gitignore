@@ -26,3 +26,6 @@ next-env.d.ts
 
 # service account keys
 *.service-account.json
+
+# 元画像アーカイブ（最適化済みwebpはpublic/images配下にコミット済み）
+/design-source/

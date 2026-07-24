@@ -4,6 +4,7 @@ import { jobAreas } from "@/lib/jobs";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { AreaCards } from "@/components/job/AreaCards";
 import { CtaSection } from "@/components/job/CtaSection";
@@ -87,6 +88,15 @@ export default function CompanyPage() {
             <p className="mt-5 max-w-3xl leading-loose text-ink-sub">
               株式会社ウィラン（Willain）は、東京・千葉エリアでインターネット通販商品の宅配を中心とした軽貨物配送事業を展開しています。ドライバー一人ひとりが安心して稼働し、成長できる環境づくりを大切にしています。
             </p>
+          </Reveal>
+          <Reveal delay={0.1} className="mt-8">
+            <Photo
+              src="/images/photos/fleet.webp"
+              alt="株式会社ウィランの軽貨物配送車両"
+              aspect="aspect-[16/9]"
+              sizes="(max-width: 896px) 100vw, 896px"
+              priority
+            />
           </Reveal>
         </div>
       </div>

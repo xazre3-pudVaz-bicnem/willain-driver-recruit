@@ -6,6 +6,7 @@ import { faqCategories } from "@/lib/faq";
 import { webSiteJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Reveal } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { Hero } from "@/components/home/Hero";
@@ -101,24 +102,35 @@ export default function HomePage() {
 
       {/* 3. ウィランの軽貨物配送とは */}
       <section className="bg-mint/60 py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <SectionHeading
-            eyebrow="About"
-            title="株式会社ウィランの軽貨物配送とは"
-          />
-          <Reveal>
-            <div className="space-y-5 leading-loose text-ink-sub">
-              <p>
-                株式会社ウィランは、東京・千葉エリアでインターネット通販商品の宅配を担う軽貨物配送の会社です。軽貨物ドライバーとは、軽バンなどの軽貨物車両を使って小型の荷物を届ける配送の仕事で、当社では主にAmazon関連の配送案件を扱っています。
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
+          <div className="grid items-center gap-10 md:grid-cols-2">
+            <Reveal>
+              <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
+                About
               </p>
-              <p>
-                ドライバーは業務委託契約のパートナーとして、品川区・江東区・江戸川区葛西エリア・船橋市の担当エリアで稼働します。配送センターで荷物を積み込み、担当エリアの個人宅へ配達し、配送が終わればそのまま直帰。軽バンで運べる比較的軽い荷物が中心のため、体力に自信がない方でも取り組みやすい仕事です。
-              </p>
-              <p>
-                「未経験から安定して稼ぎたい」「ゆくゆくは独立したい」。そんな一人ひとりの目標に、日額保証・研修・独立支援というかたちで伴走することが、私たちウィランの役割だと考えています。
-              </p>
-            </div>
-          </Reveal>
+              <h2 className="mt-3 text-[1.75rem] leading-snug font-black tracking-tight text-ink md:text-4xl">
+                株式会社ウィランの軽貨物配送とは
+              </h2>
+              <div className="mt-6 space-y-5 leading-loose text-ink-sub">
+                <p>
+                  株式会社ウィランは、東京・千葉エリアでインターネット通販商品の宅配を担う軽貨物配送の会社です。軽貨物ドライバーとは、軽バンなどの軽貨物車両を使って小型の荷物を届ける配送の仕事で、当社では主にAmazon関連の配送案件を扱っています。
+                </p>
+                <p>
+                  ドライバーは業務委託契約のパートナーとして、品川区・江東区・江戸川区葛西エリア・船橋市の担当エリアで稼働します。配送センターで荷物を積み込み、担当エリアの個人宅へ配達し、配送が終わればそのまま直帰。軽バンで運べる比較的軽い荷物が中心のため、体力に自信がない方でも取り組みやすい仕事です。
+                </p>
+                <p>
+                  「未経験から安定して稼ぎたい」「ゆくゆくは独立したい」。そんな一人ひとりの目標に、日額保証・研修・独立支援というかたちで伴走することが、私たちウィランの役割だと考えています。
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <Photo
+                src="/images/photos/van-city.webp"
+                alt="東京の街を背景に駐車された株式会社ウィランの白い軽バン"
+                aspect="aspect-[4/3]"
+              />
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -217,6 +229,14 @@ export default function HomePage() {
       <section className="bg-ink py-16 text-white md:py-24">
         <div className="mx-auto max-w-5xl px-4 md:px-6">
           <SectionHeading eyebrow="Work" title="仕事内容" />
+          <Reveal className="mb-8">
+            <Photo
+              src="/images/photos/work-loading.webp"
+              alt="配送センターで軽バンに荷物を積み込む株式会社ウィランのドライバー"
+              aspect="aspect-[16/9]"
+              sizes="(max-width: 1024px) 100vw, 1024px"
+            />
+          </Reveal>
           <div className="grid gap-8 md:grid-cols-2">
             <Reveal>
               <p className="leading-loose text-white/80">
@@ -284,6 +304,14 @@ export default function HomePage() {
           eyebrow="Vehicle"
           title="車両はリースでも、持ち込みでもOK"
         />
+        <Reveal className="mx-auto mb-8 max-w-4xl">
+          <Photo
+            src="/images/photos/van-interior.webp"
+            alt="配送に使用する軽バンの運転席まわり"
+            aspect="aspect-[16/9]"
+            sizes="(max-width: 896px) 100vw, 896px"
+          />
+        </Reveal>
         <div className="grid gap-5 md:grid-cols-2">
           <Reveal className="h-full">
             <div className="h-full rounded-2xl border-2 border-primary bg-white p-8 shadow-card">
@@ -322,6 +350,14 @@ export default function HomePage() {
             title="研修・サポート体制"
             lead="はじめての業務委託でも迷わないよう、稼働前から稼働後まで並走します。"
           />
+          <Reveal className="mx-auto mb-8 max-w-4xl">
+            <Photo
+              src="/images/photos/training.webp"
+              alt="先輩スタッフと打ち合わせをする株式会社ウィランのドライバー"
+              aspect="aspect-[16/9]"
+              sizes="(max-width: 896px) 100vw, 896px"
+            />
+          </Reveal>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {

@@ -146,6 +146,10 @@ export type JobArea = {
   addressLocality: string;
   /** 求人ごとの固有ID */
   identifier: string;
+  /** エリアのイメージ写真（public/images/photos/配下） */
+  image: string;
+  /** 写真のalt */
+  imageAlt: string;
   /**
    * 求人の初回公開日。【公開前確認事項】実際の公開日に更新すること。
    * ビルド日時で自動更新してはならない。
@@ -173,6 +177,8 @@ export const jobAreas: JobArea[] = [
     addressRegion: "東京都",
     addressLocality: "品川区",
     identifier: "willain-driver-shinagawa",
+    image: "/images/photos/area-shinagawa.webp",
+    imageAlt: "品川区の街を走る株式会社ウィランの軽貨物配送車",
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [
@@ -223,6 +229,8 @@ export const jobAreas: JobArea[] = [
     addressRegion: "東京都",
     addressLocality: "江東区",
     identifier: "willain-driver-koto",
+    image: "/images/photos/area-koto.webp",
+    imageAlt: "江東区・湾岸エリアを走る株式会社ウィランの軽貨物配送車",
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [
@@ -273,6 +281,8 @@ export const jobAreas: JobArea[] = [
     addressRegion: "東京都",
     addressLocality: "江戸川区",
     identifier: "willain-driver-kasai",
+    image: "/images/photos/area-kasai.webp",
+    imageAlt: "葛西・江戸川区の住宅街を走る株式会社ウィランの軽貨物配送車",
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [
@@ -323,6 +333,8 @@ export const jobAreas: JobArea[] = [
     addressRegion: "千葉県",
     addressLocality: "船橋市",
     identifier: "willain-driver-funabashi",
+    image: "/images/photos/area-funabashi.webp",
+    imageAlt: "船橋市の並木道を走る株式会社ウィランの軽貨物配送車",
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [

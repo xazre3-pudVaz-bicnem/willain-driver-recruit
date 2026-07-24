@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
@@ -75,6 +76,16 @@ export default function IndependenceSupportPage() {
             <p className="mt-5 max-w-3xl leading-loose text-ink-sub">
               軽貨物ドライバーは、配送の仕事であると同時に「小さな事業の経営」でもあります。株式会社ウィランは、業務委託ドライバーとしての稼働を独立・開業への助走期間と捉え、将来の目標に向けたキャリアを支援します。もちろん「独立は考えていない」という方も、そのままドライバーとして長く活躍できます。
             </p>
+          </Reveal>
+          <Reveal delay={0.1} className="mt-8">
+            <Photo
+              src="/images/photos/walking.webp"
+              alt="配送へ向かう株式会社ウィランの軽貨物ドライバー"
+              aspect="aspect-[16/9]"
+              sizes="(max-width: 896px) 100vw, 896px"
+              position="object-[center_35%]"
+              priority
+            />
           </Reveal>
         </div>
       </div>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { ApplyFlow } from "@/components/job/ApplyFlow";
 import { CtaSection } from "@/components/job/CtaSection";
@@ -85,6 +86,15 @@ export default function BeginnerPage() {
             <p className="mt-5 max-w-3xl leading-loose text-ink-sub">
               「配送の経験がない」「業務委託が初めて」。新しい仕事を始めるとき、こうした不安を感じるのは自然なことです。だからこそウィランは、研修・日額保証・車両リース・確定申告サポートという4つの仕組みで、未経験の一歩目を支えています。必要なのは普通自動車免許（AT限定可）だけです。
             </p>
+          </Reveal>
+          <Reveal delay={0.1} className="mt-8">
+            <Photo
+              src="/images/photos/training.webp"
+              alt="先輩スタッフから配送の流れを教わる未経験のドライバー"
+              aspect="aspect-[16/9]"
+              sizes="(max-width: 896px) 100vw, 896px"
+              priority
+            />
           </Reveal>
         </div>
       </div>

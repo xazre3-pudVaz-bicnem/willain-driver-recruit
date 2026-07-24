@@ -4,6 +4,7 @@ import { jobCommon, jobAreas } from "@/lib/jobs";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 import { DayFlow } from "@/components/job/DayFlow";
 import { AreaCards } from "@/components/job/AreaCards";
 import { CtaSection } from "@/components/job/CtaSection";
@@ -42,6 +43,43 @@ export default function WorkPage() {
           </Reveal>
         </div>
       </div>
+
+      {/* 業務の3ステップ写真 */}
+      <section className="mx-auto max-w-6xl px-4 pt-12 md:px-6 md:pt-16">
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            {
+              src: "/images/photos/work-loading.webp",
+              alt: "配送センターで軽バンに荷物を積み込むドライバー",
+              cap: "1. 荷物を積み込む",
+            },
+            {
+              src: "/images/photos/work-driving.webp",
+              alt: "軽バンを運転して担当エリアへ向かうドライバー",
+              cap: "2. 担当エリアで配送",
+            },
+            {
+              src: "/images/photos/work-delivery.webp",
+              alt: "個人宅へ荷物を手渡しするドライバー",
+              cap: "3. お客様へお届け",
+            },
+          ].map((item, i) => (
+            <Reveal key={item.cap} delay={i * 0.1}>
+              <figure>
+                <Photo
+                  src={item.src}
+                  alt={item.alt}
+                  aspect="aspect-[4/3]"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <figcaption className="mt-3 text-center text-sm font-bold text-ink">
+                  {item.cap}
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
       {/* 仕事の全体像 */}
       <section className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20">

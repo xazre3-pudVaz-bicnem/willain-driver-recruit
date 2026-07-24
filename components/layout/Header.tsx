@@ -25,10 +25,10 @@ export function Logo({ className = "" }: { className?: string }) {
       <Image
         src={logoPng ? "/images/logo.png" : "/images/logo.svg"}
         alt={siteConfig.companyName}
-        width={140}
-        height={36}
+        width={172}
+        height={54}
         priority
-        className={`h-9 w-auto ${className}`}
+        className={`h-8 w-auto md:h-9 ${className}`}
       />
     );
   }

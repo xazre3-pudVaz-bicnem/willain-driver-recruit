@@ -4,6 +4,7 @@ import { jobCommon } from "@/lib/jobs";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 import { PayExamples } from "@/components/job/PayExamples";
 import { CtaSection } from "@/components/job/CtaSection";
 
@@ -65,6 +66,16 @@ export default function BenefitsPage() {
             <p className="mt-5 max-w-3xl leading-loose text-ink-sub">
               軽貨物ドライバーの求人は数多くありますが、報酬体系やサポートの内容は会社によって大きく異なります。株式会社ウィランは「未経験から安心して始められて、長く稼ぎ続けられること」を軸に待遇を設計しています。
             </p>
+          </Reveal>
+          <Reveal delay={0.1} className="mt-8">
+            <Photo
+              src="/images/photos/driver-portrait.webp"
+              alt="株式会社ウィランで働く軽貨物ドライバー"
+              aspect="aspect-[16/9]"
+              sizes="(max-width: 896px) 100vw, 896px"
+              position="object-[center_30%]"
+              priority
+            />
           </Reveal>
         </div>
       </div>
