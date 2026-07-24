@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
-import { jobCommon, jobAreas } from "@/lib/jobs";
+import { jobAreas } from "@/lib/jobs";
 import { faqCategories } from "@/lib/faq";
 import { webSiteJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Reveal } from "@/components/ui/Reveal";
 import { Photo } from "@/components/ui/Photo";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { Hero } from "@/components/home/Hero";
 import { PayExamples } from "@/components/job/PayExamples";
@@ -32,43 +31,32 @@ export const metadata: Metadata = {
   },
 };
 
-const merits = [
-  {
-    title: "日額21,000円保証",
-    text: "配送に慣れないうちも収入の見通しが立てやすい、日額保証つきの報酬体系です。",
-    icon: "yen",
-  },
-  {
-    title: "週払い対応",
-    text: "規定に基づき週払いに対応。働いた分を早く受け取りたい方に向いた仕組みです。",
-    icon: "calendar",
-  },
-  {
-    title: "未経験歓迎",
-    text: "横乗り研修と未経験者向け研修あり。普通免許（AT限定可）があれば始められます。",
-    icon: "beginner",
-  },
-  {
-    title: "車両リースあり",
-    text: "月額25,000円からのリース制度。車を持っていなくてもスタートできます。",
-    icon: "van",
-  },
-] as const;
-
-const beginnerReasons = [
-  {
-    title: "先輩と一緒に走る「横乗り研修」",
-    text: "初日からひとりにはしません。先輩ドライバーの車に同乗し、荷物の積み込みから配達完了までの流れを実際に見て覚えられます。",
-  },
-  {
-    title: "慣れるまでを支える日額保証",
-    text: "宅配は慣れるほど速くなる仕事です。件数が伸びない研修期間や稼働初期も、日額21,000円の保証があるため落ち着いて成長できます。",
-  },
-  {
-    title: "車も知識もゼロからでOK",
-    text: "車両は月額25,000円からのリースを利用可能。黒ナンバーの手続きや確定申告の疑問も、面談・研修時に順を追ってご案内します。",
-  },
-] as const;
+/** セクション番号＋日本語ラベルのキッカー */
+function Kicker({
+  n,
+  children,
+  light = false,
+}: {
+  n: string;
+  children: React.ReactNode;
+  light?: boolean;
+}) {
+  return (
+    <div className="mb-5 flex items-center gap-3">
+      <span
+        className={`text-sm font-black tabular-nums ${light ? "text-primary-light" : "text-primary"}`}
+      >
+        {n}
+      </span>
+      <span className={`h-px w-8 ${light ? "bg-white/30" : "bg-primary/40"}`} />
+      <span
+        className={`text-xs font-bold tracking-wider ${light ? "text-white/70" : "text-ink-sub"}`}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
 
 export default function HomePage() {
   const topFaqs = faqCategories.flatMap((c) => c.items).slice(0, 5);
@@ -77,216 +65,260 @@ export default function HomePage() {
     <>
       <JsonLd data={webSiteJsonLd()} />
 
-      {/* 1. ヒーロー */}
+      {/* ヒーロー（全面背景写真） */}
       <Hero />
 
-      {/* 2. 4つのメリット */}
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
-        <h2 className="sr-only">株式会社ウィランで働く4つのメリット</h2>
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {merits.map((merit, i) => (
-            <Reveal key={merit.title} delay={i * 0.08} className="h-full">
-              <div className="h-full rounded-2xl border border-line bg-white p-5 shadow-card md:p-6">
-                <MeritIcon name={merit.icon} />
-                <h3 className="mt-3 text-sm leading-snug font-black text-ink md:text-base">
-                  {merit.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-ink-sub md:text-sm">
-                  {merit.text}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. ウィランの軽貨物配送とは */}
-      <section className="bg-mint/60 py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <div className="grid items-center gap-10 md:grid-cols-2">
-            <Reveal>
-              <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
-                About
-              </p>
-              <h2 className="mt-3 text-[1.75rem] leading-snug font-black tracking-tight text-ink md:text-4xl">
-                株式会社ウィランの軽貨物配送とは
-              </h2>
-              <div className="mt-6 space-y-5 leading-loose text-ink-sub">
-                <p>
-                  株式会社ウィランは、東京・千葉エリアでインターネット通販商品の宅配を担う軽貨物配送の会社です。軽貨物ドライバーとは、軽バンなどの軽貨物車両を使って小型の荷物を届ける配送の仕事で、当社では主にAmazon関連の配送案件を扱っています。
-                </p>
-                <p>
-                  ドライバーは業務委託契約のパートナーとして、品川区・江東区・江戸川区葛西エリア・船橋市の担当エリアで稼働します。配送センターで荷物を積み込み、担当エリアの個人宅へ配達し、配送が終わればそのまま直帰。軽バンで運べる比較的軽い荷物が中心のため、体力に自信がない方でも取り組みやすい仕事です。
-                </p>
-                <p>
-                  「未経験から安定して稼ぎたい」「ゆくゆくは独立したい」。そんな一人ひとりの目標に、日額保証・研修・独立支援というかたちで伴走することが、私たちウィランの役割だと考えています。
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <Photo
-                src="/images/photos/van-city.webp"
-                alt="東京の街を背景に駐車された株式会社ウィランの白い軽バン"
-                aspect="aspect-[4/3]"
-              />
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. 日額21,000円保証の説明 */}
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
-        <div className="grid items-center gap-10 md:grid-cols-2">
+      {/* 01 働くメリット：21,000を主役に */}
+      <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <Reveal>
+          <Kicker n="01">働くメリット</Kicker>
+        </Reveal>
+        <div className="grid items-center gap-8 md:grid-cols-2 md:gap-16">
           <Reveal>
-            <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
-              Guarantee
+            <p className="text-sm font-bold tracking-wider text-ink-sub">
+              報酬｜日額保証
             </p>
-            <h2 className="mt-3 text-3xl leading-tight font-black text-ink md:text-4xl">
-              日額21,000円保証だから、
-              <br />
-              最初の一歩が踏み出せる。
-            </h2>
-            <p className="mt-5 leading-relaxed text-ink-sub">
-              出来高制だけの契約では、配送に慣れないうちは収入が安定しにくいのが軽貨物業界の実情です。ウィランでは日額21,000円以上の報酬を保証（規定あり）。件数がまだ伸びない時期でも収入の見通しが立つため、未経験の方も安心してスタートできます。
-            </p>
-            <p className="mt-3 leading-relaxed text-ink-sub">
-              さらに週払い（規定あり）にも対応。「今月の生活費が不安」という状態を避けながら、新しい仕事に集中できます。
+            <p className="mt-2 flex items-baseline gap-2">
+              <span className="h-stat text-primary-dark">21,000</span>
+              <span className="text-2xl font-black text-primary-dark md:text-3xl">
+                円
+              </span>
             </p>
           </Reveal>
           <Reveal delay={0.1}>
-            <div className="rounded-3xl bg-gradient-to-br from-primary to-primary-light p-8 text-white shadow-card-hover md:p-10">
-              <p className="text-sm font-bold text-white/80">報酬（業務委託）</p>
-              <p className="mt-2 text-5xl font-black tracking-tight tabular-nums">
-                日額21,000
-                <span className="text-2xl">円〜</span>
-              </p>
-              <ul className="mt-6 space-y-2.5 text-sm font-medium">
-                {[
-                  "日額保証つきで収入の見通しが立てやすい",
-                  "週払い可能（規定あり）",
-                  "配送が早く終われば早上がりも可能",
-                  "22時以降の配送は原則なし",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <CheckIcon />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <p className="text-lg leading-[1.9] text-ink md:text-xl">
+              配送件数が伸びない時期も、1日あたりの報酬を保証します。出来高だけの契約と違い、稼働した初日から収入の見通しが立ちます。
+            </p>
           </Reveal>
         </div>
-      </section>
-
-      {/* 5. 月額報酬例 */}
-      <section className="bg-mint/60 py-16 md:py-24">
-        <div className="mx-auto max-w-5xl px-4 md:px-6">
-          <SectionHeading
-            eyebrow="Simulation"
-            title="月額報酬例"
-            lead="日額21,000円×稼働日数のシンプルな計算例です。稼働日数は週3日から相談できます。"
-          />
-          <PayExamples />
-        </div>
-      </section>
-
-      {/* 6. 未経験でも始めやすい理由 */}
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
-        <SectionHeading
-          eyebrow="For Beginners"
-          title="未経験でも始めやすい3つの理由"
-          lead="ウィランのドライバーの多くは、宅配未経験からのスタートを想定した体制で迎えています。"
-        />
-        <div className="grid gap-5 md:grid-cols-3">
-          {beginnerReasons.map((reason, i) => (
-            <Reveal key={reason.title} delay={i * 0.1} className="h-full">
-              <div className="h-full rounded-2xl border border-line bg-white p-7 shadow-card">
-                <span className="text-3xl font-black text-primary/20 tabular-nums">
-                  0{i + 1}
-                </span>
-                <h3 className="mt-2 text-lg leading-snug font-black text-ink">
-                  {reason.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-sub">
-                  {reason.text}
-                </p>
+        <Reveal>
+          <dl className="mt-14 grid grid-cols-1 divide-y divide-line border-y border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {[
+              { t: "支払い", d: "週払い可（規定あり）" },
+              { t: "経験", d: "未経験・経験者歓迎" },
+              { t: "車両", d: "リース 月額25,000円〜" },
+            ].map((item) => (
+              <div key={item.d} className="px-0 py-5 sm:px-8 sm:first:pl-0">
+                <dt className="text-xs font-bold tracking-wider text-ink-sub">
+                  {item.t}
+                </dt>
+                <dd className="mt-1 text-lg font-black text-ink">{item.d}</dd>
               </div>
-            </Reveal>
-          ))}
-        </div>
-        <Reveal className="mt-8 text-center">
-          <Link
-            href="/beginner"
-            className="inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
-          >
-            未経験の方向けの詳しい案内を見る
-            <ArrowIcon />
-          </Link>
+            ))}
+          </dl>
         </Reveal>
       </section>
 
-      {/* 7. 仕事内容 */}
-      <section className="bg-ink py-16 text-white md:py-24">
-        <div className="mx-auto max-w-5xl px-4 md:px-6">
-          <SectionHeading eyebrow="Work" title="仕事内容" />
-          <Reveal className="mb-8">
+      {/* 02 ウィランの軽貨物配送とは：写真と文章の左右分割 */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2 md:gap-14 md:py-28">
+          <Reveal>
             <Photo
-              src="/images/photos/work-loading.webp"
-              alt="配送センターで軽バンに荷物を積み込む株式会社ウィランのドライバー"
-              aspect="aspect-[16/9]"
-              sizes="(max-width: 1024px) 100vw, 1024px"
+              src="/images/photos/van-city.webp"
+              alt="東京の街を背景に駐車された株式会社ウィランの白い軽バン"
+              aspect="aspect-[4/5]"
+              rounded="rounded-sm"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </Reveal>
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="md:pt-16">
             <Reveal>
-              <p className="leading-loose text-white/80">
-                インターネット通販で購入された商品を、配送センターから個人宅へ届ける宅配ドライバーの仕事です。主にAmazon関連の配送案件を担当し、軽バンで運べる比較的軽い荷物が中心。担当エリア内での配送のため、エリアの道を覚えるほど効率よく回れるようになります。
+              <Kicker n="02">株式会社ウィランの軽貨物配送</Kicker>
+            </Reveal>
+            <Reveal>
+              <p className="text-2xl leading-[1.5] font-black text-ink md:text-4xl md:leading-[1.4]">
+                Amazonの荷物を、
+                <br />
+                担当エリアの個人宅へ。
               </p>
-              <Link
-                href="/work"
-                className="mt-6 inline-flex items-center gap-1 font-bold text-primary-light underline-offset-4 hover:underline"
-              >
-                仕事内容の詳細ページを見る
-                <ArrowIcon />
-              </Link>
             </Reveal>
             <Reveal delay={0.1}>
-              <ul className="space-y-3">
-                {jobCommon.jobDescription.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 rounded-xl bg-white/5 px-4 py-3 text-sm leading-relaxed"
-                  >
-                    <CheckIcon className="mt-0.5 shrink-0 text-primary-light" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-7 space-y-5 text-[1.0625rem] leading-[1.9] text-ink-sub">
+                <p>
+                  配送センターで荷物を積み込み、決まったエリアを回ります。軽バンで運べる小さな荷物が中心で、22時以降の配送は原則ありません。配り終えれば、そのまま直帰できます。
+                </p>
+                <p>
+                  担当エリアはほぼ固定です。建物や駐車位置を覚えるほど配送は速くなり、同じ時間でより多く回れるようになります。
+                </p>
+              </div>
             </Reveal>
           </div>
         </div>
       </section>
 
-      {/* 8. 1日の流れ */}
-      <section className="mx-auto max-w-3xl px-4 py-16 md:px-6 md:py-24">
-        <SectionHeading
-          eyebrow="Schedule"
-          title="1日の流れ"
-          lead="配送完了後は直帰OK。自分のペースで組み立てられる1日です。"
-        />
-        <DayFlow />
+      {/* 03 日額21,000円保証：濃色全面背景 */}
+      <section className="bg-emerald-ink">
+        <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+          <Reveal>
+            <Kicker n="03" light>
+              日額21,000円保証
+            </Kicker>
+          </Reveal>
+          <div className="grid items-end gap-8 md:grid-cols-[auto_1fr] md:gap-16">
+            <Reveal>
+              <p className="flex items-baseline gap-2 text-white">
+                <span className="h-stat">21,000</span>
+                <span className="text-2xl font-black md:text-3xl">円/日</span>
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="max-w-md text-base leading-[1.9] text-white/80 md:text-lg">
+                宅配は、慣れるほど速くなる仕事です。だからこそ、最初の収入を保証します。配達件数に関係なく日額21,000円（規定あり）。働いた分を早く受け取れる週払いにも対応しています。
+              </p>
+            </Reveal>
+          </div>
+        </div>
       </section>
 
-      {/* 9. 募集エリア */}
-      <section className="bg-mint/60 py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <SectionHeading
-            eyebrow="Area"
-            title="募集エリア"
-            lead="東京都品川区・江東区・江戸川区葛西エリア・千葉県船橋市で募集中。エリアごとの求人詳細をご覧ください。"
-          />
+      {/* 04 月額報酬例：表形式 */}
+      <section className="mx-auto max-w-4xl px-6 py-20 md:py-28">
+        <Reveal>
+          <Kicker n="04">月額の報酬例</Kicker>
+        </Reveal>
+        <Reveal>
+          <p className="mb-10 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
+            日額21,000円で稼働した場合の目安です。稼働日数は週3日から相談できます。
+          </p>
+        </Reveal>
+        <PayExamples />
+      </section>
+
+      {/* 05 未経験から始める：写真＋01/02/03 */}
+      <section className="border-t border-line bg-paper">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2 md:gap-14 md:py-28">
+          <div>
+            <Reveal>
+              <Kicker n="05">未経験から始める</Kicker>
+            </Reveal>
+            <Reveal>
+              <h2 className="h-section text-ink">
+                初めてでも、
+                <br />
+                現場で覚えられる。
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1} className="mt-8 hidden md:block">
+              <Photo
+                src="/images/photos/training.webp"
+                alt="先輩スタッフから配送の流れを教わる未経験のドライバー"
+                aspect="aspect-[4/3]"
+                rounded="rounded-sm"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </Reveal>
+          </div>
+          <div>
+            {[
+              {
+                t: "横乗り研修",
+                d: "初日は先輩の助手席へ。荷物の積み方、配送アプリの使い方、再配達の流れを、実際の現場で覚えます。",
+              },
+              {
+                t: "日額保証つき",
+                d: "件数がまだ少ない時期も日額21,000円（規定あり）。焦らず配送のコツをつかめます。",
+              },
+              {
+                t: "車も知識も、後から",
+                d: "車両は月額25,000円からのリースを利用できます。黒ナンバーの手続きや確定申告の疑問も、面談と研修で順に案内します。",
+              },
+            ].map((item, i) => (
+              <Reveal key={item.t} delay={i * 0.08}>
+                <div className="relative border-b border-line py-7 first:border-t">
+                  <span className="bg-numeral pointer-events-none absolute -top-2 right-0 text-6xl md:text-7xl">
+                    0{i + 1}
+                  </span>
+                  <h3 className="relative text-xl font-black text-ink">
+                    {item.t}
+                  </h3>
+                  <p className="relative mt-2 max-w-md text-[0.95rem] leading-relaxed text-ink-sub">
+                    {item.d}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 06 仕事内容：写真を大きく */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 md:grid-cols-[1.4fr_1fr] md:gap-14 md:py-28">
+          <Reveal>
+            <Photo
+              src="/images/photos/work-loading.webp"
+              alt="配送センターで軽バンに荷物を積み込む株式会社ウィランのドライバー"
+              aspect="aspect-[4/3]"
+              rounded="rounded-sm"
+              sizes="(max-width: 768px) 100vw, 60vw"
+            />
+          </Reveal>
+          <div>
+            <Reveal>
+              <Kicker n="06">仕事内容</Kicker>
+            </Reveal>
+            <Reveal>
+              <h2 className="h-section text-ink">軽バンで運ぶ、宅配。</h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <ul className="mt-7 space-y-3.5 text-[1.0625rem] leading-relaxed text-ink">
+                {[
+                  "主にAmazon関連の宅配案件",
+                  "軽バンで運べる小さな荷物が中心",
+                  "担当エリア制。道を覚えるほど効率が上がる",
+                  "9〜21時の間で実働8時間程度・直帰OK",
+                ].map((t) => (
+                  <li key={t} className="flex gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-primary"
+                    />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <Link
+                href="/work"
+                className="mt-8 inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
+              >
+                仕事内容をくわしく見る
+                <ArrowIcon />
+              </Link>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* 07 1日の流れ：縦タイムライン */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-3xl px-6 py-20 md:py-28">
+          <Reveal>
+            <Kicker n="07">1日の流れ</Kicker>
+          </Reveal>
+          <Reveal>
+            <h2 className="h-section mb-12 text-ink">配送センターから、直帰まで。</h2>
+          </Reveal>
+          <DayFlow />
+        </div>
+      </section>
+
+      {/* 08 募集エリア：写真タイル */}
+      <section className="border-t border-line bg-paper">
+        <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+          <Reveal>
+            <Kicker n="08">募集エリア</Kicker>
+          </Reveal>
+          <Reveal>
+            <h2 className="h-section mb-4 text-ink">東京4区と、千葉・船橋。</h2>
+          </Reveal>
+          <Reveal>
+            <p className="mb-10 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
+              品川区・江東区・江戸川区の葛西エリア・船橋市で募集中。待遇と研修はどのエリアも共通です。
+            </p>
+          </Reveal>
           <AreaCards areas={jobAreas} />
-          <Reveal className="mt-8 text-center">
+          <Reveal className="mt-8">
             <Link
               href="/jobs"
               className="inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
@@ -298,190 +330,224 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 10. 車両リース・持ち込み */}
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
-        <SectionHeading
-          eyebrow="Vehicle"
-          title="車両はリースでも、持ち込みでもOK"
-        />
-        <Reveal className="mx-auto mb-8 max-w-4xl">
-          <Photo
-            src="/images/photos/van-interior.webp"
-            alt="配送に使用する軽バンの運転席まわり"
-            aspect="aspect-[16/9]"
-            sizes="(max-width: 896px) 100vw, 896px"
-          />
-        </Reveal>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Reveal className="h-full">
-            <div className="h-full rounded-2xl border-2 border-primary bg-white p-8 shadow-card">
-              <p className="inline-block rounded-full bg-mint px-3 py-1 text-xs font-black text-primary-dark">
-                車を持っていない方
-              </p>
-              <h3 className="mt-3 text-xl font-black text-ink">
-                車両リース制度（月額25,000円〜）
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-ink-sub">
-                配送用の軽バンを月額25,000円からリースできます。まとまった初期投資をせずに始められるため、「まず軽貨物の仕事を試したい」という方に向いています。リース条件の詳細は面談時にご案内します。
-              </p>
-            </div>
+      {/* 09 車両：左右比較 */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-5xl px-6 py-20 md:py-28">
+          <Reveal>
+            <Kicker n="09">車両</Kicker>
           </Reveal>
-          <Reveal delay={0.1} className="h-full">
-            <div className="h-full rounded-2xl border border-line bg-white p-8 shadow-card">
-              <p className="inline-block rounded-full bg-mint px-3 py-1 text-xs font-black text-primary-dark">
-                車を持っている方
-              </p>
-              <h3 className="mt-3 text-xl font-black text-ink">
-                車両持ち込みでの稼働
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-ink-sub">
-                ご自身の軽バンをお持ちの方は、持ち込みでそのまま稼働できます。黒ナンバー（事業用登録）の手続きが済んでいない場合も、面談時に流れをご案内しますのでご安心ください。
-              </p>
-            </div>
+          <Reveal>
+            <h2 className="h-section mb-12 text-ink">
+              リースでも、持ち込みでも。
+            </h2>
           </Reveal>
+          <div className="grid gap-8 md:grid-cols-2 md:gap-0">
+            <Reveal className="md:pr-12">
+              <p className="text-sm font-bold text-primary">車を持っていない方</p>
+              <p className="mt-2 text-2xl font-black text-ink md:text-3xl">
+                車両リース
+                <br />
+                <span className="text-primary-dark">月額25,000円〜</span>
+              </p>
+              <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-sub">
+                配送用の軽バンをリースできます。まとまった初期費用を用意せずに始められます。リース条件は面談時に案内します。
+              </p>
+            </Reveal>
+            <Reveal
+              delay={0.1}
+              className="border-t border-line pt-8 md:border-t-0 md:border-l md:pt-0 md:pl-12"
+            >
+              <p className="text-sm font-bold text-primary">車を持っている方</p>
+              <p className="mt-2 text-2xl font-black text-ink md:text-3xl">
+                持ち込みで
+                <br />
+                そのまま稼働
+              </p>
+              <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-sub">
+                自分の軽バンで稼働できます。黒ナンバー（事業用登録）の手続きが未了でも、面談時に流れを案内します。
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* 11. 研修・サポート体制 */}
-      <section className="bg-mint/60 py-16 md:py-24">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <SectionHeading
-            eyebrow="Support"
-            title="研修・サポート体制"
-            lead="はじめての業務委託でも迷わないよう、稼働前から稼働後まで並走します。"
-          />
-          <Reveal className="mx-auto mb-8 max-w-4xl">
+      {/* 10 研修・サポート：濃色背景・白カードなし */}
+      <section className="bg-emerald-ink">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-[1fr_1.3fr] md:gap-16 md:py-28">
+          <div>
+            <Reveal>
+              <Kicker n="10" light>
+                研修とサポート
+              </Kicker>
+            </Reveal>
+            <Reveal>
+              <h2 className="h-section text-white">
+                はたらく人を
+                <br />
+                支える仕組み。
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="mt-6 max-w-sm text-base leading-[1.9] text-white/70">
+                入社祝金・紹介報奨金には規定・条件があります。詳細は面談時に確認できます。
+              </p>
+            </Reveal>
+          </div>
+          <div className="border-t border-white/15">
+            {[
+              {
+                t: "横乗り研修",
+                d: "先輩の車に同乗し、配送の流れを一通り体験してから独り立ちします。",
+              },
+              {
+                t: "未経験者向け研修",
+                d: "荷物の扱い方、配送アプリ、再配達の対応を基礎から確認します。",
+              },
+              {
+                t: "確定申告の相談・税理士紹介",
+                d: "経費や申告の疑問を相談でき、必要に応じて税理士を紹介します。",
+              },
+              {
+                t: "入社祝金・紹介報奨金",
+                d: "規定・条件に基づく祝金と、知人紹介への報奨金があります。",
+              },
+              {
+                t: "服装・髪型・ネイル自由",
+                d: "清潔感を保てば、身だしなみは自由です。",
+              },
+              {
+                t: "社員登用制度",
+                d: "業務委託から始めて、希望に応じて社員登用を相談できます。",
+              },
+            ].map((item, i) => (
+              <Reveal key={item.t} delay={Math.min(i * 0.05, 0.25)}>
+                <div className="flex gap-5 border-b border-white/15 py-5">
+                  <span className="text-sm font-black tabular-nums text-primary-light">
+                    0{i + 1}
+                  </span>
+                  <div>
+                    <h3 className="font-black text-white">{item.t}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-white/65">
+                      {item.d}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 11 独立支援：大きな写真＋短いコピー */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 md:grid-cols-2 md:gap-14 md:py-28">
+          <Reveal className="md:order-2">
             <Photo
-              src="/images/photos/training.webp"
-              alt="先輩スタッフと打ち合わせをする株式会社ウィランのドライバー"
-              aspect="aspect-[16/9]"
-              sizes="(max-width: 896px) 100vw, 896px"
+              src="/images/photos/driver-portrait.webp"
+              alt="株式会社ウィランで働く軽貨物ドライバー"
+              aspect="aspect-[4/3]"
+              rounded="rounded-sm"
+              position="object-[center_30%]"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </Reveal>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: "横乗り研修",
-                text: "先輩ドライバーに同乗し、実際の配送の流れを体験しながら学べます。",
-              },
-              {
-                title: "未経験者向け研修",
-                text: "荷物の扱い方・配送アプリの使い方・再配達の対応などを基礎から案内します。",
-              },
-              {
-                title: "確定申告サポート",
-                text: "業務委託で避けて通れない確定申告について相談でき、税理士の紹介も可能です。",
-              },
-              {
-                title: "入社祝金・紹介報奨金",
-                text: "規定・条件に基づき、入社祝金や紹介報奨金の制度があります。詳細は面談でご確認ください。",
-              },
-              {
-                title: "服装・髪型・ネイル自由",
-                text: "清潔感を保てば、服装や髪型・ネイルは自由。自分らしく働けます。",
-              },
-              {
-                title: "社員登用制度",
-                text: "業務委託から始めて、希望に応じて社員登用の相談ができます。",
-              },
-            ].map((item, i) => (
-              <Reveal key={item.title} delay={(i % 3) * 0.08} className="h-full">
-                <div className="h-full rounded-2xl border border-line bg-white p-6 shadow-card">
-                  <h3 className="font-black text-ink">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-sub">
-                    {item.text}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+          <div className="md:order-1">
+            <Reveal>
+              <Kicker n="11">独立・起業支援</Kicker>
+            </Reveal>
+            <Reveal>
+              <h2 className="h-section text-ink">配送だけで、終わらない。</h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="mt-6 text-[1.0625rem] leading-[1.9] text-ink-sub">
+                軽貨物は、働き方しだいで個人事業の経営を実践できる仕事です。経費の管理や確定申告について相談でき、必要に応じて税理士を紹介します。
+              </p>
+            </Reveal>
+            <Reveal delay={0.15}>
+              <ol className="mt-8 border-t border-line">
+                {[
+                  "業務委託ドライバーとして配送の基礎を作る",
+                  "稼働管理・経費・確定申告を実践で覚える",
+                  "独立支援制度を使って、自分の目標へ進む",
+                ].map((t, i) => (
+                  <li
+                    key={t}
+                    className="flex items-start gap-4 border-b border-line py-4"
+                  >
+                    <span className="text-sm font-black tabular-nums text-primary">
+                      0{i + 1}
+                    </span>
+                    <span className="text-[0.95rem] leading-relaxed text-ink">
+                      {t}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <Link
+                href="/independence-support"
+                className="mt-6 inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
+              >
+                独立・開業サポートを見る
+                <ArrowIcon />
+              </Link>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* 12. 独立・起業支援 */}
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
-        <div className="grid items-center gap-10 md:grid-cols-2">
+      {/* 12 向いている人：大きな文章 */}
+      <section className="border-t border-line bg-paper">
+        <div className="mx-auto max-w-5xl px-6 py-20 md:py-28">
           <Reveal>
-            <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
-              Independence
-            </p>
-            <h2 className="mt-3 text-3xl leading-tight font-black text-ink md:text-4xl">
-              「稼ぐ」の先にある、
-              <br />
-              独立・起業まで支援。
-            </h2>
-            <p className="mt-5 leading-relaxed text-ink-sub">
-              ウィランには独立支援制度があります。軽貨物ドライバーは、働き方次第で個人事業主としての経営感覚を実践的に磨ける仕事です。配送スキルだけでなく、確定申告や経費の考え方など、独立に必要な知識も一緒に身につけていけます。
-            </p>
-            <Link
-              href="/independence-support"
-              className="mt-6 inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
-            >
-              独立・開業サポートの詳細を見る
-              <ArrowIcon />
-            </Link>
+            <Kicker n="12">向いている人</Kicker>
           </Reveal>
-          <Reveal delay={0.1}>
-            <ol className="space-y-3">
-              {[
-                "業務委託ドライバーとして配送と個人事業の基礎を身につける",
-                "稼働管理・経費管理・確定申告を実践しながら経営感覚を磨く",
-                "独立支援制度を活用し、自分の目標に合わせた次の一歩へ",
-              ].map((step, i) => (
-                <li
-                  key={step}
-                  className="flex items-start gap-4 rounded-2xl border border-line bg-white p-5 shadow-card"
-                >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-black text-white">
-                    {i + 1}
-                  </span>
-                  <p className="pt-1 text-sm leading-relaxed text-ink-sub">
-                    {step}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 13. どのような人に向いているか */}
-      <section className="bg-mint/60 py-16 md:py-24">
-        <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <SectionHeading eyebrow="Match" title="こんな方に向いています" />
-          <div className="space-y-3">
+          <div className="mt-4 space-y-6 md:space-y-8">
             {[
-              ...jobCommon.welcomeFor,
-              "自分のペースで働きながら、しっかり収入を確保したい方",
-              "人間関係のストレスが少ない仕事を探している方",
-            ].map((item, i) => (
-              <Reveal key={item} delay={Math.min(i * 0.06, 0.3)}>
-                <div className="flex items-start gap-3 rounded-xl border border-line bg-white px-5 py-4 shadow-card">
-                  <CheckIcon className="mt-1 shrink-0 text-primary" />
-                  <p className="font-bold text-ink">{item}</p>
-                </div>
+              "一人で黙々と働きたい。",
+              "安定した報酬を確保したい。",
+              "将来は、自分で事業を始めたい。",
+            ].map((t, i) => (
+              <Reveal key={t} delay={i * 0.1}>
+                <p className="text-3xl leading-tight font-black tracking-tight text-ink md:text-6xl">
+                  {t}
+                </p>
               </Reveal>
             ))}
           </div>
+          <Reveal delay={0.1}>
+            <p className="mt-10 text-[1.0625rem] text-ink-sub">
+              ひとつでも当てはまれば、まず話を聞きに来てください。
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* 14. 応募から稼働開始までの流れ */}
-      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24">
-        <SectionHeading
-          eyebrow="Flow"
-          title="応募から稼働開始までの流れ"
-          lead="応募から稼働開始まで、最短のスケジュールは面談時にご案内します。"
-        />
-        <ApplyFlow />
+      {/* 13 応募の流れ：タイムライン */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-4xl px-6 py-20 md:py-28">
+          <Reveal>
+            <Kicker n="13">応募から稼働開始まで</Kicker>
+          </Reveal>
+          <Reveal>
+            <h2 className="h-section mb-12 text-ink">5ステップで、走り出す。</h2>
+          </Reveal>
+          <ApplyFlow />
+        </div>
       </section>
 
-      {/* 15. よくある質問 */}
-      <section className="bg-mint/60 py-16 md:py-24">
-        <div className="mx-auto max-w-3xl px-4 md:px-6">
-          <SectionHeading eyebrow="FAQ" title="よくある質問" />
-          <FaqAccordion items={topFaqs} />
-          <Reveal className="mt-8 text-center">
+      {/* 14 よくある質問 */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-3xl px-6 py-20 md:py-28">
+          <Reveal>
+            <Kicker n="14">よくある質問</Kicker>
+          </Reveal>
+          <Reveal>
+            <h2 className="h-section mb-10 text-ink">応募の前に。</h2>
+          </Reveal>
+          <FaqAccordion items={topFaqs} defaultOpenFirst />
+          <Reveal className="mt-8">
             <Link
               href="/faq"
               className="inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
@@ -493,84 +559,55 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 16. 応募CTA */}
+      {/* 最終応募導線 */}
       <CtaSection place="home_bottom" />
 
-      {/* 17. 会社情報 */}
-      <section className="mx-auto max-w-4xl px-4 py-16 md:px-6 md:py-24">
-        <SectionHeading eyebrow="Company" title="会社情報" />
+      {/* 会社情報（事実の表） */}
+      <section className="mx-auto max-w-4xl px-6 py-20 md:py-24">
         <Reveal>
-          <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-card">
-            <table className="w-full text-left text-sm md:text-base">
-              <tbody className="divide-y divide-line">
-                {[
-                  ["会社名", siteConfig.companyName],
-                  ["ブランド表記", siteConfig.brandName],
-                  ["代表者", siteConfig.representative],
-                  [
-                    "本社所在地",
-                    `${siteConfig.address.postalCode} ${siteConfig.address.full}`,
-                  ],
-                  ["電話番号", siteConfig.phoneDisplay],
-                  ["事業内容", siteConfig.business],
-                ].map(([label, value]) => (
-                  <tr key={label} className="flex flex-col md:table-row">
-                    <th
-                      scope="row"
-                      className="bg-mint/70 px-5 pt-3 pb-1 font-bold whitespace-nowrap text-ink md:w-40 md:px-6 md:py-3.5"
-                    >
-                      {label}
-                    </th>
-                    <td className="px-5 pt-1 pb-3 text-ink-sub md:px-6 md:py-3.5">
-                      {value}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-4 text-center">
-            <Link
-              href="/company"
-              className="inline-flex items-center gap-1 text-sm font-bold text-primary underline-offset-4 hover:underline"
-            >
-              会社情報の詳細を見る
-              <ArrowIcon />
-            </Link>
-          </p>
+          <Kicker n="15">会社情報</Kicker>
+        </Reveal>
+        <Reveal>
+          <dl className="border-t border-line">
+            {[
+              ["会社名", siteConfig.companyName],
+              ["代表者", siteConfig.representative],
+              [
+                "所在地",
+                `${siteConfig.address.postalCode} ${siteConfig.address.full}`,
+              ],
+              ["電話", siteConfig.phoneDisplay],
+              ["事業内容", siteConfig.business],
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="flex flex-col gap-1 border-b border-line py-4 md:flex-row md:gap-8"
+              >
+                <dt className="w-32 shrink-0 text-sm font-bold text-ink-sub">
+                  {label}
+                </dt>
+                <dd className="text-[0.95rem] text-ink">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
+        <Reveal className="mt-6">
+          <Link
+            href="/company"
+            className="inline-flex items-center gap-1 text-sm font-bold text-primary underline-offset-4 hover:underline"
+          >
+            会社情報の詳細を見る
+            <ArrowIcon />
+          </Link>
         </Reveal>
       </section>
     </>
   );
 }
 
-/* ---------------- アイコン ---------------- */
-
-function CheckIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      aria-hidden="true"
-      className={`h-5 w-5 ${className}`}
-      viewBox="0 0 20 20"
-      fill="currentColor"
-    >
-      <path
-        fillRule="evenodd"
-        d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.7-9.8a1 1 0 0 0-1.4-1.4L9 10.1 7.7 8.8a1 1 0 0 0-1.4 1.4l2 2a1 1 0 0 0 1.4 0l4-4Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
 function ArrowIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      className="h-4 w-4"
-      viewBox="0 0 16 16"
-      fill="none"
-    >
+    <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 16 16" fill="none">
       <path
         d="M6 3.5L10.5 8L6 12.5"
         stroke="currentColor"
@@ -580,38 +617,4 @@ function ArrowIcon() {
       />
     </svg>
   );
-}
-
-function MeritIcon({ name }: { name: string }) {
-  const common = "h-10 w-10 rounded-xl bg-mint p-2 text-primary";
-  switch (name) {
-    case "yen":
-      return (
-        <svg aria-hidden="true" className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M6 4l6 8 6-8M12 12v8M8 14h8M8 17.5h8" />
-        </svg>
-      );
-    case "calendar":
-      return (
-        <svg aria-hidden="true" className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="5" width="18" height="16" rx="2" />
-          <path d="M3 10h18M8 3v4M16 3v4M8 15l2.5 2.5L16 13" />
-        </svg>
-      );
-    case "beginner":
-      return (
-        <svg aria-hidden="true" className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9L9.5 8z" />
-        </svg>
-      );
-    default:
-      return (
-        <svg aria-hidden="true" className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 8a2 2 0 0 1 2-2h9v10H5a2 2 0 0 1-2-2V8Z" />
-          <path d="M14 9h3.5a2 2 0 0 1 1.6.8l1.5 2a2 2 0 0 1 .4 1.2V15a1 1 0 0 1-1 1H14V9Z" />
-          <circle cx="8" cy="17.5" r="1.8" />
-          <circle cx="16.5" cy="17.5" r="1.8" />
-        </svg>
-      );
-  }
 }

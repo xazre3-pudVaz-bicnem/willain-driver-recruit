@@ -1,13 +1,14 @@
+import Image from "next/image";
 import { siteConfig } from "@/lib/site-config";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
- * ページ下部の応募CTAセクション（全ページ共通で再利用）。
+ * ページ下部の応募CTA。白カードは使わず、走行写真の全面背景＋濃色オーバーレイ。
  */
 export function CtaSection({
-  title = "まずは話を聞くだけでもOKです",
-  text = "「自分に向いているか分からない」という段階でのご相談も歓迎です。応募フォームは60秒で入力できます。",
+  title = "まずは、希望の働き方を聞かせてください。",
+  text = "品川・江東・葛西・船橋で募集中。面談時に担当エリアや稼働条件をご案内します。",
   place,
 }: {
   title?: string;
@@ -15,35 +16,41 @@ export function CtaSection({
   place: string;
 }) {
   return (
-    <section className="bg-gradient-to-br from-primary-dark via-primary to-primary-light py-16 md:py-20">
-      <div className="mx-auto max-w-4xl px-4 text-center md:px-6">
+    <section className="relative overflow-hidden">
+      <Image
+        src="/images/photos/cta-drive.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-emerald-ink/85" />
+      <div className="relative mx-auto max-w-5xl px-6 py-20 md:py-28">
         <Reveal>
-          <h2 className="text-2xl leading-snug font-black text-white md:text-3xl">
-            {title}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-white/90">
+          <h2 className="h-section max-w-3xl text-white">{title}</h2>
+          <p className="mt-6 max-w-2xl text-base leading-[1.9] text-white/85 md:text-lg">
             {text}
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <TrackedLink
               href="/apply"
               event="apply_click"
               eventParams={{ place }}
-              className="w-full rounded-full bg-white px-8 py-4 text-center font-black text-primary-dark shadow-card transition-transform hover:-translate-y-0.5 sm:w-auto"
+              className="rounded-md bg-white px-8 py-4 text-center font-black text-primary-dark transition-colors hover:bg-mint"
             >
-              60秒で応募する
+              WEBから応募する
             </TrackedLink>
             <TrackedLink
               href={siteConfig.phoneLink}
               event="tel_click"
               eventParams={{ place }}
-              className="w-full rounded-full border-2 border-white/80 px-8 py-4 text-center font-bold text-white transition-colors hover:bg-white/10 sm:w-auto"
+              className="rounded-md border border-white/50 px-8 py-4 text-center font-bold text-white transition-colors hover:bg-white/10"
               ariaLabel={`電話で相談する ${siteConfig.phoneDisplay}`}
             >
-              電話で相談する {siteConfig.phoneDisplay}
+              電話で相談する（{siteConfig.phoneDisplay}）
             </TrackedLink>
           </div>
-          <p className="mt-4 text-xs text-white/70">
+          <p className="mt-5 text-xs text-white/60">
             受付時間外・配送中は折り返しのご連絡になる場合があります。
           </p>
         </Reveal>

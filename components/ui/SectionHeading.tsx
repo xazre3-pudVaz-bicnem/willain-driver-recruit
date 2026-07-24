@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/ui/Reveal";
 
 type Props = {
-  /** 英字の小見出しラベル */
+  /** 使用しない（後方互換のため受け取るが描画しない）。英語ラベルはサイト全体で最小化する。 */
   eyebrow?: string;
   title: string;
   lead?: string;
@@ -9,31 +9,24 @@ type Props = {
   as?: "h2" | "h3";
 };
 
+/**
+ * セクション見出し。日本語見出しを主役に、左揃え・大きめの力強いタイポグラフィ。
+ * 英語ラベル（eyebrow）はサイト全体で最小化する方針のため描画しない。
+ */
 export function SectionHeading({
-  eyebrow,
   title,
   lead,
-  align = "center",
+  align = "left",
   as: Tag = "h2",
 }: Props) {
   return (
     <Reveal
-      className={`mb-10 md:mb-14 ${align === "center" ? "text-center" : "text-left"}`}
+      className={`mb-8 md:mb-12 ${align === "center" ? "text-center" : "text-left"}`}
     >
-      {eyebrow && (
-        <p
-          className="mb-3 text-xs font-bold tracking-[0.25em] text-primary uppercase"
-          aria-hidden="true"
-        >
-          {eyebrow}
-        </p>
-      )}
-      <Tag className="text-[1.75rem] leading-snug font-black tracking-tight text-ink md:text-4xl">
-        {title}
-      </Tag>
+      <Tag className="h-section text-ink">{title}</Tag>
       {lead && (
         <p
-          className={`mt-4 leading-relaxed text-ink-sub ${
+          className={`mt-5 text-[1.0625rem] leading-[1.9] text-ink-sub ${
             align === "center" ? "mx-auto max-w-2xl" : "max-w-2xl"
           }`}
         >

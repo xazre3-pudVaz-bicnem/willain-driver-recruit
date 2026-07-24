@@ -1,154 +1,85 @@
 import Image from "next/image";
-import { siteConfig } from "@/lib/site-config";
 import { hasPublicFile } from "@/lib/assets";
-import { TrackedLink } from "@/components/ui/TrackedLink";
-
-const badges = [
-  "日額21,000円保証",
-  "週払い対応（規定あり）",
-  "未経験歓迎",
-  "車両リースあり",
-];
 
 /**
- * ヒーローセクション。
- * /public/images/hero-driver.webp を追加すると自動でプレースホルダーから差し替わる。
+ * ヒーロー。1枚の写真を画面全面に敷き、左下にコピーを重ねる。
+ * CTAボタンは置かない（ブランドイメージとメインコピーを主役にする）。
+ * /public/images/hero-driver.webp を差し替えると自動反映。
  */
 export function Hero() {
   const hasHeroImage = hasPublicFile("images/hero-driver.webp");
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-mint via-white to-white">
-      {/* 背景の装飾（控えめに） */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-primary/5"
-      />
-      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-14 pb-16 md:grid-cols-2 md:px-6 md:pt-20 md:pb-24">
-        <div>
-          <p className="inline-block rounded-full bg-primary px-4 py-1.5 text-xs font-bold tracking-wider text-white">
-            軽貨物ドライバー募集中｜業務委託
-          </p>
-          <h1 className="mt-6 text-4xl leading-[1.2] font-black tracking-tight text-ink md:text-5xl lg:text-[3.4rem]">
-            東京・千葉で
-            <span className="text-primary">稼ぐ</span>。<br />
-            軽貨物ドライバー
-            <br className="md:hidden" />
-            募集。
-          </h1>
-          <p className="mt-5 text-lg font-bold text-ink md:text-xl">
-            普通免許ひとつで、新しい働き方へ。
-          </p>
-          <p className="mt-2 leading-relaxed text-ink-sub">
-            日額21,000円保証。未経験から始められる軽貨物配送。
-            <br className="hidden md:inline" />
-            品川・江東・葛西・船橋エリアで一緒に走る仲間を募集しています。
-          </p>
+    <section className="relative -mt-16 h-[88svh] min-h-[560px] w-full overflow-hidden md:h-screen">
+      {/* 背景写真（LCP：優先読み込み） */}
+      {hasHeroImage ? (
+        <Image
+          src="/images/hero-driver.webp"
+          alt="東京の街並みを背景に白い軽バンの前に立つ株式会社ウィランの軽貨物ドライバー"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[72%_center] md:object-[center_35%]"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-dark via-primary to-primary-light" />
+      )}
 
-          <ul className="mt-6 flex flex-wrap gap-2" aria-label="待遇のポイント">
-            {badges.map((badge) => (
-              <li
-                key={badge}
-                className="rounded-full border border-primary/30 bg-white px-3.5 py-1.5 text-xs font-bold text-primary-dark shadow-sm"
-              >
-                {badge}
-              </li>
-            ))}
-          </ul>
+      {/* オーバーレイ（PC：左→右／スマホ：下→上） */}
+      <div className="hero-scrim absolute inset-0" />
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <TrackedLink
-              href="/apply"
-              event="apply_click"
-              eventParams={{ place: "hero" }}
-              className="rounded-full bg-primary px-8 py-4 text-center font-black text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-card-hover"
-            >
-              60秒で応募する
-            </TrackedLink>
-            <TrackedLink
-              href={siteConfig.phoneLink}
-              event="tel_click"
-              eventParams={{ place: "hero" }}
-              className="rounded-full border-2 border-primary bg-white px-8 py-4 text-center font-bold text-primary transition-colors hover:bg-mint"
-              ariaLabel={`電話で相談する ${siteConfig.phoneDisplay}`}
-            >
-              電話で相談する
-            </TrackedLink>
-            <TrackedLink
-              href={siteConfig.instagramUrl}
-              event="instagram_click"
-              eventParams={{ place: "hero" }}
-              className="rounded-full px-6 py-4 text-center text-sm font-bold text-ink-sub underline-offset-4 transition-colors hover:text-primary hover:underline"
-            >
-              Instagramを見る
-            </TrackedLink>
-          </div>
-        </div>
-
-        <div className="relative">
-          {hasHeroImage ? (
-            <div className="relative aspect-[16/11] overflow-hidden rounded-3xl shadow-card-hover md:aspect-[16/12]">
-              <Image
-                src="/images/hero-driver.webp"
-                alt="白い軽バンの前に立つ株式会社ウィランの軽貨物ドライバーと東京の街並み"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
-          ) : (
-            /* 画像追加までの仮ビジュアル（/public/images/hero-driver.webp を置くと自動で差し替わる） */
-            <div
-              className="relative flex aspect-[16/11] items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary-light to-mint shadow-card-hover md:aspect-[16/12]"
-              role="img"
-              aria-label="軽バンで配送する軽貨物ドライバーのイメージ"
-            >
-              <VanIllustration />
-            </div>
-          )}
-          {/* 実績風の装飾は置かず、事実ラベルのみ */}
-          <div className="absolute -bottom-4 left-4 rounded-2xl border border-line bg-white px-5 py-3 shadow-card md:left-8">
-            <p className="text-xs font-bold text-ink-sub">報酬</p>
-            <p className="text-lg font-black text-primary tabular-nums">
-              日額21,000円<span className="text-xs font-bold">以上</span>
+      {/* コピー（左下寄せ） */}
+      <div className="absolute inset-0 flex items-end pb-16 md:items-center md:pb-0">
+        <div className="mx-auto w-full max-w-6xl px-6">
+          <div className="max-w-2xl">
+            <p className="text-xs font-bold tracking-[0.2em] text-white/90 md:text-sm">
+              軽貨物ドライバー募集中<span className="mx-2 text-white/40">｜</span>業務委託
             </p>
+
+            <h1 className="h-hero mt-5 text-white">
+              東京・千葉で、
+              <br />
+              自分らしく
+              <span className="text-primary-light">稼ぐ</span>。
+            </h1>
+
+            <p className="mt-6 max-w-md text-base leading-relaxed text-white/85 md:text-lg">
+              品川・江東・葛西・船橋で軽貨物ドライバーを募集。
+              <br className="hidden sm:block" />
+              普通免許から始められる、新しい働き方。
+            </p>
+
+            {/* 条件は細い区切り線とテキストだけで表現（カード・ボタンにしない） */}
+            <dl className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/25 pt-5 text-white">
+              {[
+                { t: "報酬", d: "日額21,000円保証" },
+                { t: "経験", d: "未経験歓迎" },
+                { t: "車両", d: "リースあり" },
+              ].map((item, i) => (
+                <div
+                  key={item.d}
+                  className={`flex items-baseline gap-2 ${i > 0 ? "border-white/25 sm:border-l sm:pl-6" : ""}`}
+                >
+                  <dt className="text-[0.65rem] font-medium tracking-wider text-white/60">
+                    {item.t}
+                  </dt>
+                  <dd className="text-sm font-bold md:text-base">{item.d}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </div>
-    </section>
-  );
-}
 
-/** 仮ビジュアル用の軽バンイラスト（装飾） */
-function VanIllustration() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 320 320"
-      className="h-3/5 w-3/5 opacity-90"
-      fill="none"
-    >
-      <circle cx="160" cy="160" r="140" fill="white" fillOpacity="0.15" />
-      <rect x="40" y="130" width="180" height="90" rx="10" fill="white" />
-      <path
-        d="M220 145h34a10 10 0 0 1 8 4l16 22a10 10 0 0 1 2 6v33a10 10 0 0 1-10 10h-50v-75Z"
-        fill="white"
-      />
-      <rect x="232" y="155" width="30" height="24" rx="4" fill="#11AAA5" />
-      <rect x="54" y="146" width="60" height="10" rx="5" fill="#EAF9F8" />
-      <rect x="54" y="164" width="90" height="10" rx="5" fill="#EAF9F8" />
-      <circle cx="90" cy="225" r="22" fill="#111827" />
-      <circle cx="90" cy="225" r="10" fill="#D5E9E7" />
-      <circle cx="240" cy="225" r="22" fill="#111827" />
-      <circle cx="240" cy="225" r="10" fill="#D5E9E7" />
-      <path
-        d="M40 205h240"
-        stroke="#006E6B"
-        strokeOpacity="0.2"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-    </svg>
+      {/* スクロール誘導（控えめ） */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 md:block"
+      >
+        <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/40 p-1.5">
+          <span className="h-1.5 w-1 animate-pulse rounded-full bg-white/70" />
+        </div>
+      </div>
+    </section>
   );
 }

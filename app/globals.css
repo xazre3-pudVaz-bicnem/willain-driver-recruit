@@ -5,22 +5,26 @@
   --color-primary: #008f8c;
   --color-primary-dark: #006e6b;
   --color-primary-light: #11aaa5;
+  --color-emerald-ink: #05181b; /* オーバーレイ・濃色背景用 */
   --color-mint: #eaf9f8;
   --color-surface: #ffffff;
-  --color-ink: #111827;
+  --color-paper: #f5f6f5; /* 薄いグレー背景 */
+  --color-ink: #0d1512;
   --color-ink-sub: #4b5563;
-  --color-line: #d5e9e7;
+  --color-line: #e2e8e6;
 
   --font-sans: var(--font-noto-sans-jp), "Hiragino Kaku Gothic ProN",
     "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
 
-  --shadow-card: 0 1px 2px rgb(17 24 39 / 0.04), 0 8px 24px rgb(0 110 107 / 0.08);
-  --shadow-card-hover: 0 2px 4px rgb(17 24 39 / 0.06), 0 16px 40px rgb(0 110 107 / 0.14);
+  /* 影は原則使わない。使う場合も極めて薄く。 */
+  --shadow-card: 0 1px 2px rgb(13 21 18 / 0.04);
+  --shadow-card-hover: 0 4px 16px rgb(13 21 18 / 0.08);
 }
 
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -32,7 +36,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-primary) 18%, white);
+  background: color-mix(in srgb, var(--color-primary) 20%, white);
 }
 
 /* --- フォーカス表示（アクセシビリティ） --- */
@@ -42,12 +46,61 @@ body {
   border-radius: 2px;
 }
 
-/* --- スクロールリビール --- */
-/* JSが無効・reduced-motion環境では常に表示された状態を保つ */
+/* --- 見出しのタイポグラフィスケール --- */
+.h-hero {
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  font-weight: 900;
+}
+.h-section {
+  font-size: clamp(2.1rem, 4vw, 4.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 900;
+}
+.h-stat {
+  font-size: clamp(4rem, 11vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- ヒーローのオーバーレイ --- */
+.hero-scrim {
+  background: linear-gradient(
+    90deg,
+    rgba(5, 24, 27, 0.82) 0%,
+    rgba(5, 24, 27, 0.52) 45%,
+    rgba(5, 24, 27, 0.1) 100%
+  );
+}
+@media (max-width: 768px) {
+  /* スマホは下から濃くする */
+  .hero-scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(5, 24, 27, 0.5) 0%,
+      rgba(5, 24, 27, 0.35) 40%,
+      rgba(5, 24, 27, 0.85) 100%
+    );
+  }
+}
+
+/* 大きな背景文字（セクション番号・ラベル） */
+.bg-numeral {
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+/* --- スクロールリビール（下からフェード） --- */
 @media (prefers-reduced-motion: no-preference) {
   .reveal {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(22px);
     transition:
       opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -61,21 +114,29 @@ body {
     opacity: 1;
     transform: none;
   }
+  /* タイムラインの線が伸びる */
+  .timeline-line {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .timeline-line.is-visible {
+    transform: scaleY(1);
+  }
 }
 
-/* --- 数字のカウント風表示に使う等幅数字 --- */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* --- モバイル追従CTAの分だけ下部に余白を確保 --- */
+/* モバイル追従CTAの分の下部余白 */
 @media (max-width: 767px) {
   body.has-sticky-cta {
     padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
   }
 }
 
-/* --- details/summary のマーカー調整（FAQ） --- */
+/* --- FAQアコーディオン（細い罫線・＋−） --- */
 details.faq-item summary {
   list-style: none;
   cursor: pointer;
@@ -83,11 +144,11 @@ details.faq-item summary {
 details.faq-item summary::-webkit-details-marker {
   display: none;
 }
-details.faq-item summary .faq-icon {
+details.faq-item summary .faq-icon-bar-v {
   transition: transform 0.3s ease;
 }
-details.faq-item[open] summary .faq-icon {
-  transform: rotate(45deg);
+details.faq-item[open] summary .faq-icon-bar-v {
+  transform: rotate(90deg) scaleX(0);
 }
 
 @media (prefers-reduced-motion: reduce) {

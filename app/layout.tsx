@@ -98,7 +98,8 @@ export default function RootLayout({
         <JsonLd data={organizationJsonLd()} />
 
         <Header />
-        <main>{children}</main>
+        {/* fixedヘッダー分の余白。トップのヒーローは-mt-16で全面表示にする */}
+        <main className="pt-16">{children}</main>
         <Footer />
         <MobileStickyCta />
       </body>
