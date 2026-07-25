@@ -7,7 +7,7 @@
  * 使い方:
  *   npm run indexing:update            # 全求人ページを URL_UPDATED で通知
  *   npm run indexing:delete            # 全求人ページを URL_DELETED で通知（募集終了時）
- *   node scripts/google-indexing.ts update shinagawa   # 特定エリアのみ
+ *   node scripts/google-indexing.mts update shinagawa   # 特定エリアのみ
  *
  * 必要な環境変数（.env.local にも記述可）:
  *   GOOGLE_INDEXING_CLIENT_EMAIL / GOOGLE_INDEXING_PRIVATE_KEY / NEXT_PUBLIC_SITE_URL
@@ -99,7 +99,7 @@ async function main(): Promise<void> {
   const filter = process.argv.slice(3);
 
   if (mode !== "update" && mode !== "delete") {
-    console.error("使い方: node scripts/google-indexing.ts <update|delete> [エリアslug...]");
+    console.error("使い方: node scripts/google-indexing.mts <update|delete> [エリアslug...]");
     process.exit(1);
   }
 

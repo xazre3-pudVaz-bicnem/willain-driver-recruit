@@ -32,7 +32,7 @@ export function MobileStickyCta() {
           href={siteConfig.phoneLink}
           onClick={() => trackEvent("tel_click", { place: "sticky_cta" })}
           data-event="tel_click"
-          className="flex items-center justify-center gap-1.5 rounded-full border-2 border-primary py-3 text-sm font-bold text-primary"
+          className="flex items-center justify-center gap-1.5 rounded-full border-2 border-primary py-3 text-sm font-bold text-primary-dark"
           aria-label={`電話で相談する ${siteConfig.phoneDisplay}`}
         >
           <svg
@@ -49,7 +49,7 @@ export function MobileStickyCta() {
           href="/apply"
           onClick={() => trackEvent("apply_click", { place: "sticky_cta" })}
           data-event="apply_click"
-          className="flex items-center justify-center rounded-full bg-primary py-3 text-sm font-bold text-white shadow-card"
+          className="flex items-center justify-center rounded-full bg-primary-dark py-3 text-sm font-bold text-white shadow-card"
         >
           WEB応募（60秒）
         </Link>

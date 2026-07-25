@@ -32,7 +32,7 @@ export function Footer() {
                 href={siteConfig.phoneLink}
                 event="tel_click"
                 eventParams={{ place: "footer" }}
-                className="font-bold text-primary"
+                className="font-bold text-primary-dark"
               >
                 {siteConfig.phoneDisplay}
               </TrackedLink>
@@ -41,7 +41,7 @@ export function Footer() {
               href={siteConfig.instagramUrl}
               event="instagram_click"
               eventParams={{ place: "footer" }}
-              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-primary"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-primary-dark"
             >
               <InstagramIcon />
               {siteConfig.instagramHandle}
@@ -54,7 +54,7 @@ export function Footer() {
             </h2>
             <ul className="space-y-2.5 text-sm text-ink-sub">
               <li>
-                <Link href="/jobs" className="transition-colors hover:text-primary">
+                <Link href="/jobs" className="transition-colors hover:text-primary-dark">
                   求人一覧
                 </Link>
               </li>
@@ -62,7 +62,7 @@ export function Footer() {
                 <li key={area.slug}>
                   <Link
                     href={`/jobs/${area.slug}`}
-                    className="transition-colors hover:text-primary"
+                    className="transition-colors hover:text-primary-dark"
                   >
                     {area.areaName}の軽貨物ドライバー求人
                   </Link>
@@ -80,7 +80,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="transition-colors hover:text-primary"
+                    className="transition-colors hover:text-primary-dark"
                   >
                     {link.label}
                   </Link>

@@ -12,7 +12,7 @@ export function JobConditionsTable({ areaName }: { areaName?: string }) {
       th: "報酬",
       td: (
         <>
-          <span className="font-bold text-primary">{jobCommon.payLabel}</span>
+          <span className="font-bold text-primary-dark">{jobCommon.payLabel}</span>
           <br />
           <span className="text-sm">{jobCommon.paySupplement}</span>
         </>

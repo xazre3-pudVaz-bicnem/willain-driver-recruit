@@ -106,10 +106,10 @@ export default function IndependenceSupportPage() {
               <Reveal delay={i * 0.08}>
                 <div className="grid grid-cols-[auto_1fr] gap-x-5 py-6 md:grid-cols-[7rem_1fr] md:gap-x-8 md:py-7">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-[0.6rem] font-black tracking-widest text-primary">
+                    <span className="text-[0.6rem] font-black tracking-widest text-primary-dark">
                       STEP
                     </span>
-                    <span className="text-3xl font-black tabular-nums text-primary md:text-4xl">
+                    <span className="text-3xl font-black tabular-nums text-primary-dark md:text-4xl">
                       0{i + 1}
                     </span>
                   </div>
@@ -193,12 +193,12 @@ export default function IndependenceSupportPage() {
               <li key={c.href} className="border-b border-line">
                 <Link
                   href={c.href}
-                  className="group flex items-center justify-between gap-4 py-5 font-bold text-ink transition-colors hover:text-primary"
+                  className="group flex items-center justify-between gap-4 py-5 font-bold text-ink transition-colors hover:text-primary-dark"
                 >
                   {c.t}
                   <svg
                     aria-hidden="true"
-                    className="h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1"
+                    className="h-4 w-4 shrink-0 text-primary-dark transition-transform group-hover:translate-x-1"
                     viewBox="0 0 16 16"
                     fill="none"
                   >

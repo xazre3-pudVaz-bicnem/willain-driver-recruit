@@ -20,7 +20,7 @@ export function FaqAccordion({
           className="faq-item border-b border-line"
         >
           <summary className="flex items-start gap-4 py-5">
-            <span className="mt-0.5 text-sm font-black text-primary">Q</span>
+            <span className="mt-0.5 text-sm font-black text-primary-dark">Q</span>
             <span className="flex-1 text-base font-bold leading-snug text-ink">
               {item.q}
             </span>
@@ -29,8 +29,8 @@ export function FaqAccordion({
               aria-hidden="true"
               className="relative mt-1 h-4 w-4 shrink-0"
             >
-              <span className="absolute top-1/2 left-0 h-0.5 w-4 -translate-y-1/2 bg-primary" />
-              <span className="faq-icon-bar-v absolute top-0 left-1/2 h-4 w-0.5 -translate-x-1/2 bg-primary" />
+              <span className="absolute top-1/2 left-0 h-0.5 w-4 -translate-y-1/2 bg-primary-dark" />
+              <span className="faq-icon-bar-v absolute top-0 left-1/2 h-4 w-0.5 -translate-x-1/2 bg-primary-dark" />
             </span>
           </summary>
           <div className="pb-5 pl-8 text-[0.95rem] leading-relaxed text-ink-sub">

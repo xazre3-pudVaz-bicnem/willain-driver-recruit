@@ -37,7 +37,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
               ) : (
                 <Link
                   href={item.path}
-                  className="transition-colors hover:text-primary"
+                  className="transition-colors hover:text-primary-dark"
                 >
                   {item.name}
                 </Link>

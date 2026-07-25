@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center md:px-6 md:py-32">
-      <p className="text-6xl font-black text-primary/20">404</p>
+      <p className="text-6xl font-black text-primary-dark/20">404</p>
       <h1 className="mt-4 text-2xl font-black text-ink">
         ページが見つかりませんでした
       </h1>
@@ -15,13 +15,13 @@ export default function NotFound() {
       <div className="mt-8 flex flex-col items-center gap-3">
         <Link
           href="/"
-          className="rounded-full bg-primary px-8 py-3.5 font-bold text-white"
+          className="rounded-full bg-primary-dark px-8 py-3.5 font-bold text-white"
         >
           トップページへ戻る
         </Link>
         <Link
           href="/jobs"
-          className="font-bold text-primary underline-offset-4 hover:underline"
+          className="font-bold text-primary-dark underline-offset-4 hover:underline"
         >
           軽貨物ドライバー求人一覧を見る
         </Link>

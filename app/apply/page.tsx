@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { siteConfig } from "@/lib/site-config";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Reveal } from "@/components/ui/Reveal";
+import { Kicker } from "@/components/ui/Kicker";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { ApplyForm } from "@/components/forms/ApplyForm";
 
@@ -24,32 +25,30 @@ export default function ApplyPage() {
   return (
     <>
       <Breadcrumbs items={[{ name: "応募フォーム", path: "/apply" }]} />
-      <div className="bg-gradient-to-b from-mint to-white">
-        <div className="mx-auto max-w-2xl px-4 py-12 text-center md:px-6 md:py-16">
+      <div className="border-b border-line bg-white">
+        <div className="mx-auto max-w-2xl px-6 py-14 md:py-16">
           <Reveal>
-            <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
-              Entry
-            </p>
-            <h1 className="mt-3 text-3xl font-black text-ink md:text-4xl">
-              応募フォーム
-            </h1>
-            <p className="mt-4 leading-relaxed text-ink-sub">
-              入力は約60秒で完了します。「まず話を聞いてみたい」という段階のご相談も歓迎です。
-              <br />
-              内容を確認のうえ、担当者からご連絡します。
+            <Kicker>応募フォーム</Kicker>
+          </Reveal>
+          <Reveal>
+            <h1 className="h-section text-ink">60秒で、応募。</h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-5 text-[1.0625rem] leading-[1.9] text-ink-sub">
+              「まず話を聞いてみたい」という段階のご相談も歓迎です。内容を確認のうえ、担当者からご連絡します。
             </p>
           </Reveal>
         </div>
       </div>
 
-      <div className="mx-auto max-w-2xl px-4 pb-16 md:px-6 md:pb-24">
-        <div className="rounded-3xl border border-line bg-white p-6 shadow-card md:p-10">
+      <div className="mx-auto max-w-2xl px-6 py-14 md:py-20">
+        <div className="rounded-lg border border-line bg-white p-6 md:p-10">
           <Suspense fallback={null}>
             <ApplyForm />
           </Suspense>
         </div>
 
-        <div className="mt-8 rounded-2xl bg-mint px-6 py-5 text-center">
+        <div className="mt-8 rounded-md border border-line bg-paper px-6 py-5 text-center">
           <p className="text-sm font-bold text-ink">
             お電話でのご相談はこちら
           </p>
@@ -57,7 +56,7 @@ export default function ApplyPage() {
             href={siteConfig.phoneLink}
             event="tel_click"
             eventParams={{ place: "apply_page" }}
-            className="mt-1 inline-block text-2xl font-black text-primary tabular-nums"
+            className="mt-1 inline-block text-2xl font-black text-primary-dark tabular-nums"
             ariaLabel={`電話で相談する ${siteConfig.phoneDisplay}`}
           >
             {siteConfig.phoneDisplay}

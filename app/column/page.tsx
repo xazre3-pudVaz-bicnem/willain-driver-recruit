@@ -56,12 +56,12 @@ export default function ColumnIndexPage() {
                       className="group block border-b border-line py-6"
                     >
                       <div className="flex items-start justify-between gap-4">
-                        <h3 className="text-lg leading-snug font-black text-ink transition-colors group-hover:text-primary md:text-xl">
+                        <h3 className="text-lg leading-snug font-black text-ink transition-colors group-hover:text-primary-dark md:text-xl">
                           {article.title}
                         </h3>
                         <svg
                           aria-hidden="true"
-                          className="mt-1 h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1"
+                          className="mt-1 h-4 w-4 shrink-0 text-primary-dark transition-transform group-hover:translate-x-1"
                           viewBox="0 0 16 16"
                           fill="none"
                         >

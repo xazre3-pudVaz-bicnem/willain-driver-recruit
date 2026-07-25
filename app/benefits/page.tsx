@@ -85,7 +85,7 @@ export default function BenefitsPage() {
           {bigMerits.map((merit, i) => (
             <Reveal key={merit.title} delay={(i % 2) * 0.08}>
               <div className="flex gap-5 border-b border-line py-7">
-                <span className="text-3xl font-black tabular-nums text-primary/25">
+                <span className="text-3xl font-black tabular-nums text-primary-dark/25">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
@@ -143,7 +143,7 @@ export default function BenefitsPage() {
             報酬の仕組みは
             <Link
               href="/column/daily-guarantee-vs-piecework"
-              className="font-bold text-primary underline underline-offset-2"
+              className="font-bold text-primary-dark underline underline-offset-2"
             >
               「日額保証と出来高制の違い」
             </Link>

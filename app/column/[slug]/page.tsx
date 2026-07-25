@@ -57,7 +57,7 @@ function Block({ block }: { block: ColumnBlock }) {
             <li key={item} className="flex items-start gap-2.5 leading-relaxed text-ink-sub">
               <span
                 aria-hidden="true"
-                className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+                className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary-dark"
               />
               {item}
             </li>
@@ -66,7 +66,7 @@ function Block({ block }: { block: ColumnBlock }) {
       );
     case "ol":
       return (
-        <ol className="my-4 list-decimal space-y-2 rounded-xl bg-mint/60 py-5 pr-6 pl-11 leading-relaxed text-ink-sub marker:font-bold marker:text-primary">
+        <ol className="my-4 list-decimal space-y-2 rounded-xl bg-mint/60 py-5 pr-6 pl-11 leading-relaxed text-ink-sub marker:font-bold marker:text-primary-dark">
           {block.items.map((item) => (
             <li key={item}>{item}</li>
           ))}
@@ -88,7 +88,7 @@ function Block({ block }: { block: ColumnBlock }) {
           )}
           <Link
             href={block.href}
-            className="inline-flex items-center gap-1 font-black text-primary underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1 font-black text-primary-dark underline-offset-4 hover:underline"
           >
             {block.label}
             <svg
@@ -140,7 +140,7 @@ export default async function ColumnArticlePage({ params }: Props) {
 
       <article className="mx-auto max-w-3xl px-4 py-12 md:px-6 md:py-16">
         <header>
-          <p className="text-xs font-bold text-primary">{article.category}</p>
+          <p className="text-xs font-bold text-primary-dark">{article.category}</p>
           <h1 className="mt-3 text-3xl leading-snug font-black text-ink md:text-[2.2rem]">
             {article.title}
           </h1>
@@ -187,10 +187,10 @@ export default async function ColumnArticlePage({ params }: Props) {
                   href={`/column/${rel.slug}`}
                   className="group flex h-full flex-col rounded-2xl border border-line bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary"
                 >
-                  <p className="text-xs font-bold text-primary">
+                  <p className="text-xs font-bold text-primary-dark">
                     {rel.category}
                   </p>
-                  <h3 className="mt-2 leading-snug font-black text-ink group-hover:text-primary">
+                  <h3 className="mt-2 leading-snug font-black text-ink group-hover:text-primary-dark">
                     {rel.title}
                   </h3>
                   <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-sub">
@@ -202,7 +202,7 @@ export default async function ColumnArticlePage({ params }: Props) {
             <p className="mt-8 text-center">
               <Link
                 href="/column"
-                className="font-bold text-primary underline-offset-4 hover:underline"
+                className="font-bold text-primary-dark underline-offset-4 hover:underline"
               >
                 採用コラム一覧へ戻る
               </Link>

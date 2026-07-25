@@ -3,7 +3,7 @@ import { faqCategories, allFaqItems } from "@/lib/faq";
 import { faqJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Reveal } from "@/components/ui/Reveal";
+import { PageHero } from "@/components/ui/PageHero";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { CtaSection } from "@/components/job/CtaSection";
 
@@ -27,35 +27,20 @@ export default function FaqPage() {
       <JsonLd data={faqJsonLd(allFaqItems())} />
       <Breadcrumbs items={[{ name: "よくある質問", path: "/faq" }]} />
 
-      <div className="bg-gradient-to-b from-mint to-white">
-        <div className="mx-auto max-w-4xl px-4 py-14 md:px-6 md:py-20">
-          <Reveal>
-            <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
-              FAQ
-            </p>
-            <h1 className="mt-3 text-3xl leading-tight font-black text-ink md:text-4xl">
-              よくある質問
-            </h1>
-            <p className="mt-4 max-w-3xl leading-relaxed text-ink-sub">
-              応募前に多く寄せられる質問をまとめました。ここにない疑問は、応募フォームの相談欄またはお電話（080-7297-3908）でお気軽にお尋ねください。
-            </p>
-          </Reveal>
-        </div>
-      </div>
+      <PageHero
+        kicker="よくある質問"
+        title="応募の前に。"
+        lead="応募前に多く寄せられる質問をまとめました。ここにない疑問は、応募フォームの相談欄またはお電話（080-7297-3908）でお気軽にお尋ねください。"
+      />
 
-      <div className="mx-auto max-w-3xl space-y-12 px-4 py-14 md:px-6 md:py-20">
-        {faqCategories.map((category) => (
+      <div className="mx-auto max-w-3xl space-y-14 px-6 py-16 md:py-24">
+        {faqCategories.map((category, i) => (
           <section key={category.category}>
-            <Reveal>
-              <h2 className="mb-5 flex items-center gap-3 text-xl font-black text-ink">
-                <span
-                  aria-hidden="true"
-                  className="h-6 w-1.5 rounded-full bg-primary"
-                />
-                {category.category}
-              </h2>
-            </Reveal>
-            <FaqAccordion items={category.items} />
+            <h2 className="mb-6 flex items-center gap-3 text-xl font-black text-ink md:text-2xl">
+              <span aria-hidden="true" className="h-5 w-1 bg-primary-dark" />
+              {category.category}
+            </h2>
+            <FaqAccordion items={category.items} defaultOpenFirst={i === 0} />
           </section>
         ))}
       </div>

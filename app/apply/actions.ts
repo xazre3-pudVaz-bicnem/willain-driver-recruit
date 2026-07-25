@@ -20,17 +20,29 @@ import {
  */
 const submissionLog = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10分
-const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_MAX = 5; // 10分内に成功できる送信回数
 
+/**
+ * レート制限の「判定のみ」（副作用なし）。
+ * バリデーションエラーや送信失敗ではカウントせず、
+ * 成功送信のみを recordSubmission でカウントする（入力修正の再試行で
+ * 正規応募者がブロックされ、応募が取りこぼされるのを防ぐ）。
+ */
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const timestamps = (submissionLog.get(ip) ?? []).filter(
     (t) => now - t < RATE_LIMIT_WINDOW_MS
   );
-  if (timestamps.length >= RATE_LIMIT_MAX) {
-    submissionLog.set(ip, timestamps);
-    return true;
-  }
+  submissionLog.set(ip, timestamps);
+  return timestamps.length >= RATE_LIMIT_MAX;
+}
+
+/** 応募が正常に受理された時のみ呼び、送信回数を記録する。 */
+function recordSubmission(ip: string): void {
+  const now = Date.now();
+  const timestamps = (submissionLog.get(ip) ?? []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS
+  );
   timestamps.push(now);
   submissionLog.set(ip, timestamps);
   // メモリ肥大防止
@@ -38,7 +50,6 @@ function isRateLimited(ip: string): boolean {
     const oldestKey = submissionLog.keys().next().value;
     if (oldestKey) submissionLog.delete(oldestKey);
   }
-  return false;
 }
 
 /** 入力のサニタイズ：制御文字を除去し長さを制限する（改行・タブは保持） */
@@ -248,6 +259,8 @@ export async function submitApplication(
     };
   }
 
+  // 応募が正常に受理された時のみレート制限にカウントする
+  recordSubmission(ip);
   redirect("/apply/thanks");
 }
 

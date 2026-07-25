@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import { trackEvent } from "@/lib/analytics";
@@ -23,7 +23,10 @@ const links = [
 
 export function MobileNav({ variant = "dark" }: { variant?: "dark" | "light" }) {
   const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
+  // 背景スクロールロック
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -31,11 +34,54 @@ export function MobileNav({ variant = "dark" }: { variant?: "dark" | "light" }) 
     };
   }, [open]);
 
+  // フォーカストラップ・Escape・開いた時の初期フォーカス
+  useEffect(() => {
+    if (!open) return;
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const getFocusable = () =>
+      Array.from(
+        panel.querySelectorAll<HTMLElement>('a[href],button:not([disabled])')
+      ).filter((el) => el.offsetParent !== null);
+
+    getFocusable()[0]?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+        return;
+      }
+      if (e.key === "Tab") {
+        const items = getFocusable();
+        if (items.length === 0) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  const closeMenu = () => {
+    setOpen(false);
+    toggleRef.current?.focus();
+  };
+
   const barColor = open || variant === "dark" ? "bg-ink" : "bg-white";
 
   return (
     <div className="lg:hidden">
       <button
+        ref={toggleRef}
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
@@ -57,6 +103,10 @@ export function MobileNav({ variant = "dark" }: { variant?: "dark" | "light" }) 
       {open && (
         <div
           id="mobile-menu"
+          ref={panelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="サイトナビゲーション"
           className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-white"
         >
           <nav aria-label="モバイルナビゲーション" className="px-6 py-6">
@@ -66,7 +116,7 @@ export function MobileNav({ variant = "dark" }: { variant?: "dark" | "light" }) 
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className={`block py-3.5 font-bold text-ink transition-colors hover:text-primary ${
+                    className={`block py-3.5 font-bold text-ink transition-colors hover:text-primary-dark ${
                       link.indent ? "border-l-2 border-line pl-6 text-sm font-medium" : ""
                     }`}
                   >
@@ -83,7 +133,7 @@ export function MobileNav({ variant = "dark" }: { variant?: "dark" | "light" }) 
                   trackEvent("apply_click", { place: "mobile_menu" });
                 }}
                 data-event="apply_click"
-                className="block rounded-md bg-primary py-3.5 text-center font-bold text-white"
+                className="block rounded-md bg-primary-dark py-3.5 text-center font-bold text-white"
               >
                 WEBから応募する
               </Link>
@@ -91,10 +141,17 @@ export function MobileNav({ variant = "dark" }: { variant?: "dark" | "light" }) 
                 href={siteConfig.phoneLink}
                 onClick={() => trackEvent("tel_click", { place: "mobile_menu" })}
                 data-event="tel_click"
-                className="block rounded-md border-2 border-primary py-3.5 text-center font-bold text-primary"
+                className="block rounded-md border-2 border-primary-dark py-3.5 text-center font-bold text-primary-dark"
               >
                 電話で相談する（{siteConfig.phoneDisplay}）
               </a>
+              <button
+                type="button"
+                onClick={closeMenu}
+                className="block w-full py-2 text-center text-sm font-medium text-ink-sub"
+              >
+                閉じる
+              </button>
             </div>
           </nav>
         </div>

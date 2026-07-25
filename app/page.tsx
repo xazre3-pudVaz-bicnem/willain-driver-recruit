@@ -244,7 +244,7 @@ export default function HomePage() {
                   <li key={t} className="flex gap-3">
                     <span
                       aria-hidden="true"
-                      className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-primary"
+                      className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-primary-dark"
                     />
                     {t}
                   </li>
@@ -254,7 +254,7 @@ export default function HomePage() {
             <Reveal delay={0.15}>
               <Link
                 href="/work"
-                className="mt-8 inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
+                className="mt-8 inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
               >
                 仕事内容をくわしく見る
                 <ArrowIcon />
@@ -295,7 +295,7 @@ export default function HomePage() {
           <Reveal className="mt-8">
             <Link
               href="/jobs"
-              className="inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
+              className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
             >
               求人一覧を見る
               <ArrowIcon />
@@ -317,7 +317,7 @@ export default function HomePage() {
           </Reveal>
           <div className="grid gap-8 md:grid-cols-2 md:gap-0">
             <Reveal className="md:pr-12">
-              <p className="text-sm font-bold text-primary">車を持っていない方</p>
+              <p className="text-sm font-bold text-primary-dark">車を持っていない方</p>
               <p className="mt-2 text-2xl font-black text-ink md:text-3xl">
                 車両リース
                 <br />
@@ -331,7 +331,7 @@ export default function HomePage() {
               delay={0.1}
               className="border-t border-line pt-8 md:border-t-0 md:border-l md:pt-0 md:pl-12"
             >
-              <p className="text-sm font-bold text-primary">車を持っている方</p>
+              <p className="text-sm font-bold text-primary-dark">車を持っている方</p>
               <p className="mt-2 text-2xl font-black text-ink md:text-3xl">
                 持ち込みで
                 <br />
@@ -448,7 +448,7 @@ export default function HomePage() {
                     key={t}
                     className="flex items-start gap-4 border-b border-line py-4"
                   >
-                    <span className="text-sm font-black tabular-nums text-primary">
+                    <span className="text-sm font-black tabular-nums text-primary-dark">
                       0{i + 1}
                     </span>
                     <span className="text-[0.95rem] leading-relaxed text-ink">
@@ -461,7 +461,7 @@ export default function HomePage() {
             <Reveal delay={0.2}>
               <Link
                 href="/independence-support"
-                className="mt-6 inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
+                className="mt-6 inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
               >
                 独立・開業サポートを見る
                 <ArrowIcon />
@@ -524,7 +524,7 @@ export default function HomePage() {
           <Reveal className="mt-8">
             <Link
               href="/faq"
-              className="inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
+              className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
             >
               すべての質問を見る
               <ArrowIcon />
@@ -545,7 +545,6 @@ export default function HomePage() {
           <dl className="border-t border-line">
             {[
               ["会社名", siteConfig.companyName],
-              ["代表者", siteConfig.representative],
               [
                 "所在地",
                 `${siteConfig.address.postalCode} ${siteConfig.address.full}`,
@@ -568,7 +567,7 @@ export default function HomePage() {
         <Reveal className="mt-6">
           <Link
             href="/company"
-            className="inline-flex items-center gap-1 text-sm font-bold text-primary underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1 text-sm font-bold text-primary-dark underline-offset-4 hover:underline"
           >
             会社情報の詳細を見る
             <ArrowIcon />

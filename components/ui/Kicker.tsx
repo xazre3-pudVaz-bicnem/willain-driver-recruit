@@ -19,12 +19,12 @@ export function Kicker({
     <div className="mb-5 flex items-center gap-3">
       {n && (
         <span
-          className={`text-sm font-black tabular-nums ${light ? "text-primary-light" : "text-primary"}`}
+          className={`text-sm font-black tabular-nums ${light ? "text-primary-light" : "text-primary-dark"}`}
         >
           {n}
         </span>
       )}
-      <span className={`h-px w-8 ${light ? "bg-white/30" : "bg-primary/40"}`} />
+      <span className={`h-px w-8 ${light ? "bg-white/30" : "bg-primary-dark/40"}`} />
       <span
         className={`text-xs font-bold tracking-wider ${light ? "text-white/70" : "text-ink-sub"}`}
       >

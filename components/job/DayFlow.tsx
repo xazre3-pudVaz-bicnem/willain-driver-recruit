@@ -25,7 +25,7 @@ export function DayFlow() {
         {dayFlow.map((item, i) => (
           <li key={item.step} className="relative pb-9 last:pb-0">
             {/* 番号（線上のノード） */}
-            <span className="absolute top-0 -left-[calc(1.5rem+1px)] flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-[0.7rem] font-black text-white md:-left-[calc(2rem+1px)]">
+            <span className="absolute top-0 -left-[calc(1.5rem+1px)] flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full bg-primary-dark text-[0.7rem] font-black text-white md:-left-[calc(2rem+1px)]">
               {i + 1}
             </span>
             <Reveal delay={Math.min(i * 0.04, 0.25)}>

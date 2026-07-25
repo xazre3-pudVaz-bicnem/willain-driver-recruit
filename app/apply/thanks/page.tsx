@@ -21,7 +21,7 @@ export default function ThanksPage() {
         aria-hidden="true"
         className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-mint"
       >
-        <svg className="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none">
+        <svg className="h-8 w-8 text-primary-dark" viewBox="0 0 24 24" fill="none">
           <path
             d="M5 12.5l4.5 4.5L19 7.5"
             stroke="currentColor"
@@ -44,7 +44,7 @@ export default function ThanksPage() {
           href={siteConfig.phoneLink}
           event="tel_click"
           eventParams={{ place: "thanks" }}
-          className="inline-block rounded-full border-2 border-primary px-8 py-3.5 font-bold text-primary"
+          className="inline-block rounded-full border-2 border-primary px-8 py-3.5 font-bold text-primary-dark"
           ariaLabel={`電話で問い合わせる ${siteConfig.phoneDisplay}`}
         >
           {siteConfig.phoneDisplay}（採用担当）
@@ -52,7 +52,7 @@ export default function ThanksPage() {
         <p>
           <Link
             href="/"
-            className="text-sm font-bold text-primary underline-offset-4 hover:underline"
+            className="text-sm font-bold text-primary-dark underline-offset-4 hover:underline"
           >
             トップページへ戻る
           </Link>

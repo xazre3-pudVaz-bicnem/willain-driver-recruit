@@ -105,7 +105,7 @@ export default function BeginnerPage() {
             <Reveal key={item.worry} delay={Math.min(i * 0.05, 0.2)}>
               <div className="grid gap-x-6 border-b border-line py-7 md:grid-cols-[1fr_1.4fr]">
                 <h3 className="flex items-baseline gap-3 text-lg font-black text-ink">
-                  <span className="text-sm tabular-nums text-primary">
+                  <span className="text-sm tabular-nums text-primary-dark">
                     0{i + 1}
                   </span>
                   「{item.worry}」
@@ -143,7 +143,7 @@ export default function BeginnerPage() {
               始め方の全体像は
               <Link
                 href="/column/start-from-beginner"
-                className="font-bold text-primary underline underline-offset-2"
+                className="font-bold text-primary-dark underline underline-offset-2"
               >
                 「未経験から軽貨物ドライバーを始める流れ」
               </Link>

@@ -36,7 +36,7 @@ function RequiredBadge() {
 
 function OptionalBadge() {
   return (
-    <span className="ml-2 rounded bg-gray-400 px-1.5 py-0.5 text-[0.65rem] font-bold text-white">
+    <span className="ml-2 rounded border border-line px-1.5 py-0.5 text-[0.65rem] font-bold text-ink-sub">
       任意
     </span>
   );
@@ -373,7 +373,7 @@ export function ApplyForm() {
           <span className="text-sm leading-relaxed text-ink">
             <Link
               href="/privacy"
-              className="font-bold text-primary underline underline-offset-2"
+              className="font-bold text-primary-dark underline underline-offset-2"
               target="_blank"
             >
               プライバシーポリシー
@@ -388,7 +388,7 @@ export function ApplyForm() {
       <button
         type="submit"
         disabled={isPending}
-        className="w-full rounded-full bg-primary py-4 text-lg font-black text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-full bg-primary-dark py-4 text-lg font-black text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isPending ? "送信中です…" : "この内容で応募する"}
       </button>

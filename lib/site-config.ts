@@ -46,8 +46,6 @@ export const siteConfig = {
   companyName: "株式会社ウィラン",
   /** 英語・ブランド表記 */
   brandName: "Willain",
-  /** 代表者 */
-  representative: "鈴木 翔",
   /** 電話番号（表示用） */
   phoneDisplay: "080-7297-3908",
   /** 電話番号（tel:リンク用） */

@@ -92,7 +92,7 @@ export default function WorkPage() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <figcaption className="mt-3 flex items-baseline gap-2 text-sm font-bold text-ink">
-                  <span className="tabular-nums text-primary">0{i + 1}</span>
+                  <span className="tabular-nums text-primary-dark">0{i + 1}</span>
                   {item.cap}
                 </figcaption>
               </figure>
@@ -112,7 +112,7 @@ export default function WorkPage() {
             {features.map((item, i) => (
               <Reveal key={item.title} delay={(i % 2) * 0.08}>
                 <div className="flex gap-5 border-b border-line py-6">
-                  <span className="text-2xl font-black tabular-nums text-primary/30">
+                  <span className="text-2xl font-black tabular-nums text-primary-dark/30">
                     0{i + 1}
                   </span>
                   <div>
@@ -144,7 +144,7 @@ export default function WorkPage() {
                 >
                   <span
                     aria-hidden="true"
-                    className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-primary"
+                    className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-primary-dark"
                   />
                   {item}
                 </li>
@@ -194,11 +194,11 @@ export default function WorkPage() {
           <Reveal className="mt-6">
             <p className="text-sm text-ink-sub">
               報酬は
-              <span className="font-bold text-primary">{jobCommon.payLabel}</span>
+              <span className="font-bold text-primary-dark">{jobCommon.payLabel}</span>
               （{jobCommon.paySupplement}）。詳しくは
               <Link
                 href="/jobs"
-                className="font-bold text-primary underline underline-offset-2"
+                className="font-bold text-primary-dark underline underline-offset-2"
               >
                 求人一覧
               </Link>

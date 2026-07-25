@@ -66,7 +66,7 @@ export default async function JobAreaPage({ params }: Props) {
       <div className="border-b border-line bg-white">
         <div className="mx-auto max-w-4xl px-6 py-14 md:py-20">
           <Reveal>
-            <p className="inline-block rounded-full bg-primary px-4 py-1.5 text-xs font-bold tracking-wider text-white">
+            <p className="inline-block rounded-full bg-primary-dark px-4 py-1.5 text-xs font-bold tracking-wider text-white">
               募集中｜業務委託
             </p>
             <h1 className="mt-5 text-3xl leading-tight font-black text-ink md:text-4xl">
@@ -119,7 +119,7 @@ export default async function JobAreaPage({ params }: Props) {
             {area.features.map((feature, i) => (
               <Reveal key={feature.title} delay={i * 0.08}>
                 <div className="border-t-2 border-primary/70 py-6">
-                  <span className="text-3xl font-black tabular-nums text-primary/25">
+                  <span className="text-3xl font-black tabular-nums text-primary-dark/25">
                     0{i + 1}
                   </span>
                   <h3 className="mt-2 text-lg leading-snug font-black text-ink">
@@ -227,7 +227,7 @@ export default async function JobAreaPage({ params }: Props) {
         <Reveal className="mt-8 text-center">
           <Link
             href="/faq"
-            className="inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
           >
             その他のよくある質問を見る
             <svg
@@ -267,7 +267,7 @@ export default async function JobAreaPage({ params }: Props) {
           <Reveal className="mt-8">
             <Link
               href="/jobs"
-              className="inline-flex items-center gap-1 font-bold text-primary underline-offset-4 hover:underline"
+              className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
             >
               求人一覧へ戻る
               <svg

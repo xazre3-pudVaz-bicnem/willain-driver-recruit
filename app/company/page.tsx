@@ -33,7 +33,6 @@ export default function CompanyPage() {
   const rows: [string, React.ReactNode][] = [
     ["会社名", siteConfig.companyName],
     ["英語・ブランド表記", siteConfig.brandName],
-    ["代表者", siteConfig.representative],
     [
       "本社所在地",
       <>
@@ -49,7 +48,7 @@ export default function CompanyPage() {
         href={siteConfig.phoneLink}
         event="tel_click"
         eventParams={{ place: "company" }}
-        className="font-bold text-primary"
+        className="font-bold text-primary-dark"
       >
         {siteConfig.phoneDisplay}
       </TrackedLink>,
@@ -66,7 +65,7 @@ export default function CompanyPage() {
         href={siteConfig.instagramUrl}
         event="instagram_click"
         eventParams={{ place: "company" }}
-        className="font-bold text-primary"
+        className="font-bold text-primary-dark"
       >
         {siteConfig.instagramHandle}
       </TrackedLink>,
