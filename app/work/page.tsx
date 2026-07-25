@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { jobCommon, jobAreas } from "@/lib/jobs";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { Photo } from "@/components/ui/Photo";
+import { Kicker } from "@/components/ui/Kicker";
+import { PageHero } from "@/components/ui/PageHero";
 import { DayFlow } from "@/components/job/DayFlow";
 import { AreaCards } from "@/components/job/AreaCards";
 import { CtaSection } from "@/components/job/CtaSection";
@@ -23,45 +24,62 @@ export const metadata: Metadata = {
   },
 };
 
+const features = [
+  {
+    title: "主にAmazon関連の配送案件",
+    text: "取扱量の多いAmazon関連の案件が中心。荷物が継続的にあるため、稼働が安定します。",
+  },
+  {
+    title: "軽くて運びやすい荷物が中心",
+    text: "軽バンで運べるサイズの荷物が中心。日用品や小型の通販商品が多く、扱いやすい内容です。",
+  },
+  {
+    title: "担当エリア制で道を覚えやすい",
+    text: "毎回違う場所ではなく担当エリア内での配送。道や建物を覚えるほど配達が速くなります。",
+  },
+  {
+    title: "配送完了後は直帰OK",
+    text: "その日の配送が終わればセンターへ戻らず直帰。早く配り終えた日は早上がりも可能です。",
+  },
+  {
+    title: "夜22時以降の配送は原則なし",
+    text: "勤務は9〜21時の間で実働8時間程度。深夜配送は原則なく、生活リズムを保てます。",
+  },
+  {
+    title: "ひとりで進められる仕事",
+    text: "配達中は基本的にひとり。自分のペースで黙々と進めたい方に向いています。",
+  },
+];
+
 export default function WorkPage() {
   return (
     <>
       <Breadcrumbs items={[{ name: "仕事内容", path: "/work" }]} />
 
-      <div className="bg-gradient-to-b from-mint to-white">
-        <div className="mx-auto max-w-4xl px-4 py-14 md:px-6 md:py-20">
-          <Reveal>
-            <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
-              Work
-            </p>
-            <h1 className="mt-3 text-3xl leading-tight font-black text-ink md:text-4xl">
-              軽貨物ドライバーの仕事内容
-            </h1>
-            <p className="mt-5 max-w-3xl leading-loose text-ink-sub">
-              株式会社ウィランの軽貨物ドライバーは、インターネット通販で購入された商品を個人のお客様へ届ける宅配の仕事です。案件は主にAmazon関連。配送センターで荷物を積み込み、担当エリアの住宅へ1件ずつ配達します。軽バンで運べる比較的軽い荷物が中心のため、力仕事のイメージほど体への負担は大きくありません。
-            </p>
-          </Reveal>
-        </div>
-      </div>
+      <PageHero
+        kicker="仕事内容"
+        title="軽バンで運ぶ、宅配。"
+        lead="株式会社ウィランの軽貨物ドライバーは、インターネット通販の商品を個人宅へ届ける宅配の仕事です。案件は主にAmazon関連。配送センターで荷物を積み込み、担当エリアの住宅へ1件ずつ配達します。軽バンで運べる荷物が中心のため、力仕事のイメージほど体への負担は大きくありません。"
+      />
 
       {/* 業務の3ステップ写真 */}
-      <section className="mx-auto max-w-6xl px-4 pt-12 md:px-6 md:pt-16">
+      <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">
         <div className="grid gap-4 md:grid-cols-3">
           {[
             {
               src: "/images/photos/work-loading.webp",
               alt: "配送センターで軽バンに荷物を積み込むドライバー",
-              cap: "1. 荷物を積み込む",
+              cap: "荷物を積み込む",
             },
             {
               src: "/images/photos/work-driving.webp",
               alt: "軽バンを運転して担当エリアへ向かうドライバー",
-              cap: "2. 担当エリアで配送",
+              cap: "担当エリアで配送",
             },
             {
               src: "/images/photos/work-delivery.webp",
               alt: "個人宅へ荷物を手渡しするドライバー",
-              cap: "3. お客様へお届け",
+              cap: "お客様へお届け",
             },
           ].map((item, i) => (
             <Reveal key={item.cap} delay={i * 0.1}>
@@ -70,9 +88,11 @@ export default function WorkPage() {
                   src={item.src}
                   alt={item.alt}
                   aspect="aspect-[4/3]"
+                  rounded="rounded-sm"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <figcaption className="mt-3 text-center text-sm font-bold text-ink">
+                <figcaption className="mt-3 flex items-baseline gap-2 text-sm font-bold text-ink">
+                  <span className="tabular-nums text-primary">0{i + 1}</span>
                   {item.cap}
                 </figcaption>
               </figure>
@@ -81,64 +101,52 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* 仕事の全体像 */}
-      <section className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20">
-        <SectionHeading eyebrow="Overview" title="仕事の特徴" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              title: "主にAmazon関連の配送案件",
-              text: "インターネット通販の中でも取扱量が多いAmazon関連の案件が中心。荷物が継続的にあるため、安定した稼働につながります。",
-            },
-            {
-              title: "軽くて運びやすい荷物が中心",
-              text: "軽バンで運べるサイズの荷物が中心です。日用品や小型の通販商品が多く、宅配が初めての方でも扱いやすい内容です。",
-            },
-            {
-              title: "担当エリア制で道を覚えやすい",
-              text: "毎回違う場所ではなく、担当エリア内での配送です。道や建物を覚えるほど配達がスムーズになります。",
-            },
-            {
-              title: "配送完了後は直帰OK",
-              text: "その日の配送が終わればセンターへ戻らず直帰できます。早く配り終えた日は早上がりも可能です。",
-            },
-            {
-              title: "夜22時以降の配送は原則なし",
-              text: "勤務は9:00〜21:00の間で実働8時間程度。深夜配送は原則ないため、生活リズムを保ちやすい働き方です。",
-            },
-            {
-              title: "ひとりで進められる仕事",
-              text: "配達中は基本的にひとり。自分のペースで黙々と仕事を進めたい方に向いています。",
-            },
-          ].map((item, i) => (
-            <Reveal key={item.title} delay={(i % 3) * 0.08} className="h-full">
-              <div className="h-full rounded-2xl border border-line bg-white p-6 shadow-card">
-                <h3 className="font-black text-ink">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-sub">
-                  {item.text}
-                </p>
-              </div>
-            </Reveal>
-          ))}
+      {/* 仕事の特徴：罫線区切りの番号付きリスト（カードなし） */}
+      <section className="border-t border-line bg-paper">
+        <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+          <Kicker animate>仕事の特徴</Kicker>
+          <Reveal>
+            <h2 className="h-section mb-10 text-ink">この仕事の6つの特徴。</h2>
+          </Reveal>
+          <div className="grid gap-x-12 sm:grid-cols-2">
+            {features.map((item, i) => (
+              <Reveal key={item.title} delay={(i % 2) * 0.08}>
+                <div className="flex gap-5 border-b border-line py-6">
+                  <span className="text-2xl font-black tabular-nums text-primary/30">
+                    0{i + 1}
+                  </span>
+                  <div>
+                    <h3 className="font-black text-ink">{item.title}</h3>
+                    <p className="mt-1.5 text-[0.95rem] leading-relaxed text-ink-sub">
+                      {item.text}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* 具体的な業務 */}
-      <section className="bg-mint/60 py-14 md:py-20">
-        <div className="mx-auto max-w-3xl px-4 md:px-6">
-          <SectionHeading eyebrow="Detail" title="具体的な業務内容" />
+      {/* 具体的な業務内容：罫線区切り（箱で囲まない） */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+          <Kicker animate>具体的な業務</Kicker>
           <Reveal>
-            <ul className="space-y-3">
+            <h2 className="h-section mb-8 text-ink">配送の中身。</h2>
+          </Reveal>
+          <Reveal>
+            <ul className="border-t border-line">
               {jobCommon.jobDescription.map((item) => (
                 <li
                   key={item}
-                  className="flex items-start gap-3 rounded-xl border border-line bg-white px-5 py-4 shadow-card"
+                  className="flex gap-3 border-b border-line py-4 leading-relaxed text-ink"
                 >
                   <span
                     aria-hidden="true"
-                    className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary"
+                    className="mt-2.5 h-1.5 w-1.5 shrink-0 bg-primary"
                   />
-                  <p className="leading-relaxed text-ink">{item}</p>
+                  {item}
                 </li>
               ))}
             </ul>
@@ -150,41 +158,43 @@ export default function WorkPage() {
       </section>
 
       {/* 1日の流れ */}
-      <section className="mx-auto max-w-3xl px-4 py-14 md:px-6 md:py-20">
-        <SectionHeading
-          eyebrow="Schedule"
-          title="1日の流れ"
-          lead="時間配分は自分で調整できます。慣れるほど1日の組み立てがうまくなる仕事です。"
-        />
-        <DayFlow />
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+          <Kicker animate>1日の流れ</Kicker>
+          <Reveal>
+            <h2 className="h-section mb-10 text-ink">配送センターから、直帰まで。</h2>
+          </Reveal>
+          <DayFlow />
+        </div>
       </section>
 
-      {/* 働き方の条件 */}
-      <section className="bg-mint/60 py-14 md:py-20">
-        <div className="mx-auto max-w-4xl px-4 md:px-6">
-          <SectionHeading eyebrow="Style" title="働き方" />
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              { label: "契約形態", value: jobCommon.contractType },
-              { label: "勤務時間", value: jobCommon.workHours },
-              { label: "勤務日数", value: jobCommon.workDays },
-            ].map((item, i) => (
-              <Reveal key={item.label} delay={i * 0.08} className="h-full">
-                <div className="h-full rounded-2xl border border-line bg-white p-6 text-center shadow-card">
-                  <p className="text-xs font-bold text-ink-sub">{item.label}</p>
-                  <p className="mt-2 leading-snug font-black text-ink">
-                    {item.value}
-                  </p>
+      {/* 働き方：罫線区切りの数値表示 */}
+      <section className="border-t border-line bg-paper">
+        <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+          <Kicker animate>働き方</Kicker>
+          <Reveal>
+            <h2 className="h-section mb-8 text-ink">契約と時間。</h2>
+          </Reveal>
+          <Reveal>
+            <dl className="grid grid-cols-1 divide-y divide-line border-y border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+              {[
+                { label: "契約形態", value: jobCommon.contractType },
+                { label: "勤務時間", value: jobCommon.workHours },
+                { label: "勤務日数", value: jobCommon.workDays },
+              ].map((item) => (
+                <div key={item.label} className="py-5 sm:px-8 sm:first:pl-0">
+                  <dt className="text-xs font-bold tracking-wider text-ink-sub">
+                    {item.label}
+                  </dt>
+                  <dd className="mt-1 font-black text-ink">{item.value}</dd>
                 </div>
-              </Reveal>
-            ))}
-          </div>
+              ))}
+            </dl>
+          </Reveal>
           <Reveal className="mt-6">
-            <p className="text-center text-sm text-ink-sub">
+            <p className="text-sm text-ink-sub">
               報酬は
-              <span className="font-bold text-primary">
-                {jobCommon.payLabel}
-              </span>
+              <span className="font-bold text-primary">{jobCommon.payLabel}</span>
               （{jobCommon.paySupplement}）。詳しくは
               <Link
                 href="/jobs"
@@ -199,9 +209,14 @@ export default function WorkPage() {
       </section>
 
       {/* 募集エリア */}
-      <section className="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20">
-        <SectionHeading eyebrow="Area" title="この仕事ができる募集エリア" />
-        <AreaCards areas={jobAreas} />
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+          <Kicker animate>募集エリア</Kicker>
+          <Reveal>
+            <h2 className="h-section mb-10 text-ink">この仕事ができるエリア。</h2>
+          </Reveal>
+          <AreaCards areas={jobAreas} />
+        </div>
       </section>
 
       <CtaSection place="work" />

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { Photo } from "@/components/ui/Photo";
+import { Kicker } from "@/components/ui/Kicker";
+import { PageHero } from "@/components/ui/PageHero";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { ApplyFlow } from "@/components/job/ApplyFlow";
 import { CtaSection } from "@/components/job/CtaSection";
@@ -74,51 +75,42 @@ export default function BeginnerPage() {
     <>
       <Breadcrumbs items={[{ name: "未経験の方へ", path: "/beginner" }]} />
 
-      <div className="bg-gradient-to-b from-mint to-white">
-        <div className="mx-auto max-w-4xl px-4 py-14 md:px-6 md:py-20">
-          <Reveal>
-            <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
-              For Beginners
-            </p>
-            <h1 className="mt-3 text-3xl leading-tight font-black text-ink md:text-4xl">
-              未経験から始める軽貨物ドライバー
-            </h1>
-            <p className="mt-5 max-w-3xl leading-loose text-ink-sub">
-              「配送の経験がない」「業務委託が初めて」。新しい仕事を始めるとき、こうした不安を感じるのは自然なことです。だからこそウィランは、研修・日額保証・車両リース・確定申告サポートという4つの仕組みで、未経験の一歩目を支えています。必要なのは普通自動車免許（AT限定可）だけです。
-            </p>
-          </Reveal>
-          <Reveal delay={0.1} className="mt-8">
-            <Photo
-              src="/images/photos/training.webp"
-              alt="先輩スタッフから配送の流れを教わる未経験のドライバー"
-              aspect="aspect-[16/9]"
-              sizes="(max-width: 896px) 100vw, 896px"
-              priority
-            />
-          </Reveal>
-        </div>
-      </div>
+      <PageHero
+        kicker="未経験の方へ"
+        title="初めてでも、現場で覚えられる。"
+        lead="「配送の経験がない」「業務委託が初めて」。新しい仕事を始めるとき、不安を感じるのは自然なことです。ウィランは、研修・日額保証・車両リース・確定申告サポートで未経験の一歩目を支えています。必要なのは普通自動車免許（AT限定可）だけです。"
+      />
 
-      {/* 不安への回答 */}
-      <section className="mx-auto max-w-4xl px-4 py-14 md:px-6 md:py-20">
-        <SectionHeading
-          eyebrow="Q&A"
-          title="その不安、こう解消します"
-        />
-        <div className="space-y-5">
+      <section className="mx-auto max-w-6xl px-6 pt-14 md:pt-16">
+        <Reveal>
+          <Photo
+            src="/images/photos/training.webp"
+            alt="先輩スタッフから配送の流れを教わる未経験のドライバー"
+            aspect="aspect-[16/7]"
+            rounded="rounded-sm"
+            sizes="(max-width: 1152px) 100vw, 1152px"
+            priority
+          />
+        </Reveal>
+      </section>
+
+      {/* 不安への回答：罫線区切り（箱で囲まない） */}
+      <section className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+        <Kicker animate>よくある不安</Kicker>
+        <Reveal>
+          <h2 className="h-section mb-10 text-ink">その不安、こう解消します。</h2>
+        </Reveal>
+        <div className="border-t border-line">
           {worries.map((item, i) => (
             <Reveal key={item.worry} delay={Math.min(i * 0.05, 0.2)}>
-              <div className="rounded-2xl border border-line bg-white p-7 shadow-card">
-                <h3 className="flex items-start gap-3 text-lg font-black text-ink">
-                  <span
-                    aria-hidden="true"
-                    className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-sm text-white"
-                  >
-                    {i + 1}
+              <div className="grid gap-x-6 border-b border-line py-7 md:grid-cols-[1fr_1.4fr]">
+                <h3 className="flex items-baseline gap-3 text-lg font-black text-ink">
+                  <span className="text-sm tabular-nums text-primary">
+                    0{i + 1}
                   </span>
                   「{item.worry}」
                 </h3>
-                <p className="mt-3 pl-10 text-sm leading-relaxed text-ink-sub">
+                <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-sub md:mt-0">
                   {item.answer}
                 </p>
               </div>
@@ -128,33 +120,37 @@ export default function BeginnerPage() {
       </section>
 
       {/* 始め方 */}
-      <section className="bg-mint/60 py-14 md:py-20">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <SectionHeading
-            eyebrow="Flow"
-            title="未経験からのスタートの流れ"
-            lead="応募から稼働開始までのステップです。詳しいスケジュールは面談時にご案内します。"
-          />
+      <section className="border-t border-line bg-paper">
+        <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+          <Kicker animate>スタートの流れ</Kicker>
+          <Reveal>
+            <h2 className="h-section mb-10 text-ink">応募から、稼働まで。</h2>
+          </Reveal>
           <ApplyFlow />
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-3xl px-4 py-14 md:px-6 md:py-20">
-        <SectionHeading eyebrow="FAQ" title="未経験の方からよくある質問" />
-        <FaqAccordion items={beginnerFaq} />
-        <Reveal className="mt-8 text-center">
-          <p className="text-sm text-ink-sub">
-            始め方の全体像は
-            <Link
-              href="/column/start-from-beginner"
-              className="font-bold text-primary underline underline-offset-2"
-            >
-              「未経験から軽貨物ドライバーを始める流れ」
-            </Link>
-            の記事でも詳しく解説しています。
-          </p>
-        </Reveal>
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+          <Kicker animate>よくある質問</Kicker>
+          <Reveal>
+            <h2 className="h-section mb-10 text-ink">未経験の方から、よく届く質問。</h2>
+          </Reveal>
+          <FaqAccordion items={beginnerFaq} defaultOpenFirst />
+          <Reveal className="mt-8">
+            <p className="text-sm text-ink-sub">
+              始め方の全体像は
+              <Link
+                href="/column/start-from-beginner"
+                className="font-bold text-primary underline underline-offset-2"
+              >
+                「未経験から軽貨物ドライバーを始める流れ」
+              </Link>
+              の記事でも解説しています。
+            </p>
+          </Reveal>
+        </div>
       </section>
 
       <CtaSection

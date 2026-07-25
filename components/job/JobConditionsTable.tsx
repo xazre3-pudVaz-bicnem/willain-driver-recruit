@@ -74,7 +74,7 @@ export function JobConditionsTable({ areaName }: { areaName?: string }) {
   ];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-card">
+    <div className="overflow-hidden rounded-md border border-line bg-white">
       <table className="w-full text-left text-sm leading-relaxed md:text-base">
         <tbody className="divide-y divide-line">
           {rows.map((row) => (

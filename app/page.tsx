@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/ui/JsonLd";
 import { Reveal } from "@/components/ui/Reveal";
 import { Photo } from "@/components/ui/Photo";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
+import { Kicker } from "@/components/ui/Kicker";
 import { Hero } from "@/components/home/Hero";
 import { PayExamples } from "@/components/job/PayExamples";
 import { DayFlow } from "@/components/job/DayFlow";
@@ -30,33 +31,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
-
-/** セクション番号＋日本語ラベルのキッカー */
-function Kicker({
-  n,
-  children,
-  light = false,
-}: {
-  n: string;
-  children: React.ReactNode;
-  light?: boolean;
-}) {
-  return (
-    <div className="mb-5 flex items-center gap-3">
-      <span
-        className={`text-sm font-black tabular-nums ${light ? "text-primary-light" : "text-primary"}`}
-      >
-        {n}
-      </span>
-      <span className={`h-px w-8 ${light ? "bg-white/30" : "bg-primary/40"}`} />
-      <span
-        className={`text-xs font-bold tracking-wider ${light ? "text-white/70" : "text-ink-sub"}`}
-      >
-        {children}
-      </span>
-    </div>
-  );
-}
 
 export default function HomePage() {
   const topFaqs = faqCategories.flatMap((c) => c.items).slice(0, 5);

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { columnArticles } from "@/content/column";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Reveal } from "@/components/ui/Reveal";
+import { Kicker } from "@/components/ui/Kicker";
+import { PageHero } from "@/components/ui/PageHero";
 import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
@@ -31,23 +33,13 @@ export default function ColumnIndexPage() {
     <>
       <Breadcrumbs items={[{ name: "採用コラム", path: "/column" }]} />
 
-      <div className="bg-gradient-to-b from-mint to-white">
-        <div className="mx-auto max-w-4xl px-4 py-14 md:px-6 md:py-20">
-          <Reveal>
-            <p className="text-xs font-bold tracking-[0.25em] text-primary uppercase">
-              Column
-            </p>
-            <h1 className="mt-3 text-3xl leading-tight font-black text-ink md:text-4xl">
-              採用コラム
-            </h1>
-            <p className="mt-4 max-w-3xl leading-relaxed text-ink-sub">
-              軽貨物ドライバーという仕事を正しく理解してから応募してほしい。そんな思いから、仕事内容・業務委託の仕組み・お金の知識・独立までの道のりを、株式会社ウィランがわかりやすくまとめました。
-            </p>
-          </Reveal>
-        </div>
-      </div>
+      <PageHero
+        kicker="採用コラム"
+        title="知ってから、始める。"
+        lead="軽貨物ドライバーという仕事を正しく理解してから応募してほしい。そんな思いから、仕事内容・業務委託の仕組み・お金の知識・独立までの道のりを、わかりやすくまとめました。"
+      />
 
-      <div className="mx-auto max-w-6xl space-y-14 px-4 py-14 md:px-6 md:py-20">
+      <div className="mx-auto max-w-4xl space-y-16 px-6 py-16 md:py-24">
         {categories.map((category) => {
           const articles = columnArticles.filter(
             (a) => a.category === category
@@ -55,36 +47,37 @@ export default function ColumnIndexPage() {
           if (articles.length === 0) return null;
           return (
             <section key={category}>
-              <Reveal>
-                <h2 className="mb-6 flex items-center gap-3 text-xl font-black text-ink">
-                  <span
-                    aria-hidden="true"
-                    className="h-6 w-1.5 rounded-full bg-primary"
-                  />
-                  {category}
-                </h2>
-              </Reveal>
-              <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              <Kicker animate>{category}</Kicker>
+              <div className="border-t border-line">
                 {articles.map((article, i) => (
-                  <Reveal
-                    key={article.slug}
-                    delay={(i % 3) * 0.08}
-                    className="h-full"
-                  >
+                  <Reveal key={article.slug} delay={Math.min(i * 0.05, 0.2)}>
                     <Link
                       href={`/column/${article.slug}`}
-                      className="group flex h-full flex-col rounded-2xl border border-line bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-card-hover"
+                      className="group block border-b border-line py-6"
                     >
-                      <p className="text-xs font-bold text-primary">
-                        {article.category}
-                      </p>
-                      <h3 className="mt-2 leading-snug font-black text-ink group-hover:text-primary">
-                        {article.title}
-                      </h3>
-                      <p className="mt-2.5 line-clamp-3 flex-1 text-sm leading-relaxed text-ink-sub">
+                      <div className="flex items-start justify-between gap-4">
+                        <h3 className="text-lg leading-snug font-black text-ink transition-colors group-hover:text-primary md:text-xl">
+                          {article.title}
+                        </h3>
+                        <svg
+                          aria-hidden="true"
+                          className="mt-1 h-4 w-4 shrink-0 text-primary transition-transform group-hover:translate-x-1"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M6 3.5L10.5 8L6 12.5"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                      <p className="mt-2 line-clamp-2 text-[0.95rem] leading-relaxed text-ink-sub">
                         {article.description}
                       </p>
-                      <p className="mt-4 text-xs text-ink-sub">
+                      <p className="mt-3 text-xs text-ink-sub">
                         <time dateTime={article.updatedAt}>
                           更新日：{article.updatedAt.replaceAll("-", ".")}
                         </time>
