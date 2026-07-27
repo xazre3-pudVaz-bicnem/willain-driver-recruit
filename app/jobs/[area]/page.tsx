@@ -74,11 +74,11 @@ export default async function JobAreaPage({ params }: Props) {
             </h1>
             <ul className="mt-5 flex flex-wrap gap-2" aria-label="待遇のポイント">
               {[
-                "日額21,000円保証",
+                area.dailyPayLabel,
                 "週払い可（規定あり）",
                 "未経験歓迎",
-                "車両リース月額25,000円〜",
-                "週3日から相談可",
+                "車両リース月額30,000円",
+                "最短5日で稼働可",
               ].map((badge) => (
                 <li
                   key={badge}
@@ -143,7 +143,11 @@ export default async function JobAreaPage({ params }: Props) {
             <h2 className="h-section mb-8 text-ink">条件をまとめて確認。</h2>
           </Reveal>
           <Reveal>
-            <JobConditionsTable areaName={area.areaName} />
+            <JobConditionsTable
+              areaName={area.areaName}
+              payLabel={area.dailyPayLabel}
+              paySupplement={`${area.areaName}の日額保証（規定あり）・週払い可能（規定あり）`}
+            />
           </Reveal>
           <p className="mt-5 border-l-2 border-primary/40 pl-4 text-sm leading-relaxed text-ink-sub">
             {jobCommon.meetingNote}
@@ -159,7 +163,7 @@ export default async function JobAreaPage({ params }: Props) {
           <Reveal>
             <h2 className="h-section mb-10 text-ink">日額×稼働日数で見る。</h2>
           </Reveal>
-          <PayExamples />
+          <PayExamples daily={area.dailyPay} />
         </div>
       </section>
 
@@ -185,8 +189,9 @@ export default async function JobAreaPage({ params }: Props) {
             <Reveal className="md:pr-12">
               <h3 className="text-xl font-black text-ink">車両について</h3>
               <ul className="mt-4 space-y-2.5 text-[0.95rem] leading-relaxed text-ink-sub">
-                <li>車両リース制度あり（月額25,000円〜）</li>
+                <li>車両リース制度あり（月額30,000円）</li>
                 <li>ご自身の軽バンの持ち込みも可能</li>
+                <li>車の購入代行も可能</li>
                 <li>黒ナンバー（事業用登録）の手続きは面談時に案内</li>
               </ul>
             </Reveal>
@@ -198,7 +203,8 @@ export default async function JobAreaPage({ params }: Props) {
               <ul className="mt-4 space-y-2.5 text-[0.95rem] leading-relaxed text-ink-sub">
                 <li>先輩ドライバーに同乗する横乗り研修</li>
                 <li>未経験者向け研修で配送の基礎から習得</li>
-                <li>稼働開始後も日額21,000円保証で収入をサポート</li>
+                <li>応募から最短5日程度（経験者は最短3日）で稼働開始</li>
+                <li>稼働開始後も日額保証で収入をサポート</li>
               </ul>
             </Reveal>
           </div>

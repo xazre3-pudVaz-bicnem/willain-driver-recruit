@@ -119,7 +119,8 @@ export function jobPostingJsonLd(area: JobArea) {
       currency: jobCommon.baseSalaryCurrency,
       value: {
         "@type": "QuantitativeValue",
-        value: jobCommon.baseSalaryValue,
+        // エリアごとの日額保証（下限）。画面表示の dailyPayLabel と一致させる。
+        value: area.dailyPay,
         unitText: jobCommon.baseSalaryUnit,
       },
     },

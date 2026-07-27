@@ -78,7 +78,7 @@ export default function OpengraphImage() {
             gap: 16,
           }}
         >
-          {["21,000 JPY / DAY", "WEEKLY PAY", "NO EXPERIENCE OK"].map(
+          {["FROM 20,000 JPY / DAY", "WEEKLY PAY", "NO EXPERIENCE OK"].map(
             (label) => (
               <div
                 key={label}

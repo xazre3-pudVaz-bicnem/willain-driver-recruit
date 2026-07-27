@@ -21,12 +21,12 @@ export const metadata: Metadata = {
     absolute: `東京・千葉の軽貨物ドライバー求人｜${siteConfig.companyName}`,
   },
   description:
-    "東京・品川・江東・葛西・船橋で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額21,000円保証、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。",
+    "東京・品川・江東・葛西・船橋で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額20,000円〜（エリアにより異なる）、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。",
   alternates: { canonical: "/" },
   openGraph: {
     title: `東京・千葉の軽貨物ドライバー求人｜${siteConfig.companyName}`,
     description:
-      "日額21,000円保証・週払い対応・未経験歓迎。品川・江東・葛西・船橋で軽貨物ドライバー（業務委託）を募集中です。",
+      "日額20,000円〜・週払い対応・未経験歓迎。品川・江東・葛西・船橋で軽貨物ドライバー（業務委託）を募集中です。",
     url: "/",
     type: "website",
   },
@@ -42,7 +42,7 @@ export default function HomePage() {
       {/* ヒーロー（全面背景写真） */}
       <Hero />
 
-      {/* 01 働くメリット：21,000を主役に */}
+      {/* 01 働くメリット：日額を主役に */}
       <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <Reveal>
           <Kicker n="01">働くメリット</Kicker>
@@ -52,16 +52,16 @@ export default function HomePage() {
             <p className="text-sm font-bold tracking-wider text-ink-sub">
               報酬｜日額保証
             </p>
-            <p className="mt-2 flex items-baseline gap-2">
-              <span className="h-stat text-primary-dark">21,000</span>
+            <p className="mt-2 flex items-baseline gap-1.5">
+              <span className="h-stat text-primary-dark">20,000</span>
               <span className="text-2xl font-black text-primary-dark md:text-3xl">
-                円
+                円〜
               </span>
             </p>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="text-lg leading-[1.9] text-ink md:text-xl">
-              配送件数が伸びない時期も、1日あたりの報酬を保証します。出来高だけの契約と違い、稼働した初日から収入の見通しが立ちます。
+              1日あたりの報酬を保証します。日額はエリアにより20,000〜22,000円（品川区は22,000円〜）。出来高だけの契約と違い、稼働した初日から収入の見通しが立ちます。
             </p>
           </Reveal>
         </div>
@@ -70,7 +70,7 @@ export default function HomePage() {
             {[
               { t: "支払い", d: "週払い可（規定あり）" },
               { t: "経験", d: "未経験・経験者歓迎" },
-              { t: "車両", d: "リース 月額25,000円〜" },
+              { t: "車両", d: "リース 月額30,000円" },
             ].map((item) => (
               <div key={item.d} className="px-0 py-5 sm:px-8 sm:first:pl-0">
                 <dt className="text-xs font-bold tracking-wider text-ink-sub">
@@ -109,7 +109,7 @@ export default function HomePage() {
             <Reveal delay={0.1}>
               <div className="mt-7 space-y-5 text-[1.0625rem] leading-[1.9] text-ink-sub">
                 <p>
-                  配送センターで荷物を積み込み、決まったエリアを回ります。軽バンで運べる小さな荷物が中心で、22時以降の配送は原則ありません。配り終えれば、そのまま直帰できます。
+                  配送センターで荷物を積み込み、決まったエリアを回ります。軽バンで運べる小さな荷物が中心で、深夜の配送は原則ありません。配り終えれば、そのまま直帰できます。
                 </p>
                 <p>
                   担当エリアはほぼ固定です。建物や駐車位置を覚えるほど配送は速くなり、同じ時間でより多く回れるようになります。
@@ -120,24 +120,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 03 日額21,000円保証：濃色全面背景 */}
+      {/* 03 日額保証：濃色全面背景 */}
       <section className="bg-emerald-ink">
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
           <Reveal>
             <Kicker n="03" light>
-              日額21,000円保証
+              日額保証
             </Kicker>
           </Reveal>
           <div className="grid items-end gap-8 md:grid-cols-[auto_1fr] md:gap-16">
             <Reveal>
-              <p className="flex items-baseline gap-2 text-white">
-                <span className="h-stat">21,000</span>
-                <span className="text-2xl font-black md:text-3xl">円/日</span>
+              <p className="flex items-baseline gap-1.5 text-white">
+                <span className="h-stat">20,000</span>
+                <span className="text-2xl font-black md:text-3xl">円〜/日</span>
               </p>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="max-w-md text-base leading-[1.9] text-white/80 md:text-lg">
-                宅配は、慣れるほど速くなる仕事です。だからこそ、最初の収入を保証します。配達件数に関係なく日額21,000円（規定あり）。働いた分を早く受け取れる週払いにも対応しています。
+                宅配は、慣れるほど速くなる仕事です。だからこそ、最初の収入を保証します。配達件数に関係なくエリアにより日額20,000〜22,000円（規定あり）。働いた分を早く受け取れる週払いにも対応しています。
               </p>
             </Reveal>
           </div>
@@ -151,7 +151,7 @@ export default function HomePage() {
         </Reveal>
         <Reveal>
           <p className="mb-10 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
-            日額21,000円で稼働した場合の目安です。稼働日数は週3日から相談できます。
+日額20,000円（下限エリア）で稼働した場合の目安です。品川区など日額の高いエリアではこれより高くなります。稼働日数は週3日から相談できます。
           </p>
         </Reveal>
         <PayExamples />
@@ -189,11 +189,11 @@ export default function HomePage() {
               },
               {
                 t: "日額保証つき",
-                d: "件数がまだ少ない時期も日額21,000円（規定あり）。焦らず配送のコツをつかめます。",
+                d: "件数がまだ少ない時期も日額保証（規定あり）。焦らず配送のコツをつかめます。",
               },
               {
                 t: "車も知識も、後から",
-                d: "車両は月額25,000円からのリースを利用できます。黒ナンバーの手続きや確定申告の疑問も、面談と研修で順に案内します。",
+                d: "車両は月額30,000円のリースや購入代行を利用できます。黒ナンバーの手続きや確定申告の疑問も、面談と研修で順に案内します。",
               },
             ].map((item, i) => (
               <Reveal key={item.t} delay={i * 0.08}>
@@ -239,7 +239,7 @@ export default function HomePage() {
                   "主にAmazon関連の宅配案件",
                   "軽バンで運べる小さな荷物が中心",
                   "担当エリア制。道を覚えるほど効率が上がる",
-                  "9〜21時の間で実働8時間程度・直帰OK",
+                  "7〜20時頃で実働8〜10時間程度・直帰OK",
                 ].map((t) => (
                   <li key={t} className="flex gap-3">
                     <span
@@ -321,10 +321,10 @@ export default function HomePage() {
               <p className="mt-2 text-2xl font-black text-ink md:text-3xl">
                 車両リース
                 <br />
-                <span className="text-primary-dark">月額25,000円〜</span>
+                <span className="text-primary-dark">月額30,000円</span>
               </p>
               <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-sub">
-                配送用の軽バンをリースできます。まとまった初期費用を用意せずに始められます。リース条件は面談時に案内します。
+                配送用の軽バンを月額30,000円（固定）でリースできます。まとまった初期費用を用意せずに始められます。購入をお考えの方には車の購入代行も可能です。
               </p>
             </Reveal>
             <Reveal
