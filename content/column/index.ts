@@ -12,6 +12,13 @@ import { article as tokyoDriverChecklist } from "./tokyo-driver-checklist";
 import { article as taxReturnBasics } from "./tax-return-basics";
 import { article as independenceGuide } from "./independence-guide";
 import { article as interviewChecklist } from "./interview-checklist";
+// 新規（2026-07-28）
+import { article as tokyoJobComparison } from "./tokyo-job-comparison";
+import { article as blackNumberBasics } from "./black-number-basics";
+import { article as takeHomeAndExpenses } from "./take-home-and-expenses";
+import { article as insuranceBasics } from "./insurance-basics";
+import { article as suitedOrNot } from "./suited-or-not";
+import { article as womenDrivers } from "./women-drivers";
 
 /** 全記事（公開日の新しい順） */
 export const columnArticles: ColumnArticle[] = [
@@ -27,6 +34,12 @@ export const columnArticles: ColumnArticle[] = [
   taxReturnBasics,
   independenceGuide,
   interviewChecklist,
+  tokyoJobComparison,
+  blackNumberBasics,
+  takeHomeAndExpenses,
+  insuranceBasics,
+  suitedOrNot,
+  womenDrivers,
 ].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
 
 export function getArticle(slug: string): ColumnArticle | undefined {
