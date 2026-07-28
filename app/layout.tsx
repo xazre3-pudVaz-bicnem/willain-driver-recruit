@@ -67,6 +67,26 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja" className={`no-js ${notoSansJp.variable}`}>
+      <head>
+        {/* 解析ドメインへの事前接続（設定時のみ・LCP/INPを阻害しない） */}
+        {(GA_ID || GTM_ID) && (
+          <>
+            <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+            <link
+              rel="preconnect"
+              href="https://www.googletagmanager.com"
+              crossOrigin=""
+            />
+          </>
+        )}
+        {GA_ID && (
+          <link
+            rel="preconnect"
+            href="https://www.google-analytics.com"
+            crossOrigin=""
+          />
+        )}
+      </head>
       <body className="font-sans antialiased">
         {/* JS有効時にno-jsクラスを外す（リビール表示のフォールバック用） */}
         <Script id="remove-no-js" strategy="beforeInteractive">

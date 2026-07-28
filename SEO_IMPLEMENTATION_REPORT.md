@@ -90,6 +90,15 @@ seo:schema 検証 → error 0。
 
 Indexing: `indexing:update` / `indexing:delete` / `indexing:status`（求人ページ限定）。
 
+## 11b. 追加強化（第2〜5弾）
+
+- **JobPosting充実**: occupationalCategory / industry / workHours / responsibilities / qualifications / jobBenefits / incentiveCompensation を追加。experienceRequirements.monthsOfExperience=0 で未経験歓迎をGoogle認識形式に（すべて画面表示と一致）。
+- **固有OG画像**: `app/jobs/[area]/opengraph-image.tsx`（エリア名＋日額＋条件）、`app/column/[slug]/opengraph-image.tsx`（記事タイトル＋カテゴリ）を動的生成。og:image / twitter:image / BlogPosting.image / primaryImageOfPage に反映（使い回し解消）。
+- **画像サイトマップ**: 求人＝エリア画像、コラム＝固有OG、トップ＝ヒーローを images 付与。
+- **構造化データ追加**: /beginner に FAQPage、/column に Blog、エリア・コラム詳細に WebPage（primaryImageOfPage）。
+- **採用コラムを24記事に拡大**（新規12記事・すべて2,500字以上・比較表・BlogPosting・固有OG・内部リンク・専門家確認note）。
+- **パフォーマンス**: 解析ドメイン（googletagmanager / google-analytics）へ preconnect / dns-prefetch（設定時のみ）。
+
 ## 12. 検証結果
 
 - `npm run build` 成功（全ページ生成）
