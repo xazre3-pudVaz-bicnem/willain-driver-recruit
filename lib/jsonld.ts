@@ -81,6 +81,31 @@ export function webSiteJsonLd() {
   };
 }
 
+/**
+ * WebPage（下層ページ）。primaryImageOfPage と WebSite への紐付けを持つ。
+ * Google はリッチリザルトに直接使わないが、エンティティ理解を助ける。
+ */
+export function webPageJsonLd(input: {
+  title: string;
+  path: string;
+  image: string;
+  datePublished?: string;
+  dateModified?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${absoluteUrl(input.path)}#webpage`,
+    url: absoluteUrl(input.path),
+    name: input.title,
+    inLanguage: "ja",
+    isPartOf: { "@id": `${siteConfig.siteUrl}/#website` },
+    primaryImageOfPage: absoluteUrl(input.image),
+    ...(input.datePublished ? { datePublished: input.datePublished } : {}),
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
+  };
+}
+
 /** パンくずリスト */
 export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   return {

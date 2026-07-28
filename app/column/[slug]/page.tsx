@@ -4,7 +4,7 @@ import Link from "next/link";
 import { columnArticles, getArticle, getRelatedArticles } from "@/content/column";
 import type { ColumnBlock } from "@/lib/column";
 import { siteConfig } from "@/lib/site-config";
-import { articleJsonLd } from "@/lib/jsonld";
+import { articleJsonLd, webPageJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CtaSection } from "@/components/job/CtaSection";
@@ -130,6 +130,15 @@ export default async function ColumnArticlePage({ params }: Props) {
           publishedAt: article.publishedAt,
           updatedAt: article.updatedAt,
           image: `/column/${article.slug}/opengraph-image`,
+        })}
+      />
+      <JsonLd
+        data={webPageJsonLd({
+          title: article.title,
+          path: `/column/${article.slug}`,
+          image: `/column/${article.slug}/opengraph-image`,
+          datePublished: article.publishedAt,
+          dateModified: article.updatedAt,
         })}
       />
       <Breadcrumbs

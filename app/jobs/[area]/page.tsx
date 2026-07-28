@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { jobAreas, getJobArea, jobCommon } from "@/lib/jobs";
 import { getArticle } from "@/content/column";
-import { jobPostingJsonLd, faqJsonLd } from "@/lib/jsonld";
+import { jobPostingJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Reveal } from "@/components/ui/Reveal";
@@ -57,6 +57,14 @@ export default async function JobAreaPage({ params }: Props) {
     <>
       <JsonLd data={jobPostingJsonLd(area)} />
       <JsonLd data={faqJsonLd(area.areaFaq)} />
+      <JsonLd
+        data={webPageJsonLd({
+          title: area.h1,
+          path: `/jobs/${area.slug}`,
+          image: area.image,
+          dateModified: area.dateModified,
+        })}
+      />
       <JobViewTracker jobId={area.identifier} jobArea={area.slug} />
       <Breadcrumbs
         items={[
