@@ -7,7 +7,7 @@ import { Kicker } from "@/components/ui/Kicker";
 import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
-  title: "独立・開業サポート｜軽貨物から始めるキャリア支援",
+  title: "軽貨物ドライバーの独立・開業支援｜黒ナンバー・確定申告",
   description:
     "株式会社ウィランの独立支援制度を紹介します。軽貨物ドライバーとして経験を積みながら、確定申告サポート・税理士紹介・独立支援制度で、独立・開業を目指す方のキャリアを東京・千葉で支援します。",
   alternates: { canonical: "/independence-support" },

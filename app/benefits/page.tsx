@@ -10,7 +10,7 @@ import { PayExamples } from "@/components/job/PayExamples";
 import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
-  title: "ウィランで働くメリット｜日額保証・週払い・独立支援",
+  title: "軽貨物の日額保証・週払い・車両リース｜働くメリット",
   description:
     "株式会社ウィランで軽貨物ドライバーとして働くメリットを紹介。日額20,000円〜（エリアにより異なる）・週払い可・車両リース月額30,000円・横乗り研修・独立支援制度・税理士紹介など、未経験でも始めやすいサポート体制です。",
   alternates: { canonical: "/benefits" },

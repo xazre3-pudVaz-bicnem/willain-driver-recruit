@@ -98,14 +98,18 @@ async function main(): Promise<void> {
   const mode = process.argv[2];
   const filter = process.argv.slice(3);
 
-  if (mode !== "update" && mode !== "delete") {
-    console.error("使い方: node scripts/google-indexing.mts <update|delete> [エリアslug...]");
+  if (mode !== "update" && mode !== "delete" && mode !== "status") {
+    console.error(
+      "使い方: node scripts/google-indexing.mts <update|delete|status> [エリアslug...]"
+    );
     process.exit(1);
   }
 
   const clientEmail = process.env.GOOGLE_INDEXING_CLIENT_EMAIL;
   const privateKey = process.env.GOOGLE_INDEXING_PRIVATE_KEY;
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/+$/, "");
+  const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.willain.jp"
+  ).replace(/\/+$/, "");
 
   if (!clientEmail || !privateKey || !siteUrl) {
     console.error(
@@ -130,11 +134,40 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const type = mode === "update" ? "URL_UPDATED" : "URL_DELETED";
-  console.log(`Google Indexing APIへ ${type} を通知します（${routes.length}件）`);
-
   const token = await getAccessToken(clientEmail, privateKey);
   let failed = 0;
+
+  // 直近の通知状況を確認する
+  if (mode === "status") {
+    console.log(`Google Indexing APIの通知状況を確認します（${routes.length}件）`);
+    for (const route of routes) {
+      const url = `${siteUrl}${route}`;
+      const res = await fetch(
+        `https://indexing.googleapis.com/v3/urlNotifications/metadata?url=${encodeURIComponent(url)}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (res.ok) {
+        const data = (await res.json()) as {
+          latestUpdate?: { type?: string; notifyTime?: string };
+          latestRemove?: { type?: string; notifyTime?: string };
+        };
+        const u = data.latestUpdate;
+        const d = data.latestRemove;
+        console.log(
+          `  ${url}\n    latestUpdate: ${u ? `${u.type} @ ${u.notifyTime}` : "なし"}` +
+            `\n    latestRemove: ${d ? `${d.type} @ ${d.notifyTime}` : "なし"}`
+        );
+      } else {
+        failed += 1;
+        console.error(`  NG   ${url} → ${res.status} ${await res.text()}`);
+      }
+    }
+    if (failed > 0) process.exit(1);
+    return;
+  }
+
+  const type = mode === "update" ? "URL_UPDATED" : "URL_DELETED";
+  console.log(`Google Indexing APIへ ${type} を通知します（${routes.length}件）`);
 
   for (const route of routes) {
     const url = `${siteUrl}${route}`;

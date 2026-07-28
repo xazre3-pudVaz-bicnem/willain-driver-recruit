@@ -10,7 +10,7 @@ import { ApplyFlow } from "@/components/job/ApplyFlow";
 import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
-  title: "未経験の方へ｜研修と日額保証で始める軽貨物ドライバー",
+  title: "未経験から始める軽貨物ドライバー｜研修・車両リース",
   description:
     "軽貨物ドライバーが初めての方へ。株式会社ウィランは横乗り研修・未経験者向け研修・日額20,000円〜の日額保証で未経験からのスタートを支えます。必要なのは普通免許（AT限定可）だけ。東京・千葉で募集中。",
   alternates: { canonical: "/beginner" },

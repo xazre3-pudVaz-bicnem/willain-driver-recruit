@@ -10,7 +10,12 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "indexing:update": "node scripts/google-indexing.mts update",
-    "indexing:delete": "node scripts/google-indexing.mts delete"
+    "indexing:delete": "node scripts/google-indexing.mts delete",
+    "indexing:status": "node scripts/google-indexing.mts status",
+    "seo:audit": "node scripts/seo-check.mjs audit",
+    "seo:validate": "node scripts/seo-check.mjs validate",
+    "seo:links": "node scripts/seo-check.mjs links",
+    "seo:schema": "node scripts/seo-check.mjs schema"
   },
   "dependencies": {
     "next": "^16.2.11",

@@ -13,6 +13,8 @@ const siteLinks = [
   { href: "/column", label: "採用コラム" },
   { href: "/company", label: "会社情報" },
   { href: "/apply", label: "応募フォーム" },
+  { href: "/recruitment-policy", label: "求人情報の掲載・更新方針" },
+  { href: "/editorial-policy", label: "採用コラムの編集方針" },
   { href: "/privacy", label: "プライバシーポリシー" },
 ];
 

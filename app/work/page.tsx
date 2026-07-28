@@ -11,7 +11,7 @@ import { AreaCards } from "@/components/job/AreaCards";
 import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
-  title: "仕事内容｜Amazon関連の宅配が中心の軽貨物配送",
+  title: "軽貨物ドライバーの仕事内容｜東京・千葉の宅配求人",
   description:
     "株式会社ウィランの軽貨物ドライバーの仕事内容を紹介します。Amazon関連のインターネット通販商品を個人宅へ配送。軽バンで運べる軽い荷物中心・配送完了後は直帰可・深夜の配送は原則なし。",
   alternates: { canonical: "/work" },
@@ -68,17 +68,17 @@ export default function WorkPage() {
           {[
             {
               src: "/images/photos/work-loading.webp",
-              alt: "配送センターで軽バンに荷物を積み込むドライバー",
+              alt: "配送センターで軽バンに荷物を積み込むイメージ",
               cap: "荷物を積み込む",
             },
             {
               src: "/images/photos/work-driving.webp",
-              alt: "軽バンを運転して担当エリアへ向かうドライバー",
+              alt: "軽バンを運転して担当エリアへ向かうイメージ",
               cap: "担当エリアで配送",
             },
             {
               src: "/images/photos/work-delivery.webp",
-              alt: "個人宅へ荷物を手渡しするドライバー",
+              alt: "個人宅へ荷物を手渡しする軽貨物配送のイメージ",
               cap: "お客様へお届け",
             },
           ].map((item, i) => (
