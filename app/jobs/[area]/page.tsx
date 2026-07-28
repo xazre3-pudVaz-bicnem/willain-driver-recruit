@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { jobAreas, getJobArea, jobCommon } from "@/lib/jobs";
+import { getArticle } from "@/content/column";
 import { jobPostingJsonLd, faqJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -15,6 +16,7 @@ import { DayFlow } from "@/components/job/DayFlow";
 import { ApplyFlow } from "@/components/job/ApplyFlow";
 import { AreaCards } from "@/components/job/AreaCards";
 import { CtaSection } from "@/components/job/CtaSection";
+import { JobViewTracker } from "@/components/job/JobViewTracker";
 
 type Props = { params: Promise<{ area: string }> };
 
@@ -55,9 +57,10 @@ export default async function JobAreaPage({ params }: Props) {
     <>
       <JsonLd data={jobPostingJsonLd(area)} />
       <JsonLd data={faqJsonLd(area.areaFaq)} />
+      <JobViewTracker jobId={area.identifier} jobArea={area.slug} />
       <Breadcrumbs
         items={[
-          { name: "求人一覧", path: "/jobs" },
+          { name: "軽貨物ドライバー求人一覧", path: "/jobs" },
           { name: `${area.areaName}の求人`, path: `/jobs/${area.slug}` },
         ]}
       />
@@ -255,11 +258,66 @@ export default async function JobAreaPage({ params }: Props) {
         </div>
       </section>
 
-      {/* 応募CTA */}
+      {/* 関連ページ・関連コラム（内部リンク・具体的アンカー） */}
+      <section className="border-t border-line bg-paper">
+        <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+          <Kicker animate>あわせて読みたい</Kicker>
+          <Reveal>
+            <h2 className="h-section mb-8 text-ink">応募前に確認する。</h2>
+          </Reveal>
+          <Reveal>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {[
+                { href: "/work", t: "軽貨物ドライバーの仕事内容を見る" },
+                { href: "/beginner", t: "未経験者向けの横乗り研修を確認する" },
+                { href: "/benefits", t: "日額保証・週払い・車両リースを確認する" },
+                {
+                  href: "/independence-support",
+                  t: "軽貨物の独立・開業支援を確認する",
+                },
+                ...area.relatedArticles
+                  .map((slug) => {
+                    const a = getArticle(slug);
+                    return a
+                      ? { href: `/column/${a.slug}`, t: `${a.title}を読む` }
+                      : null;
+                  })
+                  .filter((x): x is { href: string; t: string } => x !== null),
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="group flex items-center justify-between gap-3 border border-line bg-white px-5 py-4 font-bold text-ink transition-colors hover:border-primary-dark hover:text-primary-dark"
+                  >
+                    {item.t}
+                    <svg
+                      aria-hidden="true"
+                      className="h-4 w-4 shrink-0 text-primary-dark transition-transform group-hover:translate-x-1"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M6 3.5L10.5 8L6 12.5"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 応募CTA（希望エリアを自動選択） */}
       <CtaSection
         title={`${area.areaName}の軽貨物ドライバーに応募する`}
         text="応募フォームは60秒で入力できます。「まず条件だけ聞きたい」というご相談も歓迎です。"
         place={`job_${area.slug}`}
+        area={area.slug}
       />
 
       {/* 他エリアへの内部リンク */}

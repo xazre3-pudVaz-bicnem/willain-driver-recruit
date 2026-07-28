@@ -7,6 +7,7 @@ import { trackEvent } from "@/lib/analytics";
 export function ApplySubmitTracker() {
   useEffect(() => {
     trackEvent("apply_submit", { status: "complete" });
+    trackEvent("form_submit", { status: "complete" });
   }, []);
   return null;
 }

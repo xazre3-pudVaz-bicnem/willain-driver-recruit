@@ -21,6 +21,19 @@ export const areaOptions = [
   { value: "その他", label: "その他・相談したい" },
 ];
 
+/** URLの ?area=slug（例: shinagawa）→ フォームの選択肢値（shortName）へ変換 */
+const slugToShortName: Record<string, string> = Object.fromEntries(
+  jobAreas.map((a) => [a.slug, a.shortName])
+);
+
+/** ?area= の値（slug or shortName）を有効な選択肢値に正規化する。無効なら空文字。 */
+export function resolveAreaParam(param: string | null | undefined): string {
+  if (!param) return "";
+  if (slugToShortName[param]) return slugToShortName[param];
+  if (areaOptions.some((o) => o.value === param)) return param;
+  return "";
+}
+
 export const AREA_VALUES = areaOptions.map((o) => o.value);
 export const LICENSE_VALUES = ["あり（AT限定を含む）", "なし"];
 export const VEHICLE_VALUES = [

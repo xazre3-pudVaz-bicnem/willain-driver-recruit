@@ -85,7 +85,7 @@ export default function BeginnerPage() {
         <Reveal>
           <Photo
             src="/images/photos/training.webp"
-            alt="先輩スタッフから配送の流れを教わる未経験のドライバー"
+            alt="先輩スタッフから配送の流れを教わる、未経験ドライバー研修のイメージ"
             aspect="aspect-[16/7]"
             rounded="rounded-sm"
             sizes="(max-width: 1152px) 100vw, 1152px"

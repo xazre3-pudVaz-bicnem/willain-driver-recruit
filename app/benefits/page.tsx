@@ -65,7 +65,7 @@ export default function BenefitsPage() {
         <Reveal>
           <Photo
             src="/images/photos/driver-portrait.webp"
-            alt="株式会社ウィランで働く軽貨物ドライバー"
+            alt="配送用の軽バンの前に立つ軽貨物ドライバーのイメージ"
             aspect="aspect-[16/7]"
             rounded="rounded-sm"
             sizes="(max-width: 1152px) 100vw, 1152px"

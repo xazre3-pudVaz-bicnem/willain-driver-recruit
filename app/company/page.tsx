@@ -86,7 +86,7 @@ export default function CompanyPage() {
         <Reveal>
           <Photo
             src="/images/photos/fleet.webp"
-            alt="株式会社ウィランの軽貨物配送車両"
+            alt="並んだ配送用軽バンのイメージ"
             aspect="aspect-[16/7]"
             rounded="rounded-sm"
             sizes="(max-width: 1152px) 100vw, 1152px"

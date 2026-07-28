@@ -15,7 +15,7 @@ export function Hero() {
       {hasHeroImage ? (
         <Image
           src="/images/hero-driver.webp"
-          alt="東京の街並みを背景に白い軽バンの前に立つ株式会社ウィランの軽貨物ドライバー"
+          alt="東京の街並みを背景に、白い軽バンの前に立つ軽貨物ドライバーのイメージ"
           fill
           priority
           sizes="100vw"

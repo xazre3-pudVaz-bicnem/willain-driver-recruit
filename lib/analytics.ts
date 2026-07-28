@@ -6,10 +6,18 @@
 
 export type TrackEventName =
   | "tel_click"
+  | "phone_click"
   | "apply_click"
+  | "apply_button_click"
   | "apply_submit"
   | "instagram_click"
-  | "area_job_click";
+  | "area_job_click"
+  | "job_view"
+  | "form_start"
+  | "form_submit"
+  | "form_error"
+  | "column_to_job_click"
+  | "job_to_apply_click";
 
 type EventParams = Record<string, string | number | undefined>;
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
-import { jobAreas } from "@/lib/jobs";
+import { jobAreas, jobCommon } from "@/lib/jobs";
 import { faqCategories } from "@/lib/faq";
 import { webSiteJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -41,6 +41,56 @@ export default function HomePage() {
 
       {/* ヒーロー（全面背景写真） */}
       <Hero />
+
+      {/* 00 定義＋募集条件サマリー（ハブページの導入・AIO対応） */}
+      <section className="border-b border-line bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
+          <Reveal>
+            <Kicker>東京・千葉の軽貨物ドライバー求人</Kicker>
+          </Reveal>
+          <div className="grid gap-8 md:grid-cols-2 md:gap-14">
+            <Reveal>
+              <p className="text-[1.0625rem] leading-[1.95] text-ink">
+                軽貨物ドライバーとは、軽バンを使って通販商品などの小型の荷物を個人宅や企業へ届ける配送の仕事です。株式会社ウィランでは、
+                <strong className="font-bold">
+                  東京都品川区・江東区・江戸川区葛西エリアと千葉県船橋市
+                </strong>
+                で、業務委託の軽貨物ドライバーを募集しています。案件は主にAmazon関連の宅配で、普通自動車免許（AT限定可）があれば未経験からでも始められます。
+              </p>
+              <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-sub">
+                「東京 軽貨物ドライバー 求人」「軽貨物 業務委託 東京」で探している方に向けて、報酬・車両・研修・エリアの情報をこのページにまとめています。
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <dl className="border-t border-line">
+                {[
+                  { t: "契約形態", d: "業務委託" },
+                  { t: "報酬", d: "日額20,000円〜（エリアにより異なる・日額保証／規定あり）" },
+                  { t: "勤務日数", d: jobCommon.workDays },
+                  { t: "勤務時間", d: jobCommon.workHours },
+                  { t: "必要な免許", d: "普通自動車運転免許（AT限定可）" },
+                  { t: "車両", d: "リース月額30,000円・持ち込み・購入代行" },
+                  { t: "研修", d: "横乗り研修・未経験者向け研修" },
+                  {
+                    t: "募集地域",
+                    d: "品川区・江東区・葛西（江戸川区）・船橋市",
+                  },
+                ].map((row) => (
+                  <div
+                    key={row.t}
+                    className="flex flex-col gap-0.5 border-b border-line py-3 sm:flex-row sm:gap-6"
+                  >
+                    <dt className="w-28 shrink-0 text-sm font-bold text-ink-sub">
+                      {row.t}
+                    </dt>
+                    <dd className="text-[0.95rem] text-ink">{row.d}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
       {/* 01 働くメリット：日額を主役に */}
       <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
@@ -89,7 +139,7 @@ export default function HomePage() {
           <Reveal>
             <Photo
               src="/images/photos/van-city.webp"
-              alt="東京の街を背景に駐車された株式会社ウィランの白い軽バン"
+              alt="東京の街を背景に駐車された配送用の白い軽バンのイメージ"
               aspect="aspect-[4/5]"
               rounded="rounded-sm"
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -174,7 +224,7 @@ export default function HomePage() {
             <Reveal delay={0.1} className="mt-8 hidden md:block">
               <Photo
                 src="/images/photos/training.webp"
-                alt="先輩スタッフから配送の流れを教わる未経験のドライバー"
+                alt="先輩スタッフから配送の流れを教わる、未経験ドライバー研修のイメージ"
                 aspect="aspect-[4/3]"
                 rounded="rounded-sm"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -220,7 +270,7 @@ export default function HomePage() {
           <Reveal>
             <Photo
               src="/images/photos/work-loading.webp"
-              alt="配送センターで軽バンに荷物を積み込む株式会社ウィランのドライバー"
+              alt="配送センターで軽バンに荷物を積み込む軽貨物ドライバーのイメージ"
               aspect="aspect-[4/3]"
               rounded="rounded-sm"
               sizes="(max-width: 768px) 100vw, 60vw"
@@ -284,11 +334,13 @@ export default function HomePage() {
             <Kicker n="08">募集エリア</Kicker>
           </Reveal>
           <Reveal>
-            <h2 className="h-section mb-4 text-ink">東京4区と、千葉・船橋。</h2>
+            <h2 className="h-section mb-4 text-ink">
+              東京都内3エリアと、千葉県船橋市。
+            </h2>
           </Reveal>
           <Reveal>
             <p className="mb-10 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
-              品川区・江東区・江戸川区の葛西エリア・船橋市で募集中。待遇と研修はどのエリアも共通です。
+              東京都の品川区・江東区・江戸川区（葛西エリア）と、千葉県船橋市で募集中。日額はエリアにより異なり、待遇と研修は共通です。
             </p>
           </Reveal>
           <AreaCards areas={jobAreas} />
@@ -297,10 +349,69 @@ export default function HomePage() {
               href="/jobs"
               className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
             >
-              求人一覧を見る
+              軽貨物ドライバー求人の一覧を見る
               <ArrowIcon />
             </Link>
           </Reveal>
+        </div>
+      </section>
+
+      {/* 08b 目的から探す：検索意図別の内部リンク */}
+      <section className="border-t border-line bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+          <Reveal>
+            <Kicker>目的から探す</Kicker>
+          </Reveal>
+          <Reveal>
+            <h2 className="h-section mb-10 text-ink">知りたいことから。</h2>
+          </Reveal>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                href: "/work",
+                t: "仕事内容を知りたい",
+                d: "Amazon関連の宅配・1日の流れ",
+              },
+              {
+                href: "/beginner",
+                t: "未経験から始めたい",
+                d: "横乗り研修・AT限定可・車なしOK",
+              },
+              {
+                href: "/benefits",
+                t: "報酬・待遇を知りたい",
+                d: "日額保証・週払い・車両リース",
+              },
+              {
+                href: "/jobs",
+                t: "エリアから探したい",
+                d: "品川・江東・葛西・船橋の日額比較",
+              },
+              {
+                href: "/independence-support",
+                t: "独立・開業を目指したい",
+                d: "黒ナンバー・確定申告・独立支援",
+              },
+              {
+                href: "/faq",
+                t: "疑問を解消したい",
+                d: "応募資格・報酬・車両のよくある質問",
+              },
+            ].map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="group flex h-full flex-col justify-between gap-2 border border-line px-5 py-4 transition-colors hover:border-primary-dark"
+                >
+                  <span className="flex items-center justify-between gap-2 font-bold text-ink group-hover:text-primary-dark">
+                    {item.t}
+                    <ArrowIcon />
+                  </span>
+                  <span className="text-sm text-ink-sub">{item.d}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -418,7 +529,7 @@ export default function HomePage() {
           <Reveal className="md:order-2">
             <Photo
               src="/images/photos/driver-portrait.webp"
-              alt="株式会社ウィランで働く軽貨物ドライバー"
+              alt="荷台の前に立つ軽貨物ドライバーのイメージ"
               aspect="aspect-[4/3]"
               rounded="rounded-sm"
               position="object-[center_30%]"
@@ -527,6 +638,80 @@ export default function HomePage() {
               className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
             >
               すべての質問を見る
+              <ArrowIcon />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 14b テーマ別 採用コラム導線 */}
+      <section className="border-t border-line bg-paper">
+        <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+          <Reveal>
+            <Kicker>採用コラム</Kicker>
+          </Reveal>
+          <Reveal>
+            <h2 className="h-section mb-4 text-ink">はじめる前に、知る。</h2>
+          </Reveal>
+          <Reveal>
+            <p className="mb-10 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
+              軽貨物ドライバーの仕事・報酬・車両・独立について、テーマごとにまとめています。
+            </p>
+          </Reveal>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                href: "/column/what-is-light-cargo-driver",
+                theme: "仕事内容",
+                t: "軽貨物ドライバーの仕事内容とは",
+              },
+              {
+                href: "/column/start-from-beginner",
+                theme: "未経験",
+                t: "未経験から軽貨物ドライバーを始める流れ",
+              },
+              {
+                href: "/column/daily-guarantee-vs-piecework",
+                theme: "報酬と経費",
+                t: "日額保証と出来高制の違い",
+              },
+              {
+                href: "/column/vehicle-lease-vs-own",
+                theme: "車両・黒ナンバー",
+                t: "車両持ち込みとリースの違い",
+              },
+              {
+                href: "/column/gyomu-itaku-basics",
+                theme: "業務委託",
+                t: "軽貨物の業務委託とは？雇用との違い",
+              },
+              {
+                href: "/column/tax-return-basics",
+                theme: "独立・確定申告",
+                t: "確定申告前に確認したいこと",
+              },
+            ].map((c) => (
+              <li key={c.href}>
+                <Link
+                  href={c.href}
+                  className="group flex h-full flex-col gap-2 border border-line bg-white px-5 py-4 transition-colors hover:border-primary-dark"
+                >
+                  <span className="text-xs font-bold tracking-wider text-primary-dark">
+                    {c.theme}
+                  </span>
+                  <span className="font-bold leading-snug text-ink group-hover:text-primary-dark">
+                    {c.t}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <Reveal className="mt-8">
+            <Link
+              href="/column"
+              className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
+            >
+              採用コラムの一覧を見る
               <ArrowIcon />
             </Link>
           </Reveal>

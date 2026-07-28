@@ -7,6 +7,7 @@ import { submitApplication } from "@/app/apply/actions";
 import {
   initialApplyFormState,
   areaOptions,
+  resolveAreaParam,
   LICENSE_VALUES,
   VEHICLE_VALUES,
   WORKDAYS_VALUES,
@@ -48,9 +49,10 @@ export function ApplyForm() {
     initialApplyFormState
   );
   const searchParams = useSearchParams();
-  const preselectedArea = searchParams.get("area") ?? "";
+  const preselectedArea = resolveAreaParam(searchParams.get("area"));
   const startedAtRef = useRef<HTMLInputElement>(null);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
+  const formStartedRef = useRef(false);
 
   // ボット対策用：フォーム表示時刻（hydration差異を避けるためDOMへ直接設定）
   useEffect(() => {
@@ -60,12 +62,25 @@ export function ApplyForm() {
   }, []);
 
   // 送信完了はサーバー側で/apply/thanksへリダイレクトされる。
-  // エラー時はエラーサマリーへフォーカスを移動する（アクセシビリティ）。
+  // エラー時はエラーサマリーへフォーカスを移動＋form_errorを計測。
   const hasErrors =
     Object.keys(state.errors).length > 0 || Boolean(state.formError);
   useEffect(() => {
-    if (hasErrors) errorSummaryRef.current?.focus();
+    if (hasErrors) {
+      errorSummaryRef.current?.focus();
+      trackEvent("form_error", {
+        error_count: Object.keys(state.errors).length,
+      });
+    }
   }, [state, hasErrors]);
+
+  // フォームへの最初の入力で form_start を1回だけ計測
+  const handleFirstInteraction = () => {
+    if (!formStartedRef.current) {
+      formStartedRef.current = true;
+      trackEvent("form_start", { job_area: preselectedArea || undefined });
+    }
+  };
 
   const v = (key: string, fallback = "") => state.values[key] ?? fallback;
 
@@ -73,7 +88,13 @@ export function ApplyForm() {
     <form
       action={formAction}
       noValidate
-      onSubmit={() => trackEvent("apply_submit", { status: "attempt" })}
+      onChange={handleFirstInteraction}
+      onSubmit={() =>
+        trackEvent("apply_submit", {
+          status: "attempt",
+          job_area: preselectedArea || undefined,
+        })
+      }
       className="space-y-6"
     >
       {hasErrors && (

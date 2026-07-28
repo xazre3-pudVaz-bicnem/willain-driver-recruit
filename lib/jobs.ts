@@ -165,9 +165,9 @@ export type JobArea = {
   dailyPayLabel: string;
   /** 求人ごとの固有ID */
   identifier: string;
-  /** エリアのイメージ写真（public/images/photos/配下） */
+  /** エリアのイメージ写真（public/images/photos/配下・AI生成のイメージ画像） */
   image: string;
-  /** 写真のalt */
+  /** 写真のalt（実写ではないため「〜のイメージ」と表記） */
   imageAlt: string;
   /**
    * 求人の初回公開日。【公開前確認事項】実際の公開日に更新すること。
@@ -176,6 +176,15 @@ export type JobArea = {
   datePosted: string;
   /** 求人内容の最終更新日（sitemapのlastmodにも使用） */
   dateModified: string;
+  /**
+   * 募集期限（実際の締切が決まっている場合のみ設定。未定なら undefined）。
+   * JobPosting の validThrough に使用。空欄なら出力しない。
+   */
+  validThrough?: string;
+  /** 募集中か。false の求人は JobPosting・一覧・sitemap から除外する。 */
+  isActive: boolean;
+  /** このエリアに関連する採用コラムのslug（内部リンク用） */
+  relatedArticles: string[];
   /** リード文（エリア固有の本文） */
   lead: string[];
   /** このエリアで働く特徴（エリア固有） */
@@ -198,8 +207,10 @@ export const jobAreas: JobArea[] = [
     dailyPay: 22000,
     dailyPayLabel: "日額22,000円〜",
     identifier: "willain-driver-shinagawa",
+    isActive: true,
+    relatedArticles: ["tokyo-driver-checklist", "vehicle-lease-vs-own", "start-from-beginner"],
     image: "/images/photos/area-shinagawa.webp",
-    imageAlt: "品川区の街を走る株式会社ウィランの軽貨物配送車",
+    imageAlt: "品川区の街並みと配送用の白い軽バンのイメージ",
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [
@@ -252,8 +263,10 @@ export const jobAreas: JobArea[] = [
     dailyPay: 20500,
     dailyPayLabel: "日額20,500円〜",
     identifier: "willain-driver-koto",
+    isActive: true,
+    relatedArticles: ["tokyo-driver-checklist", "daily-guarantee-vs-piecework", "weekly-payment-jobs"],
     image: "/images/photos/area-koto.webp",
-    imageAlt: "江東区・湾岸エリアを走る株式会社ウィランの軽貨物配送車",
+    imageAlt: "江東区・湾岸エリアの街並みと配送用軽バンのイメージ",
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [
@@ -306,8 +319,10 @@ export const jobAreas: JobArea[] = [
     dailyPay: 20500,
     dailyPayLabel: "日額20,500円〜",
     identifier: "willain-driver-kasai",
+    isActive: true,
+    relatedArticles: ["tokyo-driver-checklist", "license-requirements", "start-from-beginner"],
     image: "/images/photos/area-kasai.webp",
-    imageAlt: "葛西・江戸川区の住宅街を走る株式会社ウィランの軽貨物配送車",
+    imageAlt: "葛西・江戸川区の住宅街と配送用軽バンのイメージ",
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [
@@ -360,8 +375,10 @@ export const jobAreas: JobArea[] = [
     dailyPay: 20000,
     dailyPayLabel: "日額20,000円〜",
     identifier: "willain-driver-funabashi",
+    isActive: true,
+    relatedArticles: ["daily-guarantee-vs-piecework", "vehicle-lease-vs-own", "gyomu-itaku-basics"],
     image: "/images/photos/area-funabashi.webp",
-    imageAlt: "船橋市の並木道を走る株式会社ウィランの軽貨物配送車",
+    imageAlt: "船橋市の並木道と配送用軽バンのイメージ",
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [
@@ -405,6 +422,11 @@ export const jobAreas: JobArea[] = [
 
 export function getJobArea(slug: string): JobArea | undefined {
   return jobAreas.find((a) => a.slug === slug);
+}
+
+/** 募集中（isActive）のエリアのみ。一覧・ItemList・sitemap・Indexing対象に使う。 */
+export function getActiveAreas(): JobArea[] {
+  return jobAreas.filter((a) => a.isActive);
 }
 
 /**

@@ -83,7 +83,7 @@ export default function IndependenceSupportPage() {
           <Reveal delay={0.1}>
             <Photo
               src="/images/photos/walking.webp"
-              alt="配送へ向かう株式会社ウィランの軽貨物ドライバー"
+              alt="配送へ向かう軽貨物ドライバーのイメージ"
               aspect="aspect-[4/5]"
               rounded="rounded-sm"
               sizes="(max-width: 768px) 100vw, 50vw"

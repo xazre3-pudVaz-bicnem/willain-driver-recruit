@@ -22,7 +22,7 @@ const shortLabel: Record<string, string> = {
 
 type AreaInput = Pick<
   JobArea,
-  "slug" | "areaName" | "image" | "imageAlt" | "addressRegion"
+  "slug" | "areaName" | "image" | "imageAlt" | "addressRegion" | "dailyPayLabel"
 >;
 
 /**
@@ -43,9 +43,15 @@ export function AreaCards({
         <Link
           key={area.slug}
           href={`/jobs/${area.slug}`}
-          onClick={() => trackEvent("area_job_click", { area: area.slug })}
+          onClick={() =>
+            trackEvent("area_job_click", {
+              job_area: area.slug,
+              cta_location: "area_card",
+            })
+          }
           data-event="area_job_click"
           data-area={area.slug}
+          aria-label={`${area.areaName}の軽貨物ドライバー求人（${area.dailyPayLabel}）を見る`}
           className="group relative flex min-h-[220px] items-end overflow-hidden rounded-md md:min-h-[260px]"
         >
           <Image
@@ -63,6 +69,9 @@ export function AreaCards({
             <h3 className="mt-1 text-2xl font-black text-white md:text-3xl">
               {shortLabel[area.slug] ?? area.areaName}
             </h3>
+            <span className="mt-1 block text-xs font-bold text-primary-light">
+              {area.dailyPayLabel}
+            </span>
             <span className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-white">
               求人詳細を見る
               <svg

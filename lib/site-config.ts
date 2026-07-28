@@ -10,33 +10,27 @@
  * └─────────────────────────────────────────────────────────┘
  */
 
+/** 正式ドメイン（canonical・sitemap・構造化データの正規URL） */
+export const PRODUCTION_ORIGIN = "https://www.willain.jp";
+
 /**
  * サイトURLの解決（canonical・sitemap・構造化データの基点）。
  * 優先順位:
- *   1. NEXT_PUBLIC_SITE_URL（独自ドメイン確定後は必ずこれを設定する）
- *   2. Vercelの本番ドメイン（VERCEL_PROJECT_PRODUCTION_URL。自動提供）
- *   3. Vercelのデプロイ別URL（VERCEL_URL。プレビュー用）
- *   4. localhost（ローカル開発・ローカルビルド）
- * Vercel以外のCIで本番ビルドする場合のみ、未設定を検知してビルドを失敗させ、
- * canonicalがlocalhostのまま公開される事故を防ぐ。
+ *   1. NEXT_PUBLIC_SITE_URL（明示指定。ステージング等で上書きする場合）
+ *   2. 本番ビルド（NODE_ENV=production）は常に正式ドメイン www.willain.jp
+ *      → Vercelの初期ドメインが canonical にならないよう固定する
+ *   3. Vercelプレビューの一時URL（VERCEL_URL）
+ *   4. localhost（ローカル開発）
  */
 function resolveSiteUrl(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL;
   if (configured) return configured.replace(/\/+$/, "");
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
-  if (
-    typeof window === "undefined" &&
-    process.env.NODE_ENV === "production" &&
-    process.env.CI
-  ) {
-    throw new Error(
-      "NEXT_PUBLIC_SITE_URL が未設定です。公開ビルドでは必ず本番URLを設定してください（README「環境変数」参照）。"
-    );
+  if (process.env.NODE_ENV === "production") {
+    // プレビュー（Vercel Preview）はプレビューURL、本番は正式ドメインに固定
+    if (process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL) {
+      return `https://${process.env.VERCEL_URL}`;
+    }
+    return PRODUCTION_ORIGIN;
   }
   return "http://localhost:3000";
 }

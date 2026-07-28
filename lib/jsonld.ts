@@ -12,7 +12,11 @@ export function serializeJsonLd(data: object): string {
     .replace(/&/g, "\\u0026");
 }
 
-/** Organization（全ページ共通・layoutで出力） */
+/**
+ * Organization（全ページ共通・layoutで出力）
+ * ※常設営業所か登記住所のみか未確認のため LocalBusiness は使わない。
+ *   採用の連絡先として contactPoint（recruiter）を明示する。
+ */
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -31,7 +35,36 @@ export function organizationJsonLd() {
       streetAddress: siteConfig.address.street,
       addressCountry: "JP",
     },
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "recruitment",
+        telephone: siteConfig.phoneE164,
+        areaServed: "JP",
+        availableLanguage: ["ja"],
+      },
+    ],
     sameAs: [siteConfig.instagramUrl],
+  };
+}
+
+/**
+ * ItemList（求人一覧ページ用）。個別求人へのリンク集であり JobPosting は付けない。
+ * 各エリア求人詳細を position 付きで列挙する。
+ */
+export function jobsItemListJsonLd(
+  areas: { areaName: string; slug: string; dailyPayLabel: string }[]
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "軽貨物ドライバー求人一覧",
+    itemListElement: areas.map((a, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: `${a.areaName}の軽貨物ドライバー求人（${a.dailyPayLabel}）`,
+      url: absoluteUrl(`/jobs/${a.slug}`),
+    })),
   };
 }
 
@@ -80,7 +113,7 @@ export function faqJsonLd(faqs: { q: string; a: string }[]) {
  * - title には職種名のみ（会社名・勤務地・報酬・記号を入れない）
  * - description は画面表示と同一データから生成
  * - datePosted は実際の初回公開日（ビルド日で自動更新しない）
- * - validThrough は実際の募集期限が決まっていないため設定しない
+ * - validThrough は area.validThrough がある場合のみ出力（未定なら付けない）
  * - directApply はサイト内フォームから直接応募できるため true
  */
 export function jobPostingJsonLd(area: JobArea) {
@@ -98,6 +131,7 @@ export function jobPostingJsonLd(area: JobArea) {
       value: area.identifier,
     },
     datePosted: area.datePosted,
+    ...(area.validThrough ? { validThrough: area.validThrough } : {}),
     employmentType: jobCommon.employmentTypeSchema,
     hiringOrganization: {
       "@type": "Organization",
@@ -128,27 +162,32 @@ export function jobPostingJsonLd(area: JobArea) {
   };
 }
 
-/** Article（採用コラム記事） */
+/**
+ * BlogPosting（採用コラム記事）。
+ * image・mainEntityOfPage・author(組織)・publisher を含める。
+ */
 export function articleJsonLd(input: {
   title: string;
   description: string;
   path: string;
   publishedAt: string;
   updatedAt: string;
+  image?: string;
 }) {
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: input.title,
     description: input.description,
     inLanguage: "ja",
-    mainEntityOfPage: absoluteUrl(input.path),
+    mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(input.path) },
+    image: absoluteUrl(input.image ?? "/opengraph-image"),
     datePublished: input.publishedAt,
     dateModified: input.updatedAt,
     author: {
       "@type": "Organization",
-      name: siteConfig.companyName,
-      url: siteConfig.siteUrl,
+      name: `${siteConfig.companyName} 採用担当`,
+      url: absoluteUrl("/recruitment-policy"),
     },
     publisher: { "@id": `${siteConfig.siteUrl}/#organization` },
   };
