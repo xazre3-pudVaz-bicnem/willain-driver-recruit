@@ -22,6 +22,16 @@ npm run dev
 | `npm run typecheck` | TypeScript型チェック |
 | `npm run indexing:update` | 求人ページをGoogle Indexing APIへ更新通知（任意） |
 | `npm run indexing:delete` | 求人ページの削除（募集終了）通知（任意） |
+| `npm run indexing:status` | Indexing APIの通知状況を確認（任意） |
+| `npm run seo:audit` | ビルド後HTMLのSEO監査（title/description一覧＋問題） |
+| `npm run seo:validate` | SEO検証（NGで exit 1・CIで利用可） |
+| `npm run seo:links` | 内部リンク切れ・空hrefの検査 |
+| `npm run seo:schema` | 構造化データ（JobPosting/ItemList等）の検査 |
+
+SEO検証は `npm run build` の後に実行してください（`.next/server/app/*.html` を検査します）。
+SEO実装の詳細は [SEO_IMPLEMENTATION_REPORT.md](./SEO_IMPLEMENTATION_REPORT.md)、
+キーワード設計は [SEO_KEYWORD_MAP.md](./SEO_KEYWORD_MAP.md)、
+公開後の人的作業は [SEO_OFFSITE_CHECKLIST.md](./SEO_OFFSITE_CHECKLIST.md) を参照。
 
 ## 環境変数
 

@@ -120,7 +120,7 @@ for (const p of indexPages) {
 // title / description 重複
 for (const [t, routes] of titles)
   if (routes.length > 1) add("error", `title重複: "${t}" → ${routes.join(", ")}`);
-for (const [d, routes] of descs)
+for (const [, routes] of descs)
   if (routes.length > 1)
     add("error", `description重複: ${routes.join(", ")}`);
 
