@@ -95,6 +95,31 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   };
 }
 
+/**
+ * Blog（コラム一覧ページ用）。記事を blogPost として列挙する。
+ */
+export function blogJsonLd(
+  articles: { slug: string; title: string; description: string; publishedAt: string; updatedAt: string }[]
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${siteConfig.siteUrl}/column#blog`,
+    name: "株式会社ウィラン 採用コラム",
+    url: absoluteUrl("/column"),
+    inLanguage: "ja",
+    publisher: { "@id": `${siteConfig.siteUrl}/#organization` },
+    blogPost: articles.map((a) => ({
+      "@type": "BlogPosting",
+      headline: a.title,
+      description: a.description,
+      url: absoluteUrl(`/column/${a.slug}`),
+      datePublished: a.publishedAt,
+      dateModified: a.updatedAt,
+    })),
+  };
+}
+
 /** FAQPage */
 export function faqJsonLd(faqs: { q: string; a: string }[]) {
   return {
@@ -157,6 +182,19 @@ export function jobPostingJsonLd(area: JobArea) {
         value: area.dailyPay,
         unitText: jobCommon.baseSalaryUnit,
       },
+    },
+    // 以下はすべて画面（募集要項テーブル）に表示している内容と一致させる
+    occupationalCategory: "軽貨物配送ドライバー",
+    industry: "軽貨物運送業",
+    workHours: jobCommon.workHours,
+    responsibilities: jobCommon.jobDescription.join("／"),
+    qualifications: jobCommon.requirements.join("／"),
+    jobBenefits: jobCommon.support.join("／"),
+    incentiveCompensation: "入社祝金（規定あり）・紹介報奨金（条件あり）",
+    // 未経験歓迎＝必要経験0か月（Googleが認識する形式）
+    experienceRequirements: {
+      "@type": "OccupationalExperienceRequirements",
+      monthsOfExperience: 0,
     },
     directApply: true,
   };

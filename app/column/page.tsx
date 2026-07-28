@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { columnArticles } from "@/content/column";
+import { blogJsonLd } from "@/lib/jsonld";
+import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Reveal } from "@/components/ui/Reveal";
 import { Kicker } from "@/components/ui/Kicker";
@@ -31,6 +33,7 @@ const categories = [
 export default function ColumnIndexPage() {
   return (
     <>
+      <JsonLd data={blogJsonLd(columnArticles)} />
       <Breadcrumbs items={[{ name: "採用コラム", path: "/column" }]} />
 
       <PageHero

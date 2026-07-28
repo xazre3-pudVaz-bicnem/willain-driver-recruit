@@ -32,6 +32,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(area.dateModified),
     changeFrequency: "weekly",
     priority: 0.9,
+    // 画像サイトマップ：エリア代表画像
+    images: [absoluteUrl(area.image)],
   }));
 
   const columnPages: MetadataRoute.Sitemap = columnArticles.map((article) => ({
@@ -39,7 +41,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(article.updatedAt),
     changeFrequency: "monthly",
     priority: 0.6,
+    // 記事の固有OG画像
+    images: [absoluteUrl(`/column/${article.slug}/opengraph-image`)],
   }));
+
+  // トップのヒーロー画像も画像サイトマップに含める
+  const home = staticPages.find((p) => p.url === absoluteUrl("/"));
+  if (home) home.images = [absoluteUrl("/images/hero-driver.webp")];
 
   return [...staticPages, ...jobPages, ...columnPages];
 }

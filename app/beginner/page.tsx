@@ -6,6 +6,8 @@ import { Photo } from "@/components/ui/Photo";
 import { Kicker } from "@/components/ui/Kicker";
 import { PageHero } from "@/components/ui/PageHero";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
+import { JsonLd } from "@/components/ui/JsonLd";
+import { faqJsonLd } from "@/lib/jsonld";
 import { ApplyFlow } from "@/components/job/ApplyFlow";
 import { CtaSection } from "@/components/job/CtaSection";
 
@@ -73,6 +75,7 @@ const beginnerFaq = [
 export default function BeginnerPage() {
   return (
     <>
+      <JsonLd data={faqJsonLd(beginnerFaq)} />
       <Breadcrumbs items={[{ name: "未経験の方へ", path: "/beginner" }]} />
 
       <PageHero

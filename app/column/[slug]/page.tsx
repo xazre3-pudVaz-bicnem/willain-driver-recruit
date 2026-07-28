@@ -129,6 +129,7 @@ export default async function ColumnArticlePage({ params }: Props) {
           path: `/column/${article.slug}`,
           publishedAt: article.publishedAt,
           updatedAt: article.updatedAt,
+          image: `/column/${article.slug}/opengraph-image`,
         })}
       />
       <Breadcrumbs
@@ -157,7 +158,15 @@ export default async function ColumnArticlePage({ params }: Props) {
                 {article.updatedAt.replaceAll("-", ".")}
               </time>
             </p>
-            <p>執筆・監修：{siteConfig.companyName} 採用担当</p>
+            <p>
+              執筆・監修：
+              <Link
+                href="/recruitment-policy"
+                className="font-bold text-primary-dark underline underline-offset-2"
+              >
+                {siteConfig.companyName} 採用担当
+              </Link>
+            </p>
           </div>
         </header>
 
