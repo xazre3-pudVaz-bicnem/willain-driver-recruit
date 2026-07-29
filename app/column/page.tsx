@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { columnArticles } from "@/content/column";
+import { publishedColumnArticles } from "@/content/column";
 import { blogJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -13,7 +13,10 @@ export const metadata: Metadata = {
   title: "採用コラム｜軽貨物ドライバーの仕事・報酬・独立の知識",
   description:
     "軽貨物ドライバーの仕事内容・業務委託の仕組み・報酬・週払い・確定申告・独立開業など、これから軽貨物を始める方に役立つ知識を株式会社ウィランがまとめた採用コラムです。",
-  alternates: { canonical: "/column" },
+  alternates: {
+    canonical: "/column",
+    types: { "application/rss+xml": "/feed.xml" },
+  },
   openGraph: {
     title: "採用コラム｜株式会社ウィラン",
     description:
@@ -33,7 +36,7 @@ const categories = [
 export default function ColumnIndexPage() {
   return (
     <>
-      <JsonLd data={blogJsonLd(columnArticles)} />
+      <JsonLd data={blogJsonLd(publishedColumnArticles)} />
       <Breadcrumbs items={[{ name: "採用コラム", path: "/column" }]} />
 
       <PageHero
@@ -44,7 +47,7 @@ export default function ColumnIndexPage() {
 
       <div className="mx-auto max-w-4xl space-y-16 px-6 py-16 md:py-24">
         {categories.map((category) => {
-          const articles = columnArticles.filter(
+          const articles = publishedColumnArticles.filter(
             (a) => a.category === category
           );
           if (articles.length === 0) return null;

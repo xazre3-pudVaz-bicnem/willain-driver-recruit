@@ -1,0 +1,83 @@
+name: Auto Publish Column
+
+# 採用コラムを毎日1記事、自動生成して公開する。
+# - schedule: UTC20:00 = 日本時間 翌日05:00
+# - workflow_dispatch: GitHub Actions画面から手動実行も可能
+on:
+  schedule:
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+# 同時実行を防ぐ（二重投稿・push競合の回避）
+concurrency:
+  group: auto-column
+  cancel-in-progress: false
+
+# main へ push するための権限
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリを取得
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node.js をセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: 依存関係をインストール
+        run: npm ci
+
+      # 記事生成（テーマ選定→生成→検証→重複→画像→保存）。
+      # スキップ時は変更なしで正常終了。APIキー/レスポンス全文はログに出さない。
+      - name: 採用コラムを生成
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # モデルは Secret でも Variable でも指定可（未設定なら claude-haiku-4-5-20251001）
+          ANTHROPIC_MODEL: ${{ secrets.ANTHROPIC_MODEL || vars.ANTHROPIC_MODEL }}
+          AUTO_COLUMN_ENABLED: ${{ vars.AUTO_COLUMN_ENABLED }}
+          AUTO_COLUMN_MAX_PER_DAY: ${{ vars.AUTO_COLUMN_MAX_PER_DAY }}
+          AUTO_COLUMN_MIN_LENGTH: ${{ vars.AUTO_COLUMN_MIN_LENGTH }}
+          AUTO_COLUMN_MAX_LENGTH: ${{ vars.AUTO_COLUMN_MAX_LENGTH }}
+        run: npm run column:generate
+
+      # 生成物に変更があるか判定（なければ以降をスキップ）
+      - name: 変更の有無を確認
+        id: diff
+        run: |
+          if [ -n "$(git status --porcelain content/column/generated data/column-history.json data/generation-log.json)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "新規記事あり。検証に進みます。"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "新規記事なし（未使用テーマなし／重複／同日投稿済み等）。commitせず終了します。"
+          fi
+
+      # 公開前の最終検証。1つでも失敗したらcommitせずにジョブを失敗させる
+      - name: 検証（lint / 型 / build / SEO）
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          npm run lint
+          npm run typecheck
+          npm run build
+          npm run seo:validate
+
+      # 生成記事と管理データだけをcommitしてpush（force pushはしない）
+      - name: commit & push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          TITLE=$(node -e "const l=require('./data/generation-log.json');const p=l.filter(x=>x.status==='published');process.stdout.write(p.length?p[p.length-1].title:'column')")
+          git config user.name "Willain Column Bot"
+          git config user.email "column-bot@users.noreply.github.com"
+          git add content/column/generated data/column-history.json data/generation-log.json
+          git commit -m "Auto publish column: ${TITLE}"
+          # リモートの更新を取り込む（競合時はforceせず失敗させる）
+          git pull --rebase origin "${{ github.ref_name }}"
+          git push origin "HEAD:${{ github.ref_name }}"

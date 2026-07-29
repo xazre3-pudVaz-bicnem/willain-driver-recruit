@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig, absoluteUrl } from "@/lib/site-config";
 import { getActiveAreas } from "@/lib/jobs";
-import { columnArticles } from "@/content/column";
+import { publishedColumnArticles } from "@/content/column";
 
 /**
  * sitemap.xml。
@@ -36,14 +36,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: [absoluteUrl(area.image)],
   }));
 
-  const columnPages: MetadataRoute.Sitemap = columnArticles.map((article) => ({
-    url: absoluteUrl(`/column/${article.slug}`),
-    lastModified: new Date(article.updatedAt),
-    changeFrequency: "monthly",
-    priority: 0.6,
-    // 記事の固有OG画像
-    images: [absoluteUrl(`/column/${article.slug}/opengraph-image`)],
-  }));
+  const columnPages: MetadataRoute.Sitemap = publishedColumnArticles.map(
+    (article) => ({
+      url: absoluteUrl(`/column/${article.slug}`),
+      lastModified: new Date(article.updatedAt),
+      changeFrequency: "monthly",
+      priority: 0.6,
+      // 記事の固有OG画像（アイキャッチ写真があればそれも含める）
+      images: [
+        absoluteUrl(`/column/${article.slug}/opengraph-image`),
+        ...(article.image ? [absoluteUrl(article.image)] : []),
+      ],
+    }),
+  );
 
   // トップのヒーロー画像も画像サイトマップに含める
   const home = staticPages.find((p) => p.url === absoluteUrl("/"));

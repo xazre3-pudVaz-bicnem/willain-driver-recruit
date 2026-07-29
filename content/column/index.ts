@@ -26,9 +26,11 @@ import { article as deliveryTypes } from "./delivery-types";
 import { article as work3Days } from "./work-3-days";
 import { article as age4050 } from "./age-40-50";
 import { article as contractCheck } from "./contract-check";
+// 自動生成記事（generate-column が管理）
+import { generatedColumnArticles } from "./generated";
 
-/** 全記事（公開日の新しい順） */
-export const columnArticles: ColumnArticle[] = [
+/** 手動作成の記事 */
+const handwrittenArticles: ColumnArticle[] = [
   whatIsLightCargoDriver,
   gyomuItakuBasics,
   startFromBeginner,
@@ -53,7 +55,18 @@ export const columnArticles: ColumnArticle[] = [
   work3Days,
   age4050,
   contractCheck,
+];
+
+/** 全記事（手動＋自動生成／公開日の新しい順） */
+export const columnArticles: ColumnArticle[] = [
+  ...handwrittenArticles,
+  ...generatedColumnArticles,
 ].sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
+
+/** 公開中の記事のみ（status未設定は公開扱い）。一覧・sitemap・RSS・詳細で使う */
+export const publishedColumnArticles: ColumnArticle[] = columnArticles.filter(
+  (a) => (a.status ?? "published") === "published",
+);
 
 export function getArticle(slug: string): ColumnArticle | undefined {
   return columnArticles.find((a) => a.slug === slug);

@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     "東京・品川・江東・葛西・船橋で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額20,000円〜（エリアにより異なる）、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。",
   applicationName: siteConfig.siteName,
   formatDetection: { telephone: false },
+  alternates: {
+    types: { "application/rss+xml": `${siteConfig.siteUrl}/feed.xml` },
+  },
   openGraph: {
     siteName: siteConfig.siteName,
     locale: "ja_JP",

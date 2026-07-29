@@ -15,7 +15,10 @@
     "seo:audit": "node scripts/seo-check.mjs audit",
     "seo:validate": "node scripts/seo-check.mjs validate",
     "seo:links": "node scripts/seo-check.mjs links",
-    "seo:schema": "node scripts/seo-check.mjs schema"
+    "seo:schema": "node scripts/seo-check.mjs schema",
+    "column:generate": "tsx scripts/generate-column.ts",
+    "column:generate:dry": "tsx scripts/generate-column.ts --dry-run",
+    "column:validate": "tsx scripts/generate-column.ts --validate-only"
   },
   "dependencies": {
     "next": "^16.2.11",
@@ -31,6 +34,8 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.2.11",
     "tailwindcss": "^4.3.3",
-    "typescript": "^6.0.3"
+    "tsx": "^4.20.6",
+    "typescript": "^6.0.3",
+    "zod": "^3.25.76"
   }
 }

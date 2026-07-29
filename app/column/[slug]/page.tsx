@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { columnArticles, getArticle, getRelatedArticles } from "@/content/column";
+import Image from "next/image";
+import {
+  publishedColumnArticles,
+  getArticle,
+  getRelatedArticles,
+} from "@/content/column";
 import type { ColumnBlock } from "@/lib/column";
 import { siteConfig } from "@/lib/site-config";
 import { articleJsonLd, webPageJsonLd } from "@/lib/jsonld";
@@ -12,7 +17,7 @@ import { CtaSection } from "@/components/job/CtaSection";
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return columnArticles.map((article) => ({ slug: article.slug }));
+  return publishedColumnArticles.map((article) => ({ slug: article.slug }));
 }
 
 export const dynamicParams = false;
@@ -108,6 +113,26 @@ function Block({ block }: { block: ColumnBlock }) {
           </Link>
         </div>
       );
+    case "sources":
+      return (
+        <ul className="my-5 space-y-2 rounded-xl border border-line bg-white px-6 py-5 text-sm">
+          {block.items.map((source) => (
+            <li key={source.url} className="leading-relaxed">
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-primary-dark underline underline-offset-2"
+              >
+                {source.name}
+              </a>
+              <span className="ml-2 text-xs text-ink-sub">
+                （確認日：{source.checkedDate.replaceAll("-", ".")}）
+              </span>
+            </li>
+          ))}
+        </ul>
+      );
     default:
       return null;
   }
@@ -129,7 +154,7 @@ export default async function ColumnArticlePage({ params }: Props) {
           path: `/column/${article.slug}`,
           publishedAt: article.publishedAt,
           updatedAt: article.updatedAt,
-          image: `/column/${article.slug}/opengraph-image`,
+          image: article.image ?? `/column/${article.slug}/opengraph-image`,
         })}
       />
       <JsonLd
@@ -178,6 +203,20 @@ export default async function ColumnArticlePage({ params }: Props) {
             </p>
           </div>
         </header>
+
+        {article.image && (
+          <figure className="mt-8 overflow-hidden rounded-2xl">
+            <Image
+              src={article.image}
+              alt={article.imageAlt ?? `${article.title}のイメージ`}
+              width={1200}
+              height={630}
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="h-auto w-full object-cover"
+              priority
+            />
+          </figure>
+        )}
 
         <div className="mt-8">
           {article.blocks.map((block, i) => (
