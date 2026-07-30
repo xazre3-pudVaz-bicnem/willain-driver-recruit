@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-07-30",
+  "origin": "https://www.willain.jp",
+  "note": "コラム記事(/column/[slug])は24本。JobPostingは求人詳細4ページのみ。",
+  "pages": [
+    { "url": "/", "type": "home-hub", "indexable": true, "primaryKeywords": ["東京 軽貨物ドライバー 求人", "軽貨物 業務委託 東京"], "h1": "東京・千葉の軽貨物ドライバー求人", "jsonld": ["WebSite", "Organization"], "hasJobPosting": false, "classification": "改善" },
+    { "url": "/jobs", "type": "job-list", "indexable": true, "primaryKeywords": ["軽貨物ドライバー 求人一覧", "東京 千葉 軽貨物 求人"], "jsonld": ["ItemList", "BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/jobs/shinagawa", "type": "job-detail", "indexable": true, "primaryKeywords": ["品川区 軽貨物ドライバー 求人"], "jsonld": ["JobPosting", "FAQPage", "WebPage", "BreadcrumbList"], "hasJobPosting": true, "classification": "改善" },
+    { "url": "/jobs/koto", "type": "job-detail", "indexable": true, "primaryKeywords": ["江東区 軽貨物ドライバー 求人"], "jsonld": ["JobPosting", "FAQPage", "WebPage", "BreadcrumbList"], "hasJobPosting": true, "classification": "改善" },
+    { "url": "/jobs/kasai", "type": "job-detail", "indexable": true, "primaryKeywords": ["葛西 軽貨物ドライバー 求人", "江戸川区 軽貨物ドライバー 求人"], "jsonld": ["JobPosting", "FAQPage", "WebPage", "BreadcrumbList"], "hasJobPosting": true, "classification": "改善" },
+    { "url": "/jobs/funabashi", "type": "job-detail", "indexable": true, "primaryKeywords": ["船橋市 軽貨物ドライバー 求人", "千葉 軽貨物ドライバー 求人"], "jsonld": ["JobPosting", "FAQPage", "WebPage", "BreadcrumbList"], "hasJobPosting": true, "classification": "改善" },
+    { "url": "/work", "type": "pillar", "indexable": true, "primaryKeywords": ["軽貨物ドライバー 仕事内容"], "jsonld": ["BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/beginner", "type": "pillar", "indexable": true, "primaryKeywords": ["軽貨物ドライバー 未経験", "AT限定 軽貨物ドライバー", "車なし 軽貨物ドライバー"], "jsonld": ["FAQPage", "BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/benefits", "type": "pillar", "indexable": true, "primaryKeywords": ["軽貨物 日額保証", "軽貨物 週払い", "軽貨物 車両リース"], "jsonld": ["BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/independence-support", "type": "pillar", "indexable": true, "primaryKeywords": ["軽貨物 独立", "軽貨物 開業", "軽貨物 黒ナンバー", "軽貨物 確定申告"], "jsonld": ["BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/tools/reward-simulator", "type": "tool", "indexable": true, "primaryKeywords": ["軽貨物 手取り シミュレーション", "軽貨物 報酬 シミュレーション", "軽貨物 経費 計算"], "jsonld": ["WebPage", "BreadcrumbList"], "hasJobPosting": false, "classification": "新設" },
+    { "url": "/faq", "type": "faq", "indexable": true, "primaryKeywords": ["軽貨物ドライバー よくある質問"], "jsonld": ["FAQPage", "BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/company", "type": "static", "indexable": true, "primaryKeywords": ["株式会社ウィラン 会社概要"], "jsonld": ["BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/recruitment-policy", "type": "eeat", "indexable": true, "primaryKeywords": ["求人掲載方針"], "jsonld": ["BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/editorial-policy", "type": "eeat", "indexable": true, "primaryKeywords": ["編集方針"], "jsonld": ["BreadcrumbList"], "hasJobPosting": false, "classification": "改善" },
+    { "url": "/privacy", "type": "legal", "indexable": true, "primaryKeywords": ["プライバシーポリシー"], "jsonld": ["BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/column", "type": "blog-hub", "indexable": true, "primaryKeywords": ["軽貨物ドライバー コラム"], "jsonld": ["Blog", "BreadcrumbList"], "hasJobPosting": false, "classification": "改善" },
+    { "url": "/column/category/work", "type": "category-hub", "indexable": true, "primaryKeywords": ["軽貨物ドライバー 仕事内容 コラム"], "jsonld": ["ItemList", "BreadcrumbList"], "hasJobPosting": false, "classification": "新設" },
+    { "url": "/column/category/contract", "type": "category-hub", "indexable": true, "primaryKeywords": ["軽貨物 業務委託 契約"], "jsonld": ["ItemList", "BreadcrumbList"], "hasJobPosting": false, "classification": "新設" },
+    { "url": "/column/category/money", "type": "category-hub", "indexable": true, "primaryKeywords": ["軽貨物 報酬 経費"], "jsonld": ["ItemList", "BreadcrumbList"], "hasJobPosting": false, "classification": "新設" },
+    { "url": "/column/category/independence", "type": "category-hub", "indexable": true, "primaryKeywords": ["軽貨物 独立 確定申告"], "jsonld": ["ItemList", "BreadcrumbList"], "hasJobPosting": false, "classification": "新設" },
+    { "url": "/column/[slug]", "type": "article", "count": 24, "indexable": true, "jsonld": ["BlogPosting", "WebPage", "BreadcrumbList"], "hasJobPosting": false, "classification": "改善", "note": "目次・honest著者表記・articleSection/keywordsを追加" },
+    { "url": "/apply", "type": "form", "indexable": true, "jsonld": ["BreadcrumbList"], "hasJobPosting": false, "classification": "維持" },
+    { "url": "/apply/thanks", "type": "form-complete", "indexable": false, "robots": "noindex", "hasJobPosting": false, "classification": "noindex" }
+  ]
+}

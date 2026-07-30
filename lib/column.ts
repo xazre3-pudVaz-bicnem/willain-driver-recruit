@@ -55,6 +55,16 @@ export type ColumnArticle = {
   status?: "published" | "draft";
   /** 生成モデル（内部管理・画面非表示） */
   generatedBy?: string;
+  /** AIを利用して作成したか（編集方針・著者表示を実態に合わせるため） */
+  generatedWithAI?: boolean;
+  /** 人間が内容を確認したか（trueのときのみ「採用担当が確認」と表示可能） */
+  humanReviewed?: boolean;
+  /** 確認者（humanReviewed=true のときの表示・監査用） */
+  reviewedBy?: string;
+  /** 確認日（YYYY-MM-DD） */
+  reviewedAt?: string;
+  /** 品質スコア（0〜100・内部管理） */
+  qualityScore?: number;
   /** メインキーワード（カニバリ判定用） */
   mainKeyword?: string;
   /** サブキーワード */

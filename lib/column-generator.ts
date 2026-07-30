@@ -67,8 +67,9 @@ export type LogEntry = {
   slug: string;
   inputTokens: number;
   outputTokens: number;
-  status: "published" | "skipped" | "error";
+  status: "published" | "draft" | "skipped" | "error";
   errorType: string | null;
+  qualityScore?: number;
 };
 
 export type SkipReason =
@@ -89,6 +90,8 @@ export type GenerationResult =
       usage: { model: string; input: number; output: number };
       filePath: string;
       topicId: string;
+      status: "published" | "draft";
+      qualityScore: number;
     }
   | {
       outcome: "skipped";
@@ -106,6 +109,7 @@ export type RunOptions = {
   maxPerDay: number;
   minLength: number;
   maxLength: number;
+  mode: ColumnMode;
   log?: (msg: string) => void;
 };
 
@@ -117,10 +121,14 @@ export type Corpus = {
   history: HistoryEntry[];
 };
 
+export type ColumnMode = "auto" | "review";
+
 export type AssembleOptions = {
   today: string;
   minLength: number;
   maxLength: number;
+  /** auto=品質検証後に自動公開 / review=下書き保存し人間確認後に公開 */
+  mode: ColumnMode;
 };
 
 export type AssembleResult =
@@ -132,6 +140,9 @@ export type AssembleResult =
       primaryAreaSlug: string | null;
       image: ColumnImage;
       contentHash: string;
+      qualityScore: number;
+      /** 実際に確定した公開状態（review／制度テーマは draft） */
+      status: "published" | "draft";
     }
   | { ok: false; reason: "validation" | "duplicate"; errors?: string[]; detail?: string };
 
@@ -400,6 +411,17 @@ export function assembleArticle(
   const related = resolveRelatedArticles(gen, topic, corpus.existingSlugs);
   const blocks = buildBlocks(gen, topic, primaryAreaSlug, related);
 
+  // 制度・税務・法務テーマ（needsSources）は必ず人間確認（review）へ回す
+  const forceReview = topic.needsSources;
+  const effectiveReview = opts.mode === "review" || forceReview;
+  const status: "published" | "draft" = effectiveReview ? "draft" : "published";
+  const qualityScore = computeQualityScore(gen, {
+    minLength: opts.minLength,
+    maxLength: opts.maxLength,
+    needsSources: topic.needsSources,
+    warnings: validation.warnings.length,
+  });
+
   const article: ColumnArticle = {
     slug: topic.slugHint,
     title: gen.title.trim(),
@@ -411,9 +433,13 @@ export function assembleArticle(
     image: image.path,
     imageAlt: image.alt,
     tags: (gen.tags ?? []).slice(0, 5),
-    author: "株式会社ウィラン 採用担当",
-    status: "published",
+    // AI補助で作成。人間が個別確認したとは表示しない（確認は review 運用で行う）
+    author: "株式会社ウィラン 編集部",
+    status,
     generatedBy: resolveModel(),
+    generatedWithAI: true,
+    humanReviewed: false,
+    qualityScore,
     mainKeyword: topic.mainKeyword,
     subKeywords: topic.subKeywords,
     searchIntent: topic.searchIntent,
@@ -436,7 +462,27 @@ export function assembleArticle(
     primaryAreaSlug,
     image,
     contentHash,
+    qualityScore,
+    status,
   };
+}
+
+/** 品質スコア（0〜100）。分量・構成・出典・警告から機械的に算出 */
+function computeQualityScore(
+  gen: GeneratedColumn,
+  opts: { minLength: number; maxLength: number; needsSources: boolean; warnings: number },
+): number {
+  let score = 0;
+  const len = bodyLength(gen);
+  if (len >= opts.minLength) score += 30;
+  if (len <= opts.maxLength) score += 10;
+  if (gen.sections.length >= 4 && gen.sections.length <= 7) score += 20;
+  if (gen.checklist.length >= 3) score += 12;
+  if (gen.faq.length >= 2) score += 10;
+  if (gen.relatedArticleSlugs.length >= 2) score += 8;
+  if (!opts.needsSources || gen.sourceIds.length >= 1) score += 10;
+  score -= Math.min(opts.warnings * 4, 20);
+  return Math.max(0, Math.min(100, score));
 }
 
 /* ------------------------------ 生成本体 ------------------------------ */
@@ -457,15 +503,15 @@ export async function runGeneration(
   const history = await loadHistory();
   const genLog = await readJson<LogEntry[]>(LOG_PATH, []);
 
-  // 同日の二重投稿ガード
-  const publishedToday = genLog.filter(
-    (l) => l.date === opts.today && l.status === "published",
+  // 同日の二重作成ガード（公開・下書きのどちらも「作成済み」とみなす）
+  const createdToday = genLog.filter(
+    (l) => l.date === opts.today && (l.status === "published" || l.status === "draft"),
   ).length;
-  if (!opts.dryRun && publishedToday >= 1) {
+  if (!opts.dryRun && createdToday >= 1) {
     return { outcome: "skipped", reason: "already-posted-today", detail: opts.today };
   }
-  if (!opts.dryRun && publishedToday >= opts.maxPerDay) {
-    return { outcome: "skipped", reason: "max-per-day", detail: `${publishedToday}/${opts.maxPerDay}` };
+  if (!opts.dryRun && createdToday >= opts.maxPerDay) {
+    return { outcome: "skipped", reason: "max-per-day", detail: `${createdToday}/${opts.maxPerDay}` };
   }
 
   const corpus = buildCorpus(history);
@@ -527,7 +573,8 @@ export async function runGeneration(
     };
   }
 
-  const { article, image, primaryAreaSlug, contentHash } = assembled;
+  const { article, image, primaryAreaSlug, contentHash, qualityScore, status } =
+    assembled;
   const filePath = path.join(GENERATED_DIR, `${topic.slugHint}.ts`);
 
   if (opts.dryRun) {
@@ -540,10 +587,12 @@ export async function runGeneration(
       usage,
       filePath,
       topicId: topic.id,
+      status,
+      qualityScore,
     };
   }
 
-  // 10) 保存
+  // 10) 保存（review／制度テーマは status="draft" で保存し、一覧・sitemapには出さない）
   await writeArticleFiles(article);
 
   history.push({
@@ -568,8 +617,9 @@ export async function runGeneration(
     slug: article.slug,
     inputTokens: usageInput,
     outputTokens: usageOutput,
-    status: "published",
+    status,
     errorType: null,
+    qualityScore,
   });
   await writeJson(LOG_PATH, genLog);
 
@@ -582,6 +632,8 @@ export async function runGeneration(
     usage,
     filePath,
     topicId: topic.id,
+    status,
+    qualityScore,
   };
 }
 

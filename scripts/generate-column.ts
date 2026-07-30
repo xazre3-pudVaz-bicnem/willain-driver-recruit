@@ -49,6 +49,9 @@ const ENABLED = envFlag("AUTO_COLUMN_ENABLED", true);
 const MAX_PER_DAY = envInt("AUTO_COLUMN_MAX_PER_DAY", 1);
 const MIN_LENGTH = envInt("AUTO_COLUMN_MIN_LENGTH", 2500);
 const MAX_LENGTH = envInt("AUTO_COLUMN_MAX_LENGTH", 4500);
+// auto=品質検証後に自動公開 / review=下書き保存し人間確認後に公開
+const MODE: "auto" | "review" =
+  process.env.AUTO_COLUMN_MODE?.trim().toLowerCase() === "review" ? "review" : "auto";
 
 function todayJst(): string {
   const now = new Date();
@@ -85,10 +88,18 @@ function reportResult(result: GenerationResult): number {
 
   // generated
   const a = result.article;
-  line(`✅ ${result.dryRun ? "生成（dry-run・未保存）" : "記事を保存しました"}`);
+  const statusLabel = result.status === "published" ? "公開" : "下書き（要確認）";
+  const head = result.dryRun
+    ? `生成（dry-run・未保存）／判定: ${statusLabel}`
+    : result.status === "published"
+      ? "記事を公開保存しました"
+      : "下書きとして保存しました（人間確認後に公開）";
+  line(`✅ ${head}`);
   line(`  slug:      ${a.slug}`);
   line(`  title:     ${a.title}`);
   line(`  category:  ${a.category}`);
+  line(`  status:    ${result.status}`);
+  line(`  品質スコア: ${result.qualityScore}/100`);
   line(`  本文文字数: ${result.bodyLength}`);
   line(`  画像:      ${a.image}（alt: ${a.imageAlt}）`);
   line(`  関連記事:  ${a.related?.join(", ")}`);
@@ -107,7 +118,7 @@ function reportResult(result: GenerationResult): number {
 
 async function runGenerateMode(): Promise<number> {
   const today = todayJst();
-  line(`▶ コラム自動生成${DRY_RUN ? "（dry-run）" : ""}  対象日: ${today}（JST）`);
+  line(`▶ コラム自動生成${DRY_RUN ? "（dry-run）" : ""}  対象日: ${today}（JST）／モード: ${MODE}`);
 
   if (!ENABLED) {
     line("AUTO_COLUMN_ENABLED=false のため、APIを呼ばずに終了します。");
@@ -128,6 +139,7 @@ async function runGenerateMode(): Promise<number> {
       maxPerDay: MAX_PER_DAY,
       minLength: MIN_LENGTH,
       maxLength: MAX_LENGTH,
+      mode: MODE,
       log: (m) => line(`  · ${m}`),
     });
     return reportResult(result);
@@ -304,6 +316,7 @@ async function runValidateMode(): Promise<number> {
     today,
     minLength: MIN_LENGTH,
     maxLength: MAX_LENGTH,
+    mode: MODE,
   });
   if (!assembled.ok) {
     failed = true;
@@ -311,6 +324,7 @@ async function runValidateMode(): Promise<number> {
     for (const e of assembled.errors ?? []) line(`     - ${e}`);
   } else {
     line(`  OK 検証・重複・画像・リンク・ブロック変換すべて通過`);
+    line(`     判定: ${assembled.status}（品質スコア ${assembled.qualityScore}/100）`);
     line(`     本文文字数: ${assembled.bodyLength}`);
     line(`     画像: ${assembled.image.path}`);
     line(`     関連記事: ${assembled.article.related.join(", ")}`);

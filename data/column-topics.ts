@@ -120,6 +120,12 @@ export const columnTopics: ColumnTopic[] = [
   { id: "incorporation", title: "軽貨物ドライバーが法人化を考えるタイミング", slugHint: "incorporation-timing", category: "独立・キャリア", theme: "独立・確定申告", mainKeyword: "軽貨物 法人化", subKeywords: ["個人事業主 法人化", "配送 法人 タイミング"], searchIntent: "個人から法人化を検討する目安・考え方を知りたい", imageCategory: "apply", needsSources: true, sourceIds: ["nta"] },
   // 40. 働き方
   { id: "health", title: "軽貨物ドライバーが長く続けるための体調管理", slugHint: "health-management", category: "働き方・契約", theme: "働き方", mainKeyword: "軽貨物 体調管理", subKeywords: ["ドライバー 健康", "配送 腰痛 対策"], searchIntent: "軽貨物ドライバーを長く続けるための体調・健康管理を知りたい", imageCategory: "driver", needsSources: false, sourceIds: [] },
+  // 41〜（実務系の追加テーマ・出典不要の一般的な内容のみ）
+  { id: "rainy-day", title: "雨の日の軽貨物配送で気をつけること", slugHint: "rainy-day-delivery", category: "仕事内容", theme: "配送実務", mainKeyword: "軽貨物 雨の日", subKeywords: ["配送 雨 対策", "宅配 雨天"], searchIntent: "雨の日の配送で荷物や運転に気をつける点を知りたい", imageCategory: "delivery", needsSources: false, sourceIds: [] },
+  { id: "summer-health", title: "夏の軽貨物配送で行う体調管理", slugHint: "summer-health-management", category: "働き方・契約", theme: "働き方", mainKeyword: "軽貨物 夏 熱中症", subKeywords: ["配送 夏 体調管理", "ドライバー 暑さ対策"], searchIntent: "夏の配送での熱中症・体調管理の基本を知りたい", imageCategory: "driver", needsSources: false, sourceIds: [] },
+  { id: "vehicle-maintenance", title: "軽貨物車両のオイル交換と日常点検の基本", slugHint: "vehicle-maintenance-basics", category: "働き方・契約", theme: "車両・リース", mainKeyword: "軽貨物 日常点検", subKeywords: ["軽バン オイル交換", "配送車 メンテナンス"], searchIntent: "軽バンの日常点検・オイル交換など基本的な整備を知りたい", imageCategory: "van", needsSources: false, sourceIds: [] },
+  { id: "parking-tips", title: "軽貨物配送で駐車場所を選ぶときの基本", slugHint: "parking-tips", category: "仕事内容", theme: "配送実務", mainKeyword: "軽貨物 駐車", subKeywords: ["配送 駐車場所", "宅配 停める場所"], searchIntent: "配送中に停める場所を選ぶときの一般的な注意を知りたい", imageCategory: "delivery", needsSources: false, sourceIds: [] },
+  { id: "interview-prep", title: "軽貨物ドライバーが面談前に準備するもの", slugHint: "interview-preparation", category: "働き方・契約", theme: "応募・面談", mainKeyword: "軽貨物 面談 準備", subKeywords: ["軽貨物 面接 持ち物", "業務委託 面談 準備"], searchIntent: "面談前に準備・確認しておくとよいものを知りたい", imageCategory: "apply", needsSources: false, sourceIds: [] },
 ];
 
 const topicById = new Map(columnTopics.map((t) => [t.id, t]));

@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/ui/JsonLd";
 import { faqJsonLd } from "@/lib/jsonld";
 import { ApplyFlow } from "@/components/job/ApplyFlow";
 import { CtaSection } from "@/components/job/CtaSection";
+import { FirstPartyNotes } from "@/components/content/FirstPartyNotes";
 
 export const metadata: Metadata = {
   title: "未経験から始める軽貨物ドライバー｜研修・車両リース",
@@ -155,6 +156,10 @@ export default function BeginnerPage() {
           </Reveal>
         </div>
       </section>
+
+      {/* 一次情報（確認済みのときのみ表示） */}
+      <FirstPartyNotes id="beginner-stumble" />
+      <FirstPartyNotes id="training-checklist" />
 
       <CtaSection
         title="未経験からの応募、歓迎します"

@@ -33,6 +33,13 @@ const categories = [
   "独立・キャリア",
 ] as const;
 
+const categoryHubSlug: Record<(typeof categories)[number], string> = {
+  仕事内容: "work",
+  "働き方・契約": "contract",
+  "お金・報酬": "money",
+  "独立・キャリア": "independence",
+};
+
 export default function ColumnIndexPage() {
   return (
     <>
@@ -51,9 +58,20 @@ export default function ColumnIndexPage() {
             (a) => a.category === category
           );
           if (articles.length === 0) return null;
+          const hubSlug = categoryHubSlug[category];
           return (
             <section key={category}>
-              <Kicker animate>{category}</Kicker>
+              <div className="flex items-end justify-between gap-4">
+                <Kicker animate>{category}</Kicker>
+                {articles.length >= 3 && (
+                  <Link
+                    href={`/column/category/${hubSlug}`}
+                    className="shrink-0 text-sm font-bold text-primary-dark underline-offset-4 hover:underline"
+                  >
+                    このカテゴリーを見る →
+                  </Link>
+                )}
+              </div>
               <div className="border-t border-line">
                 {articles.map((article, i) => (
                   <Reveal key={article.slug} delay={Math.min(i * 0.05, 0.2)}>

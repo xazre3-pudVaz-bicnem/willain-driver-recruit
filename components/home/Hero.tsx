@@ -32,16 +32,20 @@ export function Hero() {
       <div className="absolute inset-0 flex items-end pb-16 md:items-center md:pb-0">
         <div className="mx-auto w-full max-w-6xl px-6">
           <div className="max-w-2xl">
-            <p className="text-xs font-bold tracking-[0.2em] text-white/90 md:text-sm">
-              軽貨物ドライバー募集中<span className="mx-2 text-white/40">｜</span>業務委託
-            </p>
+            {/* H1：地域・職種・求人を自然に含む（ページ内で1つだけ） */}
+            <h1 className="text-xs font-bold tracking-[0.2em] text-white/90 md:text-sm">
+              東京・千葉の軽貨物ドライバー求人
+              <span className="mx-2 text-white/40">｜</span>
+              <span className="font-medium">業務委託・未経験歓迎</span>
+            </h1>
 
-            <h1 className="h-hero mt-5 text-white">
+            {/* 視覚的なメインコピー（デザイン維持） */}
+            <p className="h-hero mt-5 text-white">
               東京・千葉で、
               <br />
               自分らしく
               <span className="text-primary-light">稼ぐ</span>。
-            </h1>
+            </p>
 
             <p className="mt-6 max-w-md text-base leading-relaxed text-white/85 md:text-lg">
               品川・江東・葛西・船橋で軽貨物ドライバーを募集。

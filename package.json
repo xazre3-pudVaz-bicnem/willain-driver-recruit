@@ -16,6 +16,9 @@
     "seo:validate": "node scripts/seo-check.mjs validate",
     "seo:links": "node scripts/seo-check.mjs links",
     "seo:schema": "node scripts/seo-check.mjs schema",
+    "seo:content": "tsx scripts/seo-content.ts content",
+    "seo:duplicates": "tsx scripts/seo-content.ts duplicates",
+    "seo:jobs": "tsx scripts/seo-content.ts jobs",
     "column:generate": "tsx scripts/generate-column.ts",
     "column:generate:dry": "tsx scripts/generate-column.ts --dry-run",
     "column:validate": "tsx scripts/generate-column.ts --validate-only"

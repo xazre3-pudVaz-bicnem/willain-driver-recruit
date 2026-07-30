@@ -17,7 +17,9 @@ export type TrackEventName =
   | "form_submit"
   | "form_error"
   | "column_to_job_click"
-  | "job_to_apply_click";
+  | "job_to_apply_click"
+  | "simulator_area_select"
+  | "simulator_to_jobs";
 
 type EventParams = Record<string, string | number | undefined>;
 

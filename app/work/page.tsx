@@ -9,6 +9,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { DayFlow } from "@/components/job/DayFlow";
 import { AreaCards } from "@/components/job/AreaCards";
 import { CtaSection } from "@/components/job/CtaSection";
+import { FirstPartyNotes } from "@/components/content/FirstPartyNotes";
 
 export const metadata: Metadata = {
   title: "軽貨物ドライバーの仕事内容｜東京・千葉の宅配求人",
@@ -218,6 +219,9 @@ export default function WorkPage() {
           <AreaCards areas={jobAreas} />
         </div>
       </section>
+
+      {/* 一次情報（確認済みのときのみ表示） */}
+      <FirstPartyNotes id="loading-tips" />
 
       <CtaSection place="work" />
     </>

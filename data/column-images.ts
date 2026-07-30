@@ -30,7 +30,30 @@ export type ColumnImage = {
   /** スペック要件（実運用の判定は history 側で行う） */
   usedCount: number;
   lastUsedAt: string | null;
+
+  /* --- 実写を追加できるようにするためのメタ（未指定＝AI生成イメージとして扱う） --- */
+  /** AI生成画像か（既定 true）。false は実写 */
+  isGenerated?: boolean;
+  /** 株式会社ウィランの実際の車両・研修・現場などを撮影した実写か（既定 false） */
+  isActualCompanyPhoto?: boolean;
+  /** 撮影日（実写の場合・YYYY-MM-DD） */
+  photographedAt?: string;
+  /** 関連エリア（任意） */
+  area?: string;
+  /** キャプション（実写の場合に表示可能） */
+  caption?: string;
+  /** クレジット（撮影者・提供元など） */
+  credit?: string;
 };
+
+/**
+ * 実写（株式会社ウィランの実物）かどうか。
+ * true のときだけ「株式会社ウィランの配送車両」等の実写表記を許可する。
+ * それ以外は必ず「〜のイメージ」と表記する（AI生成画像を実物と偽らない）。
+ */
+export function isActualPhoto(img: ColumnImage): boolean {
+  return img.isActualCompanyPhoto === true && img.isGenerated !== true;
+}
 
 /** 横長写真のみ（アイキャッチは 3:2 前後が扱いやすいため縦長は除外） */
 export const columnImages: ColumnImage[] = [

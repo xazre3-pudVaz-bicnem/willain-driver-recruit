@@ -73,6 +73,7 @@ export const COLUMN_SYSTEM_PROMPT = `あなたは、株式会社ウィランの�
 ・本文（content）にURLやMarkdownリンク、HTMLタグを書かない。内部リンクは relatedJobSlugs / relatedArticleSlugs のslug選択だけで指定する
 ・H1は記事テンプレート側で出す。sectionsのheadingにH1やタイトルの重複を入れない
 ・比較や一覧は checklist か、文章で簡潔に示す（表組み・記号の羅列は使わない）
+・タイトルの末尾が「〜を解説」「〜の確認事項」「〜の考え方」ばかりにならないよう、検索意図を保ちつつ自然な言い回しにする
 
 【出力形式（重要）】
 ・出力はJSONオブジェクトだけ。前後に説明文・コードフェンス（\`\`\`）・注釈を一切付けない

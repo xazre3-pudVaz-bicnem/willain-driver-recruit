@@ -175,6 +175,24 @@ node -e "const l=require('./data/generation-log.json');const m='2026-07';const s
 
 ---
 
+## 公開モード（auto / review）と AI表記
+
+`AUTO_COLUMN_MODE`（Variables）で運用を切り替えます。未設定なら `auto`。
+
+- **auto**：品質検証を通過した記事を自動公開します。著者は「株式会社ウィラン 編集部」名義で、
+  「承認済みの求人データと公式情報をもとにAIを補助的に利用して作成」と表示します
+  （担当者が個別に執筆・確認したとは表示しません）。
+- **review**：記事を `status:"draft"`（下書き）で保存します。一覧・sitemap・RSSには出ません。
+  担当者が内容を確認したら、`content/column/generated/<slug>.ts` の
+  `humanReviewed:true` / `reviewedBy` / `reviewedAt` を設定し、`status:"published"` に変更してください。
+  このとき初めて「採用担当が確認」と表示されます。
+
+税務・法務・保険・黒ナンバー・契約に関わるテーマは、`AUTO_COLUMN_MODE=auto` でも**常に下書き**として保存され、
+人間確認を経るまで公開されません。
+
+実行結果は次の4種です：**公開 / 下書き / スキップ / エラー**。記事には品質スコア（0〜100）が付き、
+`data/generation-log.json` に記録されます。
+
 ## コスト・安全設計の要点
 
 - 1回の実行でAPIは記事生成1回（JSON修正が必要な場合のみ+1回、最大2回）。

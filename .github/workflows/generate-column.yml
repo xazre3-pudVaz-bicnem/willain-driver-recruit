@@ -43,6 +43,7 @@ jobs:
           # モデルは Secret でも Variable でも指定可（未設定なら claude-haiku-4-5-20251001）
           ANTHROPIC_MODEL: ${{ secrets.ANTHROPIC_MODEL || vars.ANTHROPIC_MODEL }}
           AUTO_COLUMN_ENABLED: ${{ vars.AUTO_COLUMN_ENABLED }}
+          AUTO_COLUMN_MODE: ${{ vars.AUTO_COLUMN_MODE }}
           AUTO_COLUMN_MAX_PER_DAY: ${{ vars.AUTO_COLUMN_MAX_PER_DAY }}
           AUTO_COLUMN_MIN_LENGTH: ${{ vars.AUTO_COLUMN_MIN_LENGTH }}
           AUTO_COLUMN_MAX_LENGTH: ${{ vars.AUTO_COLUMN_MAX_LENGTH }}

@@ -215,7 +215,7 @@ export function jobPostingJsonLd(area: JobArea) {
     responsibilities: jobCommon.jobDescription.join("／"),
     qualifications: jobCommon.requirements.join("／"),
     jobBenefits: jobCommon.support.join("／"),
-    incentiveCompensation: "入社祝金（規定あり）・紹介報奨金（条件あり）",
+    incentiveCompensation: "稼働開始祝金（規定あり）・紹介報奨金（条件あり）",
     // 未経験歓迎＝必要経験0か月（Googleが認識する形式）
     experienceRequirements: {
       "@type": "OccupationalExperienceRequirements",
@@ -236,6 +236,15 @@ export function articleJsonLd(input: {
   publishedAt: string;
   updatedAt: string;
   image?: string;
+  /** 記事カテゴリ（articleSection） */
+  section?: string;
+  /** キーワード（メイン＋サブ） */
+  keywords?: string[];
+  /**
+   * 著者名。人間が確認していないAI補助記事は「編集部」、
+   * 確認済みは「採用担当」など、実態に合わせて渡す。
+   */
+  authorName?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -247,10 +256,14 @@ export function articleJsonLd(input: {
     image: absoluteUrl(input.image ?? "/opengraph-image"),
     datePublished: input.publishedAt,
     dateModified: input.updatedAt,
+    ...(input.section ? { articleSection: input.section } : {}),
+    ...(input.keywords && input.keywords.length
+      ? { keywords: input.keywords.join(", ") }
+      : {}),
     author: {
       "@type": "Organization",
-      name: `${siteConfig.companyName} 採用担当`,
-      url: absoluteUrl("/recruitment-policy"),
+      name: input.authorName ?? `${siteConfig.companyName} 編集部`,
+      url: absoluteUrl("/editorial-policy"),
     },
     publisher: { "@id": `${siteConfig.siteUrl}/#organization` },
   };

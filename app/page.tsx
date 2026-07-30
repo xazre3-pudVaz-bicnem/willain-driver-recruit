@@ -58,7 +58,7 @@ export default function HomePage() {
                 で、業務委託の軽貨物ドライバーを募集しています。案件は主にAmazon関連の宅配で、普通自動車免許（AT限定可）があれば未経験からでも始められます。
               </p>
               <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-sub">
-                「東京 軽貨物ドライバー 求人」「軽貨物 業務委託 東京」で探している方に向けて、報酬・車両・研修・エリアの情報をこのページにまとめています。
+                このページでは募集エリアと条件の概要をまとめています。仕事内容・報酬・車両・未経験の始め方は、それぞれの専用ページでくわしく確認できます。
               </p>
             </Reveal>
             <Reveal delay={0.1}>
@@ -324,6 +324,15 @@ export default function HomePage() {
             <h2 className="h-section mb-12 text-ink">配送センターから、直帰まで。</h2>
           </Reveal>
           <DayFlow />
+          <Reveal className="mt-8">
+            <Link
+              href="/work"
+              className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
+            >
+              仕事内容と1日の流れをくわしく見る
+              <ArrowIcon />
+            </Link>
+          </Reveal>
         </div>
       </section>
 
@@ -391,6 +400,11 @@ export default function HomePage() {
                 href: "/independence-support",
                 t: "独立・開業を目指したい",
                 d: "黒ナンバー・確定申告・独立支援",
+              },
+              {
+                href: "/tools/reward-simulator",
+                t: "報酬を試算したい",
+                d: "日額・経費から残額の目安を計算",
               },
               {
                 href: "/faq",
@@ -474,7 +488,7 @@ export default function HomePage() {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mt-6 max-w-sm text-base leading-[1.9] text-white/70">
-                入社祝金・紹介報奨金には規定・条件があります。詳細は面談時に確認できます。
+                稼働開始祝金・紹介報奨金には規定・条件があります。詳細は面談時に確認できます。
               </p>
             </Reveal>
           </div>
@@ -493,8 +507,8 @@ export default function HomePage() {
                 d: "経費や申告の疑問を相談でき、必要に応じて税理士を紹介します。",
               },
               {
-                t: "入社祝金・紹介報奨金",
-                d: "規定・条件に基づく祝金と、知人紹介への報奨金があります。",
+                t: "稼働開始祝金・紹介報奨金",
+                d: "規定・条件に基づく祝金と、知人紹介への報奨金があります（業務委託契約のため雇用ではありません）。",
               },
               {
                 t: "服装・髪型・ネイル自由",
@@ -619,6 +633,15 @@ export default function HomePage() {
             <h2 className="h-section mb-12 text-ink">5ステップで、走り出す。</h2>
           </Reveal>
           <ApplyFlow />
+          <Reveal className="mt-8">
+            <Link
+              href="/apply"
+              className="inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
+            >
+              応募フォームへ進む（60秒）
+              <ArrowIcon />
+            </Link>
+          </Reveal>
         </div>
       </section>
 

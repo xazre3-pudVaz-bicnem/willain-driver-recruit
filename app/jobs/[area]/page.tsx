@@ -12,8 +12,6 @@ import { Kicker } from "@/components/ui/Kicker";
 import { FaqAccordion } from "@/components/ui/FaqAccordion";
 import { JobConditionsTable } from "@/components/job/JobConditionsTable";
 import { PayExamples } from "@/components/job/PayExamples";
-import { DayFlow } from "@/components/job/DayFlow";
-import { ApplyFlow } from "@/components/job/ApplyFlow";
 import { AreaCards } from "@/components/job/AreaCards";
 import { CtaSection } from "@/components/job/CtaSection";
 import { JobViewTracker } from "@/components/job/JobViewTracker";
@@ -124,7 +122,12 @@ export default async function JobAreaPage({ params }: Props) {
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
           <Kicker animate>{`${area.addressLocality}で働く`}</Kicker>
           <Reveal>
-            <h2 className="h-section mb-10 text-ink">このエリアの特徴。</h2>
+            <h2 className="h-section mb-4 text-ink">このエリアの特徴。</h2>
+          </Reveal>
+          <Reveal>
+            <p className="mb-10 max-w-2xl text-[0.95rem] leading-relaxed text-ink-sub">
+              以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の一般的な傾向です。担当エリアや配送先の詳細、集合場所は、応募後の面談でご案内します。
+            </p>
           </Reveal>
           <div className="grid gap-x-14 md:grid-cols-3">
             {area.features.map((feature, i) => (
@@ -178,58 +181,70 @@ export default async function JobAreaPage({ params }: Props) {
         </div>
       </section>
 
-      {/* 1日の流れ */}
+      {/* 共通のご案内：仕事内容・車両・研修・応募（全エリア共通は専用ページへ集約し重複を避ける） */}
       <section className="border-t border-line bg-white">
-        <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
-          <Kicker animate>1日の流れ</Kicker>
-          <Reveal>
-            <h2 className="h-section mb-10 text-ink">配送センターから、直帰まで。</h2>
-          </Reveal>
-          <DayFlow />
-        </div>
-      </section>
-
-      {/* 車両・研修：左右分割（中央縦線・カードなし） */}
-      <section className="border-t border-line bg-paper">
         <div className="mx-auto max-w-5xl px-6 py-16 md:py-24">
-          <Kicker animate>車両と研修</Kicker>
+          <Kicker animate>仕事内容・車両・研修・応募</Kicker>
           <Reveal>
-            <h2 className="h-section mb-10 text-ink">はじめ方を、支える。</h2>
+            <h2 className="h-section mb-4 text-ink">共通の内容は、専用ページで。</h2>
           </Reveal>
-          <div className="grid gap-8 md:grid-cols-2 md:gap-0">
-            <Reveal className="md:pr-12">
-              <h3 className="text-xl font-black text-ink">車両について</h3>
-              <ul className="mt-4 space-y-2.5 text-[0.95rem] leading-relaxed text-ink-sub">
-                <li>車両リース制度あり（月額30,000円）</li>
-                <li>ご自身の軽バンの持ち込みも可能</li>
-                <li>車の購入代行も可能</li>
-                <li>黒ナンバー（事業用登録）の手続きは面談時に案内</li>
-              </ul>
-            </Reveal>
-            <Reveal
-              delay={0.1}
-              className="border-t border-line pt-8 md:border-t-0 md:border-l md:pt-0 md:pl-12"
-            >
-              <h3 className="text-xl font-black text-ink">研修について</h3>
-              <ul className="mt-4 space-y-2.5 text-[0.95rem] leading-relaxed text-ink-sub">
-                <li>先輩ドライバーに同乗する横乗り研修</li>
-                <li>未経験者向け研修で配送の基礎から習得</li>
-                <li>応募から最短5日程度（経験者は最短3日）で稼働開始</li>
-                <li>稼働開始後も日額保証で収入をサポート</li>
-              </ul>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* 応募の流れ */}
-      <section className="border-t border-line bg-white">
-        <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-          <Kicker animate>応募の流れ</Kicker>
           <Reveal>
-            <h2 className="h-section mb-10 text-ink">5ステップで、走り出す。</h2>
+            <p className="mb-8 max-w-2xl leading-relaxed text-ink-sub">
+              {area.areaName}の報酬・勤務条件は上の募集要項のとおりです。1日の流れ・車両・研修・応募の手順は全エリア共通のため、専用ページでくわしく確認できます。
+            </p>
           </Reveal>
-          <ApplyFlow />
+          <Reveal>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {[
+                {
+                  href: "/work",
+                  t: "仕事内容と1日の流れを見る",
+                  d: "配送センターでの積み込みから直帰まで",
+                },
+                {
+                  href: "/benefits",
+                  t: "車両（リース月額30,000円）・報酬・待遇を見る",
+                  d: "持ち込み・購入代行・日額保証・週払い",
+                },
+                {
+                  href: "/beginner",
+                  t: "未経験者向けの横乗り研修を見る",
+                  d: "最短5日程度（経験者は最短3日）で稼働開始",
+                },
+                {
+                  href: "/apply",
+                  t: "応募の流れを確認して応募する",
+                  d: "フォームは約60秒。相談だけでも可",
+                },
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="group flex h-full flex-col justify-between gap-1 border border-line px-5 py-4 transition-colors hover:border-primary-dark"
+                  >
+                    <span className="flex items-center justify-between gap-2 font-bold text-ink group-hover:text-primary-dark">
+                      {item.t}
+                      <svg
+                        aria-hidden="true"
+                        className="h-4 w-4 shrink-0 text-primary-dark transition-transform group-hover:translate-x-1"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M6 3.5L10.5 8L6 12.5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="text-sm text-ink-sub">{item.d}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </div>
       </section>
 

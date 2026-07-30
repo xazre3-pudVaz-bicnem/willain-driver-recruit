@@ -41,11 +41,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function Block({ block }: { block: ColumnBlock }) {
+function Block({ block, id }: { block: ColumnBlock; id?: string }) {
   switch (block.type) {
     case "h2":
       return (
-        <h2 className="mt-12 mb-4 border-l-4 border-primary pl-4 text-2xl leading-snug font-black text-ink">
+        <h2
+          id={id}
+          className="mt-12 mb-4 scroll-mt-24 border-l-4 border-primary pl-4 text-2xl leading-snug font-black text-ink"
+        >
           {block.text}
         </h2>
       );
@@ -145,6 +148,20 @@ export default async function ColumnArticlePage({ params }: Props) {
 
   const related = getRelatedArticles(article);
 
+  // 目次（H2見出しから生成）
+  const headings = article.blocks
+    .map((b, i) => (b.type === "h2" ? { text: b.text, id: `h-${i}` } : null))
+    .filter((h): h is { text: string; id: string } => h !== null);
+
+  // 著者表示：人間が確認した場合のみ「採用担当が確認」と表示（実態と一致させる）
+  const reviewed = article.humanReviewed === true;
+  const aiAssisted = article.generatedWithAI === true;
+  const authorName = reviewed
+    ? `${siteConfig.companyName} 採用担当`
+    : aiAssisted
+      ? `${siteConfig.companyName} 編集部`
+      : `${siteConfig.companyName} 採用担当`;
+
   return (
     <>
       <JsonLd
@@ -155,6 +172,12 @@ export default async function ColumnArticlePage({ params }: Props) {
           publishedAt: article.publishedAt,
           updatedAt: article.updatedAt,
           image: article.image ?? `/column/${article.slug}/opengraph-image`,
+          section: article.category,
+          keywords: [
+            ...(article.mainKeyword ? [article.mainKeyword] : []),
+            ...(article.subKeywords ?? []),
+          ],
+          authorName,
         })}
       />
       <JsonLd
@@ -193,16 +216,49 @@ export default async function ColumnArticlePage({ params }: Props) {
               </time>
             </p>
             <p>
-              執筆・監修：
+              {reviewed ? "確認" : aiAssisted ? "編集" : "編集・確認"}：
               <Link
-                href="/recruitment-policy"
+                href="/editorial-policy"
                 className="font-bold text-primary-dark underline underline-offset-2"
               >
-                {siteConfig.companyName} 採用担当
+                {authorName}
               </Link>
+              {reviewed && article.reviewedAt ? (
+                <span className="ml-1">（{article.reviewedAt.replaceAll("-", ".")}確認）</span>
+              ) : null}
             </p>
           </div>
+          {aiAssisted && !reviewed && (
+            <p className="mt-3 rounded-lg bg-mint/50 px-4 py-2.5 text-xs leading-relaxed text-ink-sub">
+              この記事は、承認済みの求人データと公式情報をもとに、AIを補助的に利用して作成しています（担当者による内容確認前の記事です）。制度・数値は各
+              <Link href="/editorial-policy" className="font-bold text-primary-dark underline underline-offset-2">
+                編集方針
+              </Link>
+              の出典・公的機関をご確認ください。
+            </p>
+          )}
         </header>
+
+        {headings.length >= 3 && (
+          <nav
+            aria-label="目次"
+            className="mt-8 rounded-2xl border border-line bg-paper px-6 py-5"
+          >
+            <p className="text-sm font-black text-ink">目次</p>
+            <ol className="mt-3 space-y-1.5 text-sm text-ink-sub">
+              {headings.map((h) => (
+                <li key={h.id}>
+                  <a
+                    href={`#${h.id}`}
+                    className="underline-offset-2 hover:text-primary-dark hover:underline"
+                  >
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
 
         {article.image && (
           <figure className="mt-8 overflow-hidden rounded-2xl">
@@ -220,7 +276,11 @@ export default async function ColumnArticlePage({ params }: Props) {
 
         <div className="mt-8">
           {article.blocks.map((block, i) => (
-            <Block key={i} block={block} />
+            <Block
+              key={i}
+              block={block}
+              id={block.type === "h2" ? `h-${i}` : undefined}
+            />
           ))}
         </div>
 
