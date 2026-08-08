@@ -22,12 +22,18 @@ const shortLabel: Record<string, string> = {
 
 type AreaInput = Pick<
   JobArea,
-  "slug" | "areaName" | "image" | "imageAlt" | "addressRegion" | "dailyPayLabel"
+  | "slug"
+  | "areaName"
+  | "image"
+  | "imageAlt"
+  | "addressRegion"
+  | "dailyPayLabel"
+  | "spotlight"
 >;
 
 /**
  * 募集エリア。写真を敷いた濃色タイルに地名を大きく重ねる。
- * 均一な白カードは使わない。
+ * 均一な白カードは使わない。注力エリア（spotlight）は先頭に並べ、バッジを表示する。
  */
 export function AreaCards({
   areas,
@@ -36,7 +42,10 @@ export function AreaCards({
   areas: AreaInput[];
   currentSlug?: string;
 }) {
-  const visible = areas.filter((a) => a.slug !== currentSlug);
+  const visible = areas
+    .filter((a) => a.slug !== currentSlug)
+    .slice()
+    .sort((a, b) => (b.spotlight ? 1 : 0) - (a.spotlight ? 1 : 0));
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       {visible.map((area) => (
@@ -62,6 +71,11 @@ export function AreaCards({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-emerald-ink/85 via-emerald-ink/40 to-emerald-ink/10" />
+          {area.spotlight && (
+            <span className="absolute top-4 left-4 z-10 rounded-full bg-primary-light px-3 py-1 text-xs font-black tracking-wider text-emerald-ink shadow">
+              今月の注力エリア
+            </span>
+          )}
           <div className="relative w-full p-6">
             <p className="text-xs font-black tracking-[0.2em] text-primary-light">
               {romaji[area.slug] ?? ""}

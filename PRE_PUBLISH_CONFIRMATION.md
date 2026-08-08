@@ -14,7 +14,8 @@
 
 | 項目 | 現在の掲載内容 | 反映箇所 |
 | --- | --- | --- |
-| エリア別日額 | 品川22,000／江東20,500／葛西20,500／船橋20,000円〜 | `lib/jobs.ts` 各エリア `dailyPay` |
+| エリア別日額 | 品川22,000／江東20,500／葛西20,500／船橋**21,000**円〜（サイト下限は20,500円） | `lib/jobs.ts` 各エリア `dailyPay`・`jobCommon.payMinValue` |
+| 注力エリア | 今月は葛西・江戸川エリアを強化（spotlight表示・自動コラムも葛西を優先） | `lib/jobs.ts` kasai `spotlight` |
 | 車両リース | 月額30,000円（固定）＋車の購入代行 | `lib/jobs.ts` `leasePrice` |
 | 稼働開始まで | 最短5日程度・経験者は最短3日 | `jobCommon.startLeadTime` ほか |
 | 勤務時間 | 7:00〜20:00頃・実働8〜10時間 | `jobCommon.workHours` |

@@ -40,6 +40,8 @@ export type ColumnTopic = {
 };
 
 export const columnTopics: ColumnTopic[] = [
+  // 注力エリア（葛西）を短期的に強化するため、キュー先頭に配置
+  { id: "kasai-search", title: "葛西・江戸川区で軽貨物ドライバー求人を探すときに確認したいこと", slugHint: "kasai-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "江戸川区 軽貨物 求人", subKeywords: ["葛西 宅配", "江戸川区 配送 業務委託"], searchIntent: "葛西・江戸川区で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "kasai" },
   // 1. 仕事内容
   { id: "job-overview", title: "軽貨物ドライバーの仕事内容とは", slugHint: "light-cargo-job-overview", category: "仕事内容", theme: "軽貨物ドライバーの仕事内容", mainKeyword: "軽貨物ドライバー 仕事内容", subKeywords: ["軽貨物 一日", "宅配 業務委託"], searchIntent: "軽貨物ドライバーが実際にどんな作業をするのかを知りたい", imageCategory: "driver", needsSources: false, sourceIds: [] },
   // 2. 未経験者向け
@@ -110,8 +112,6 @@ export const columnTopics: ColumnTopic[] = [
   { id: "shinagawa-search", title: "品川区で軽貨物ドライバー求人を探す際の確認事項", slugHint: "shinagawa-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "品川区 軽貨物 求人", subKeywords: ["品川 宅配 ドライバー", "品川区 配送 業務委託"], searchIntent: "品川区で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "shinagawa" },
   // 35. 地域別（江東）
   { id: "koto-search", title: "江東区で軽貨物ドライバー求人を探す際の確認事項", slugHint: "koto-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "江東区 軽貨物 求人", subKeywords: ["江東区 宅配", "豊洲 亀戸 配送"], searchIntent: "江東区で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "koto" },
-  // 36. 地域別（葛西）
-  { id: "kasai-search", title: "葛西・江戸川区で軽貨物求人を探す際の確認事項", slugHint: "kasai-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "江戸川区 軽貨物 求人", subKeywords: ["葛西 宅配", "江戸川区 配送 業務委託"], searchIntent: "葛西・江戸川区で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "kasai" },
   // 37. 地域別（船橋）
   { id: "funabashi-search", title: "船橋市で軽貨物ドライバー求人を探す際の確認事項", slugHint: "funabashi-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "船橋市 軽貨物 求人", subKeywords: ["船橋 宅配", "千葉 配送 業務委託"], searchIntent: "船橋市で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "funabashi" },
   // 38. 独立

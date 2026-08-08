@@ -13,6 +13,7 @@ import { Hero } from "@/components/home/Hero";
 import { PayExamples } from "@/components/job/PayExamples";
 import { DayFlow } from "@/components/job/DayFlow";
 import { AreaCards } from "@/components/job/AreaCards";
+import { SpotlightCallout } from "@/components/job/SpotlightCallout";
 import { ApplyFlow } from "@/components/job/ApplyFlow";
 import { CtaSection } from "@/components/job/CtaSection";
 
@@ -21,12 +22,12 @@ export const metadata: Metadata = {
     absolute: `東京・千葉の軽貨物ドライバー求人｜${siteConfig.companyName}`,
   },
   description:
-    "東京・品川・江東・葛西・船橋で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額20,000円〜（エリアにより異なる）、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。",
+    "東京・品川・江東・葛西・船橋で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額20,500円〜（エリアにより異なる）、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。",
   alternates: { canonical: "/" },
   openGraph: {
     title: `東京・千葉の軽貨物ドライバー求人｜${siteConfig.companyName}`,
     description:
-      "日額20,000円〜・週払い対応・未経験歓迎。品川・江東・葛西・船橋で軽貨物ドライバー（業務委託）を募集中です。",
+      "日額20,500円〜・週払い対応・未経験歓迎。品川・江東・葛西・船橋で軽貨物ドライバー（業務委託）を募集中です。",
     url: "/",
     type: "website",
   },
@@ -65,7 +66,7 @@ export default function HomePage() {
               <dl className="border-t border-line">
                 {[
                   { t: "契約形態", d: "業務委託" },
-                  { t: "報酬", d: "日額20,000円〜（エリアにより異なる・日額保証／規定あり）" },
+                  { t: "報酬", d: "日額20,500円〜（エリアにより異なる・日額保証／規定あり）" },
                   { t: "勤務日数", d: jobCommon.workDays },
                   { t: "勤務時間", d: jobCommon.workHours },
                   { t: "必要な免許", d: "普通自動車運転免許（AT限定可）" },
@@ -103,7 +104,7 @@ export default function HomePage() {
               報酬｜日額保証
             </p>
             <p className="mt-2 flex items-baseline gap-1.5">
-              <span className="h-stat text-primary-dark">20,000</span>
+              <span className="h-stat text-primary-dark">20,500</span>
               <span className="text-2xl font-black text-primary-dark md:text-3xl">
                 円〜
               </span>
@@ -111,7 +112,7 @@ export default function HomePage() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="text-lg leading-[1.9] text-ink md:text-xl">
-              1日あたりの報酬を保証します。日額はエリアにより20,000〜22,000円（品川区は22,000円〜）。出来高だけの契約と違い、稼働した初日から収入の見通しが立ちます。
+              1日あたりの報酬を保証します。日額はエリアにより20,500〜22,000円（品川区は22,000円〜）。出来高だけの契約と違い、稼働した初日から収入の見通しが立ちます。
             </p>
           </Reveal>
         </div>
@@ -181,13 +182,13 @@ export default function HomePage() {
           <div className="grid items-end gap-8 md:grid-cols-[auto_1fr] md:gap-16">
             <Reveal>
               <p className="flex items-baseline gap-1.5 text-white">
-                <span className="h-stat">20,000</span>
+                <span className="h-stat">20,500</span>
                 <span className="text-2xl font-black md:text-3xl">円〜/日</span>
               </p>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="max-w-md text-base leading-[1.9] text-white/80 md:text-lg">
-                宅配は、慣れるほど速くなる仕事です。だからこそ、最初の収入を保証します。配達件数に関係なくエリアにより日額20,000〜22,000円（規定あり）。働いた分を早く受け取れる週払いにも対応しています。
+                宅配は、慣れるほど速くなる仕事です。だからこそ、最初の収入を保証します。配達件数に関係なくエリアにより日額20,500〜22,000円（規定あり）。働いた分を早く受け取れる週払いにも対応しています。
               </p>
             </Reveal>
           </div>
@@ -201,7 +202,7 @@ export default function HomePage() {
         </Reveal>
         <Reveal>
           <p className="mb-10 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
-日額20,000円（下限エリア）で稼働した場合の目安です。品川区など日額の高いエリアではこれより高くなります。稼働日数は週3日から相談できます。
+日額20,500円（下限エリア）で稼働した場合の目安です。品川区など日額の高いエリアではこれより高くなります。稼働日数は週3日から相談できます。
           </p>
         </Reveal>
         <PayExamples />
@@ -348,9 +349,12 @@ export default function HomePage() {
             </h2>
           </Reveal>
           <Reveal>
-            <p className="mb-10 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
+            <p className="mb-8 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
               東京都の品川区・江東区・江戸川区（葛西エリア）と、千葉県船橋市で募集中。日額はエリアにより異なり、待遇と研修は共通です。
             </p>
+          </Reveal>
+          <Reveal>
+            <SpotlightCallout />
           </Reveal>
           <AreaCards areas={jobAreas} />
           <Reveal className="mt-8">

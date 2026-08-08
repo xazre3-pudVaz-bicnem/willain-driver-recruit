@@ -7,18 +7,19 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Kicker } from "@/components/ui/Kicker";
 import { PageHero } from "@/components/ui/PageHero";
 import { AreaCards } from "@/components/job/AreaCards";
+import { SpotlightCallout } from "@/components/job/SpotlightCallout";
 import { JobConditionsTable } from "@/components/job/JobConditionsTable";
 import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
   title: "軽貨物ドライバー求人一覧｜品川・江東・葛西・船橋",
   description:
-    "株式会社ウィランの軽貨物ドライバー求人一覧です。東京都品川区・江東区・江戸川区葛西エリア・千葉県船橋市で業務委託ドライバーを募集中。日額20,000円〜・週払い可・未経験歓迎・車両リースあり。エリアごとの日額を比較できます。",
+    "株式会社ウィランの軽貨物ドライバー求人一覧です。東京都品川区・江東区・江戸川区葛西エリア・千葉県船橋市で業務委託ドライバーを募集中。日額20,500円〜・週払い可・未経験歓迎・車両リースあり。エリアごとの日額を比較できます。",
   alternates: { canonical: "/jobs" },
   openGraph: {
     title: "軽貨物ドライバー求人一覧｜株式会社ウィラン",
     description:
-      "東京都品川区・江東区・葛西エリア・千葉県船橋市で軽貨物ドライバー（業務委託）を募集中。日額20,000円〜・週払い可・未経験歓迎。",
+      "東京都品川区・江東区・葛西エリア・千葉県船橋市で軽貨物ドライバー（業務委託）を募集中。日額20,500円〜・週払い可・未経験歓迎。",
     url: "/jobs",
     type: "website",
   },
@@ -44,6 +45,7 @@ export default function JobsPage() {
 
       <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">
         <h2 className="sr-only">募集エリア別の求人</h2>
+        <SpotlightCallout />
         <AreaCards areas={areas} />
       </section>
 

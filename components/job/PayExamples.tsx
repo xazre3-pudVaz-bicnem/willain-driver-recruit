@@ -3,7 +3,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * 月額報酬例。カードを使わず、横罫線で区切った数値表として表示する。
- * daily（日額）を渡すとそのエリアの例を表示。省略時はサイト下限（20,000円）。
+ * daily（日額）を渡すとそのエリアの例を表示。省略時はサイト下限（20,500円）。
  * 誤認防止のため必ず注記とセットで表示する。
  */
 export function PayExamples({ daily }: { daily?: number }) {

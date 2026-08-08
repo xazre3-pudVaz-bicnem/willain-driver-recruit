@@ -114,6 +114,31 @@ export default async function JobAreaPage({ params }: Props) {
               ))}
             </div>
           </Reveal>
+          {area.spotlight && area.spotlightNote && (
+            <Reveal className="mt-8">
+              <div className="rounded-2xl border-2 border-primary/30 bg-mint px-6 py-5">
+                <span className="inline-block rounded-full bg-primary-dark px-3 py-1 text-xs font-black tracking-wider text-white">
+                  今月の注力エリア
+                </span>
+                <p className="mt-2 leading-relaxed text-ink">{area.spotlightNote}</p>
+                <Link
+                  href={`/apply?area=${area.slug}`}
+                  className="mt-3 inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
+                >
+                  {area.areaName}の求人に応募する（約60秒）
+                  <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 16 16" fill="none">
+                    <path
+                      d="M6 3.5L10.5 8L6 12.5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </Reveal>
+          )}
         </div>
       </div>
 

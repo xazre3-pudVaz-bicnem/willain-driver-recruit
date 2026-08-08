@@ -34,7 +34,7 @@ type FieldKey =
   | "other";
 
 export function RewardSimulator({ areas, leaseDefault }: Props) {
-  const [dailyPay, setDailyPay] = useState<number>(areas[0]?.dailyPay ?? 20000);
+  const [dailyPay, setDailyPay] = useState<number>(areas[0]?.dailyPay ?? 20500);
   const [fields, setFields] = useState<Record<FieldKey, number>>({
     workDays: 22,
     lease: leaseDefault,

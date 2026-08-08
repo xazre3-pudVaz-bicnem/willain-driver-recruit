@@ -56,7 +56,7 @@ export function Hero() {
             {/* 条件は細い区切り線とテキストだけで表現（カード・ボタンにしない） */}
             <dl className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/25 pt-5 text-white">
               {[
-                { t: "報酬", d: "日額20,000円〜" },
+                { t: "報酬", d: "日額20,500円〜" },
                 { t: "経験", d: "未経験歓迎" },
                 { t: "車両", d: "リースあり" },
               ].map((item, i) => (

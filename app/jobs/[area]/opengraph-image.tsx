@@ -18,7 +18,7 @@ export default async function Image({
   const { area: slug } = await params;
   const area = getJobArea(slug);
   const areaName = area?.areaName ?? "東京・千葉";
-  const pay = area?.dailyPayLabel ?? "日額20,000円〜";
+  const pay = area?.dailyPayLabel ?? "日額20,500円〜";
 
   return new ImageResponse(
     (

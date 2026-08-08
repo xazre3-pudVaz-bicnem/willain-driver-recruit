@@ -165,7 +165,7 @@ export function bodyLength(gen: GeneratedColumn): number {
 }
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const ALLOWED_DAILY = new Set([20000, 20500, 22000]);
+const ALLOWED_DAILY = new Set([20000, 20500, 21000, 22000]);
 const ALLOWED_LEASE = new Set([30000]);
 
 export function validateGenerated(
@@ -241,7 +241,7 @@ export function validateGenerated(
   for (const m of all.matchAll(/(日額|日給)\s*([0-9,]+)\s*円/g)) {
     const n = Number(m[2].replace(/,/g, ""));
     if (!ALLOWED_DAILY.has(n)) {
-      errors.push(`求人条件と一致しない日額表記：${m[0]}（許可：20,000／20,500／22,000円）`);
+      errors.push(`求人条件と一致しない日額表記：${m[0]}（許可：20,000／20,500／21,000／22,000円）`);
     }
   }
   for (const m of all.matchAll(/月額\s*([0-9,]+)\s*円/g)) {

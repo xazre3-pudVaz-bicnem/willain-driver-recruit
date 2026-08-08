@@ -22,11 +22,11 @@ export const jobCommon = {
    * 日額はエリアにより異なる（各エリアの dailyPay を参照）。
    * 以下はサイト全体で示す下限〜上限。
    */
-  payLabel: "日額20,000円〜",
-  payMinValue: 20000,
+  payLabel: "日額20,500円〜",
+  payMinValue: 20500,
   payMaxValue: 22000,
   paySupplement:
-    "エリアにより日額20,000〜22,000円（日額保証・規定あり）・週払い可能（規定あり）",
+    "エリアにより日額20,500〜22,000円（日額保証・規定あり）・週払い可能（規定あり）",
   baseSalaryCurrency: "JPY",
   baseSalaryUnit: "DAY",
 
@@ -75,7 +75,7 @@ export const jobCommon = {
 
   /** 待遇・サポート */
   support: [
-    "日額保証（エリアにより日額20,000〜22,000円）",
+    "日額保証（エリアにより日額20,500〜22,000円）",
     "週払い可能（規定あり）",
     "車両リース制度（月額30,000円）",
     "車両持ち込み可能",
@@ -183,6 +183,10 @@ export type JobArea = {
   validThrough?: string;
   /** 募集中か。false の求人は JobPosting・一覧・sitemap から除外する。 */
   isActive: boolean;
+  /** 注力エリア（今月特に募集を強化しているエリア）。カード・一覧・トップで優先表示する。 */
+  spotlight?: boolean;
+  /** 注力エリアの補足文（事実に基づく案内。誇大・虚偽の緊急性は書かない） */
+  spotlightNote?: string;
   /** このエリアに関連する採用コラムのslug（内部リンク用） */
   relatedArticles: string[];
   /** リード文（エリア固有の本文） */
@@ -320,6 +324,9 @@ export const jobAreas: JobArea[] = [
     dailyPayLabel: "日額20,500円〜",
     identifier: "willain-driver-kasai",
     isActive: true,
+    spotlight: true,
+    spotlightNote:
+      "今月は葛西・江戸川エリアの募集を特に強化しています。面談の日程は柔軟に調整しますので、まずはお気軽にご相談ください。",
     relatedArticles: ["tokyo-driver-checklist", "license-requirements", "start-from-beginner"],
     image: "/images/photos/area-kasai.webp",
     imageAlt: "葛西・江戸川区の住宅街と配送用軽バンのイメージ",
@@ -367,13 +374,13 @@ export const jobAreas: JobArea[] = [
     areaName: "千葉県船橋市",
     shortName: "船橋",
     h1: "船橋市の軽貨物ドライバー求人（業務委託）",
-    metaTitle: "船橋市の軽貨物ドライバー求人｜日額20,000円〜・週払い可",
+    metaTitle: "船橋市の軽貨物ドライバー求人｜日額21,000円〜・週払い可",
     metaDescription:
-      "千葉県船橋市で軽貨物ドライバー（業務委託）を募集中。日額20,000円〜・週払い可・未経験歓迎・車両リースあり。住宅の多い船橋市でAmazon関連の宅配案件を担当します。応募は60秒で完了。",
+      "千葉県船橋市で軽貨物ドライバー（業務委託）を募集中。日額21,000円〜・週払い可・未経験歓迎・車両リースあり。住宅の多い船橋市でAmazon関連の宅配案件を担当します。応募は60秒で完了。",
     addressRegion: "千葉県",
     addressLocality: "船橋市",
-    dailyPay: 20000,
-    dailyPayLabel: "日額20,000円〜",
+    dailyPay: 21000,
+    dailyPayLabel: "日額21,000円〜",
     identifier: "willain-driver-funabashi",
     isActive: true,
     relatedArticles: ["daily-guarantee-vs-piecework", "vehicle-lease-vs-own", "gyomu-itaku-basics"],
@@ -382,7 +389,7 @@ export const jobAreas: JobArea[] = [
     datePosted: "2026-07-25",
     dateModified: "2026-07-25",
     lead: [
-      "株式会社ウィランでは、千葉県船橋市エリアで稼働いただける軽貨物ドライバー（業務委託）を募集しています。仕事内容はインターネット通販商品（主にAmazon関連）の個人宅配送で、船橋市の報酬は日額20,000円〜を保証（規定あり）。東京都内のエリアと同じ研修・サポート体制で、千葉エリアでも始めやすい環境です。",
+      "株式会社ウィランでは、千葉県船橋市エリアで稼働いただける軽貨物ドライバー（業務委託）を募集しています。仕事内容はインターネット通販商品（主にAmazon関連）の個人宅配送で、船橋市の報酬は日額21,000円〜を保証（規定あり）。東京都内のエリアと同じ研修・サポート体制で、千葉エリアでも始めやすい環境です。",
       "船橋市は千葉県内でも人口の多い住宅都市で、船橋駅・西船橋駅周辺の商業エリアから、郊外の戸建て住宅地まで幅広い顔を持っています。湾岸部には物流施設が集まり、京葉道路や国道14号、湾岸道路など幹線道路のネットワークも充実。軽貨物配送の拠点として動きやすい環境が整った地域です。",
     ],
     features: [
@@ -396,7 +403,7 @@ export const jobAreas: JobArea[] = [
       },
       {
         title: "千葉エリアでも同じ待遇・サポート",
-        text: "日額20,000円〜・週払い（規定あり）・車両リース・横乗り研修など、東京エリアと同じ条件で稼働できます。千葉県内で軽貨物の仕事を探している方にも向いています。",
+        text: "日額21,000円〜・週払い（規定あり）・車両リース・横乗り研修など、東京エリアと同じ条件で稼働できます。千葉県内で軽貨物の仕事を探している方にも向いています。",
       },
     ],
     areaFaq: [
@@ -410,7 +417,7 @@ export const jobAreas: JobArea[] = [
       },
       {
         q: "東京の求人と待遇に違いはありますか？",
-        a: "報酬は日額20,000円〜と船橋市の設定になりますが、週払い（規定あり）・車両リース制度・研修体制などのサポートは東京エリアと同じです。",
+        a: "報酬は日額21,000円〜と船橋市の設定になりますが、週払い（規定あり）・車両リース制度・研修体制などのサポートは東京エリアと同じです。",
       },
       {
         q: "車両リースの車はどこで受け取れますか？",
@@ -427,6 +434,11 @@ export function getJobArea(slug: string): JobArea | undefined {
 /** 募集中（isActive）のエリアのみ。一覧・ItemList・sitemap・Indexing対象に使う。 */
 export function getActiveAreas(): JobArea[] {
   return jobAreas.filter((a) => a.isActive);
+}
+
+/** 注力エリア（今月強化中・募集中のもの）。無ければ undefined。 */
+export function getSpotlightArea(): JobArea | undefined {
+  return jobAreas.find((a) => a.isActive && a.spotlight);
 }
 
 /**

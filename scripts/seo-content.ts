@@ -69,7 +69,7 @@ const PROHIBITED = [
   /(年収|月収|日収)[\s]*[0-9０-９〜～]+[\s]*万?円/, /平均(年収|月収|日給)/,
   /安心してスタート/, /一人ひとりに寄り添/, /あなたの挑戦を応援/, /今すぐ応募しましょう/,
 ];
-const ALLOWED_DAILY = new Set([20000, 20500, 22000]);
+const ALLOWED_DAILY = new Set([20000, 20500, 21000, 22000]);
 
 async function fileExists(p: string): Promise<boolean> {
   try {
