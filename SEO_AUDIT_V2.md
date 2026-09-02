@@ -84,6 +84,20 @@ URL削除・統合が発生しないため、今回の301追加はありませ�
 - 事実確認できない条件・地域特徴は `PRE_PUBLISH_CONFIRMATION.md` に集約。掲載は「主体明示＋面談確認」で運用。
 - 実写がない画像は必ず「〜のイメージ」。実写追加時のみ実写表記を許可（`data/column-images.ts` の `isActualPhoto`）。
 
+## 8b. 追加強化 V3（技術・構造化データ・AIO）
+
+| 施策 | 内容 |
+| --- | --- |
+| 用語集 `/glossary` を新設 | 軽貨物の基本用語20語を定義（`DefinedTermSet`/`DefinedTerm`構造化データ）。AIO・エンティティ理解・「軽貨物 用語」系の受け皿。制度用語は断定を避け公的機関確認を明記。sitemap・フッター・関連導線に追加 |
+| Organization 拡充 | `description`・`knowsAbout`・`areaServed`（品川区/江東区/江戸川区/船橋市の実エリア）を追加し、ローカル/エンティティ信号を強化 |
+| SiteNavigationElement | 主要ナビ11項目をlayoutで出力し、サイト構造の把握を助ける |
+| WebApplication | 報酬シミュレーターに `WebApplication`（無料・FinanceApplication）を付与 |
+| フッター内部リンク強化 | シミュレーター・用語集・コラムのカテゴリーハブ（3記事以上のみ動的表示）を追加。孤立ページを防ぎクロール性と内部リンク equity を向上 |
+| robots ディレクティブ | `max-image-preview:large` / `max-snippet:-1` / `max-video-preview:-1` を付与（Discover・リッチ表示のプレビュー最大化） |
+| 重複解消 | カテゴリーハブの BreadcrumbList 二重出力を解消（Breadcrumbsコンポーネントが自動出力するため手動分を削除） |
+
+備考：独立・キャリアのカテゴリーハブは公開記事が3本未満のため未生成（フッター・sitemap・generateStaticParamsすべて条件付き）。自動コラムで該当記事が増えると次回ビルドで自動的にハブが生成・掲載される。
+
 ## 8. 検証結果（クリーン状態）
 
 - build 成功（83ページ）／lint 0／typecheck 0

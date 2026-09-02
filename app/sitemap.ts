@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: absoluteUrl("/beginner"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.8 },
     { url: absoluteUrl("/independence-support"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.7 },
     { url: absoluteUrl("/faq"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.7 },
+    { url: absoluteUrl("/glossary"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.6 },
     { url: absoluteUrl("/tools/reward-simulator"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.6 },
     { url: absoluteUrl("/company"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.6 },
     { url: absoluteUrl("/apply"), lastModified: siteLastMod, changeFrequency: "monthly", priority: 0.9 },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getActiveAreas, jobCommon } from "@/lib/jobs";
+import { siteConfig, absoluteUrl } from "@/lib/site-config";
 import { webPageJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -102,6 +103,20 @@ export default function RewardSimulatorPage() {
           path: "/tools/reward-simulator",
           image: "/images/photos/app-scan.webp",
         })}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "軽貨物ドライバーの報酬・経費シミュレーター",
+          url: absoluteUrl("/tools/reward-simulator"),
+          applicationCategory: "FinanceApplication",
+          operatingSystem: "Web",
+          inLanguage: "ja",
+          isAccessibleForFree: true,
+          offers: { "@type": "Offer", price: "0", priceCurrency: "JPY" },
+          publisher: { "@id": `${siteConfig.siteUrl}/#organization` },
+        }}
       />
       <Breadcrumbs
         items={[

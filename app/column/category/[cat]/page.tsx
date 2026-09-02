@@ -4,7 +4,6 @@ import Link from "next/link";
 import { publishedColumnArticles } from "@/content/column";
 import type { ColumnCategory } from "@/lib/column";
 import { absoluteUrl } from "@/lib/site-config";
-import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/ui/PageHero";
@@ -170,12 +169,6 @@ export default async function CategoryHubPage({ params }: Props) {
 
   return (
     <>
-      <JsonLd
-        data={breadcrumbJsonLd([
-          { name: "採用コラム", path: "/column" },
-          { name: hub.h1, path: `/column/category/${hub.slug}` },
-        ])}
-      />
       <JsonLd
         data={{
           "@context": "https://schema.org",

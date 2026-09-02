@@ -1,5 +1,5 @@
 import { siteConfig, absoluteUrl } from "@/lib/site-config";
-import { jobCommon, buildJobDescriptionText, type JobArea } from "@/lib/jobs";
+import { jobCommon, buildJobDescriptionText, getActiveAreas, type JobArea } from "@/lib/jobs";
 
 /**
  * JSON-LDをXSS対策済みの文字列に変換する。
@@ -26,6 +26,19 @@ export function organizationJsonLd() {
     alternateName: siteConfig.brandName,
     url: siteConfig.siteUrl,
     logo: absoluteUrl("/icons/icon.svg"),
+    description:
+      "東京都（品川区・江東区・江戸川区葛西エリア）と千葉県船橋市で、軽貨物ドライバー（業務委託）を募集する軽貨物配送事業。未経験者向けの横乗り研修、車両リース、独立支援に対応。",
+    knowsAbout: [
+      "軽貨物配送",
+      "宅配便の配送",
+      "ラストワンマイル配送",
+      "軽貨物ドライバーの採用",
+      "業務委託ドライバー",
+    ],
+    areaServed: getActiveAreas().map((a) => ({
+      "@type": "AdministrativeArea",
+      name: a.addressLocality,
+    })),
     telephone: siteConfig.phoneE164,
     address: {
       "@type": "PostalAddress",
@@ -65,6 +78,32 @@ export function jobsItemListJsonLd(
       name: `${a.areaName}の軽貨物ドライバー求人（${a.dailyPayLabel}）`,
       url: absoluteUrl(`/jobs/${a.slug}`),
     })),
+  };
+}
+
+/**
+ * SiteNavigationElement（主要ナビ）。全ページのlayoutで出力し、
+ * サイトの主要導線をGoogleが把握しやすくする。
+ */
+export function siteNavigationJsonLd() {
+  const items: { name: string; path: string }[] = [
+    { name: "軽貨物ドライバー求人一覧", path: "/jobs" },
+    { name: "仕事内容", path: "/work" },
+    { name: "未経験の方へ", path: "/beginner" },
+    { name: "待遇・メリット", path: "/benefits" },
+    { name: "独立・開業サポート", path: "/independence-support" },
+    { name: "報酬・経費シミュレーター", path: "/tools/reward-simulator" },
+    { name: "用語集", path: "/glossary" },
+    { name: "採用コラム", path: "/column" },
+    { name: "よくある質問", path: "/faq" },
+    { name: "会社情報", path: "/company" },
+    { name: "応募フォーム", path: "/apply" },
+  ];
+  return {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    name: items.map((i) => i.name),
+    url: items.map((i) => absoluteUrl(i.path)),
   };
 }
 

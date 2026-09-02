@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import { jobAreas } from "@/lib/jobs";
+import { publishedColumnArticles } from "@/content/column";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Logo } from "@/components/layout/Header";
 
@@ -9,6 +10,8 @@ const siteLinks = [
   { href: "/benefits", label: "ウィランで働くメリット" },
   { href: "/beginner", label: "未経験の方へ" },
   { href: "/independence-support", label: "独立・開業サポート" },
+  { href: "/tools/reward-simulator", label: "報酬・経費シミュレーター" },
+  { href: "/glossary", label: "軽貨物ドライバー用語集" },
   { href: "/faq", label: "よくある質問" },
   { href: "/column", label: "採用コラム" },
   { href: "/company", label: "会社情報" },
@@ -17,6 +20,21 @@ const siteLinks = [
   { href: "/editorial-policy", label: "採用コラムの編集方針" },
   { href: "/privacy", label: "プライバシーポリシー" },
 ];
+
+// 記事が3本以上あるカテゴリーのハブだけをリンクする（薄い/未生成ページへのリンクを避ける）
+const columnCategoryLinks = (
+  [
+    { slug: "work", category: "仕事内容", label: "仕事内容のコラム" },
+    { slug: "contract", category: "働き方・契約", label: "働き方・契約のコラム" },
+    { slug: "money", category: "お金・報酬", label: "報酬・経費のコラム" },
+    { slug: "independence", category: "独立・キャリア", label: "独立・確定申告のコラム" },
+  ] as const
+)
+  .filter(
+    (c) =>
+      publishedColumnArticles.filter((a) => a.category === c.category).length >= 3,
+  )
+  .map((c) => ({ href: `/column/category/${c.slug}`, label: c.label }));
 
 export function Footer() {
   return (
@@ -89,6 +107,25 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+            {columnCategoryLinks.length > 0 && (
+              <>
+                <h2 className="mt-6 mb-3 text-sm font-black tracking-wider text-ink">
+                  コラムのテーマ
+                </h2>
+                <ul className="space-y-2.5 text-sm text-ink-sub">
+                  {columnCategoryLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="transition-colors hover:text-primary-dark"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </nav>
         </div>
 

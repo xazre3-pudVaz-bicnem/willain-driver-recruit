@@ -3,7 +3,7 @@ import { Noto_Sans_JP } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { siteConfig } from "@/lib/site-config";
-import { organizationJsonLd } from "@/lib/jsonld";
+import { organizationJsonLd, siteNavigationJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -40,6 +40,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
   ...((process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
     process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION)
@@ -125,6 +132,7 @@ export default function RootLayout({
         )}
 
         <JsonLd data={organizationJsonLd()} />
+        <JsonLd data={siteNavigationJsonLd()} />
 
         <Header />
         {/* fixedヘッダー分の余白。トップのヒーローは-mt-16で全面表示にする */}
