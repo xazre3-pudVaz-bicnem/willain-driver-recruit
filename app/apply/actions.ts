@@ -87,13 +87,20 @@ export async function submitApplication(
     redirect("/apply/thanks");
   }
 
-  // --- 最短入力時間チェック（3秒未満の送信はボットとみなす） ---
+  // --- 最短入力時間チェック（極端に速い送信のみボットとみなす） ---
+  // started_at が取得できた場合のみ判定する。JS無効・自動入力・hydrationのタイミング差で
+  // 値が無い/不正なときは、正規の応募者をブロックしない（ボットはハニーポットで別途防御）。
   const startedAt = Number(sanitize(formData.get("started_at"), 20));
-  if (!startedAt || Date.now() - startedAt < 3000) {
+  const MIN_ELAPSED_MS = 1500;
+  if (
+    Number.isFinite(startedAt) &&
+    startedAt > 0 &&
+    Date.now() - startedAt < MIN_ELAPSED_MS
+  ) {
     return {
       errors: {},
       formError:
-        "送信内容を確認できませんでした。お手数ですが、もう一度お試しください。改善しない場合は、お電話（080-7297-3908）でご連絡ください。",
+        "送信が速すぎたため確認できませんでした。もう一度「この内容で応募する」を押してください。改善しない場合は、お電話（080-7297-3908）でご連絡ください。",
       values: collectValues(formData),
     };
   }
@@ -177,13 +184,16 @@ export async function submitApplication(
   }
 
   // --- メール送信（Resend） ---
+  // 必須は RESEND_API_KEY と APPLICATION_TO_EMAIL の2つだけ。
+  // 送信元（APPLICATION_FROM_EMAIL）は未設定なら Resend のテスト用送信者を使う
+  // （自社ドメインをResendで認証すれば saiyo@willain.co.jp 等に差し替え可能）。
   const apiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.APPLICATION_TO_EMAIL;
-  const fromEmail = process.env.APPLICATION_FROM_EMAIL;
+  const fromEmail = process.env.APPLICATION_FROM_EMAIL || "onboarding@resend.dev";
 
-  if (!apiKey || !toEmail || !fromEmail) {
+  if (!apiKey || !toEmail) {
     console.error(
-      "[apply] RESEND_API_KEY / APPLICATION_TO_EMAIL / APPLICATION_FROM_EMAIL が未設定です。"
+      "[apply] RESEND_API_KEY / APPLICATION_TO_EMAIL が未設定です。Vercelの環境変数を設定してください。"
     );
     return {
       errors: {},
