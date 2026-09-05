@@ -232,35 +232,16 @@ export async function submitApplication(
     )
     .join("")}</table>`;
 
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: fromEmail,
-        to: [toEmail],
-        reply_to: email,
-        subject: `【応募】軽貨物ドライバー（${area}希望）${name}様`,
-        text: textBody,
-        html: htmlBody,
-      }),
-    });
-
-    if (!res.ok) {
-      const detail = await res.text();
-      console.error(`[apply] Resend API error: ${res.status} ${detail}`);
-      return {
-        errors: {},
-        formError:
-          "送信中にエラーが発生しました。お手数ですが、時間をおいて再度お試しいただくか、お電話（080-7297-3908）でご連絡ください。",
-        values,
-      };
-    }
-  } catch (err) {
-    console.error("[apply] Resend request failed:", err);
+  // ① 採用担当への通知メール（必須）。失敗したら応募エラーにする。
+  const notifyResult = await sendResendEmail(apiKey, {
+    from: fromEmail,
+    to: [toEmail],
+    reply_to: email, // 担当者が返信すると応募者に届く
+    subject: `【応募】軽貨物ドライバー（${area}希望）${name}様`,
+    text: textBody,
+    html: htmlBody,
+  });
+  if (!notifyResult.ok) {
     return {
       errors: {},
       formError:
@@ -269,9 +250,83 @@ export async function submitApplication(
     };
   }
 
+  // ② 応募者への自動返信（お礼メール）。届かなくても応募自体は成立させる（ベストエフォート）。
+  const ackText = [
+    `${name} 様`,
+    "",
+    "この度は、株式会社ウィランの軽貨物ドライバー求人にご応募いただき、誠にありがとうございます。",
+    "以下の内容で応募を受け付けました。担当者より順次ご連絡いたしますので、少々お待ちください。",
+    "",
+    ...rows.map(([k, v]) => `■ ${k}\n${v}`),
+    "",
+    "※このメールは自動送信です。ご返信いただくと採用担当に届きます。",
+    "お急ぎの場合は、お電話（080-7297-3908）でもご相談いただけます。",
+    "",
+    "---",
+    "株式会社ウィラン 採用担当",
+    "https://www.willain.jp/",
+  ].join("\n");
+
+  const ackHtml = `<p>${escapeHtml(name)} 様</p>
+<p>この度は、株式会社ウィランの軽貨物ドライバー求人にご応募いただき、誠にありがとうございます。<br>
+以下の内容で応募を受け付けました。担当者より順次ご連絡いたしますので、少々お待ちください。</p>
+<table border="1" cellpadding="8" cellspacing="0">${rows
+    .map(
+      ([k, v]) =>
+        `<tr><th align="left">${escapeHtml(k)}</th><td>${escapeHtml(v).replace(/\n/g, "<br>")}</td></tr>`
+    )
+    .join("")}</table>
+<p style="color:#555;font-size:13px">※このメールは自動送信です。ご返信いただくと採用担当に届きます。<br>
+お急ぎの場合は、お電話（080-7297-3908）でもご相談いただけます。</p>
+<p style="color:#555;font-size:13px">株式会社ウィラン 採用担当<br>
+<a href="https://www.willain.jp/">https://www.willain.jp/</a></p>`;
+
+  // 応募者の入力メールが正しい前提。失敗しても応募は成立（担当者には届いている）。
+  await sendResendEmail(apiKey, {
+    from: fromEmail,
+    to: [email],
+    reply_to: toEmail, // 応募者が返信すると採用担当に届く
+    subject: "【株式会社ウィラン】ご応募ありがとうございます",
+    text: ackText,
+    html: ackHtml,
+  });
+
   // 応募が正常に受理された時のみレート制限にカウントする
   recordSubmission(ip);
   redirect("/apply/thanks");
+}
+
+/** Resendでメールを1通送る。成功可否だけ返す（本文全文はログに出さない）。 */
+async function sendResendEmail(
+  apiKey: string,
+  payload: {
+    from: string;
+    to: string[];
+    reply_to: string;
+    subject: string;
+    text: string;
+    html: string;
+  }
+): Promise<{ ok: boolean }> {
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const detail = await res.text().catch(() => "");
+      console.error(`[apply] Resend API error: ${res.status} ${detail}`);
+      return { ok: false };
+    }
+    return { ok: true };
+  } catch (err) {
+    console.error("[apply] Resend request failed:", err);
+    return { ok: false };
+  }
 }
 
 function collectValues(formData: FormData): Record<string, string> {
