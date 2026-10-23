@@ -1,10 +1,11 @@
 # 採用コラム自動投稿システム 運用ガイド
 
-株式会社ウィランの採用サイトに、Claude Haiku API で採用コラムを1日1記事、自動生成して公開する仕組みです。WordPressは使いません。生成記事は既存のコラム実装（Next.js / App Router / TypeScriptデータ）に統合され、一覧・詳細・カテゴリ・関連記事・sitemap・RSSへ自動反映されます。
+株式会社ウィランの採用サイトに、Claude Haiku API で採用コラムを週2回（月・木）下書きとして自動生成し、担当者が確認してから公開する仕組みです（2026-10-23〜。ウィランと合意した「確認済みの記事を週1〜2本」の運用）。WordPressは使いません。生成記事は既存のコラム実装（Next.js / App Router / TypeScriptデータ）に統合され、一覧・詳細・カテゴリ・関連記事・sitemap・RSSへ自動反映されます。
 
 - 記事の保存先: `content/column/generated/<slug>.ts`（`ColumnArticle` 形式）
 - 使用モデル: `claude-haiku-4-5-20251001`（環境変数で変更可・Sonnet/Opus/Fableは使いません）
-- 実行: GitHub Actions（毎日 / 手動）
+- 実行: GitHub Actions（週2回 / 手動）
+- 既定の公開モード: `review`（下書き保存 → 担当者が確認して公開）
 - ローカル確認: `npm run column:validate`（API不要）/ `npm run column:generate:dry`（API必要）
 
 ---
@@ -44,9 +45,9 @@
 
 > 同じ日にすでに自動投稿済みの場合は、二重投稿されません（`data/generation-log.json` で判定）。
 
-## 5. 毎日の実行時間
+## 5. 実行のタイミング
 
-- **日本時間 毎日 午前5時**（`.github/workflows/generate-column.yml` の `cron: "0 20 * * *"` = UTC20時）
+- **日本時間 毎週 月曜・木曜の午前5時**（`.github/workflows/generate-column.yml` の `cron: "0 20 * * 0,3"` = 日・水のUTC20時）
 - GitHubのscheduleは負荷状況により数分〜数十分ずれることがあります。
 
 ## 6. dry-runの方法
@@ -117,7 +118,10 @@ npm run column:validate
 ## 10. 生成失敗時の確認方法
 
 - **GitHub Actions のログ**: Actions → Auto Publish Column → 該当実行。どのステップで止まったか、スキップ理由が表示されます（APIキー・レスポンス全文は出力しません）。
-- **スキップ**（正常終了・commitなし）: 未使用テーマなし / 重複超過 / 品質検証NG / 同日投稿済み / `AUTO_COLUMN_ENABLED=false` など。
+- **要対応（ジョブ失敗＝GitHubから失敗通知が届く・commitなし）**: 品質検証NG（1回だけ自動で修正を依頼し、それでもNGの場合）/ 重複超過 / 未使用テーマなし。
+  - 2026-07-29〜10-22 は品質検証NGが「正常終了」扱いだったため、86回すべて不合格でも気づけなかった。その再発防止。
+  - 失敗通知は、ワークフローの `cron` を最後に変更したGitHubユーザーに届く（GitHubの通知設定で Actions の失敗通知を有効にしておく）。
+- **スキップ**（正常終了・commitなし）: 同日投稿済み / 上限到達 / `AUTO_COLUMN_ENABLED=false`。
 - **失敗**（ジョブがfail) : APIエラー（429/5xxは最大3回リトライ後）、JSON2回失敗、build/lint/型/SEO検証NG。**失敗時はmainへ不完全な記事をpushしません。**
 - **エラー履歴**: `data/generation-log.json` に `status: "error"` と `errorType` が残ります（保存できた場合）。
 
@@ -177,7 +181,7 @@ node -e "const l=require('./data/generation-log.json');const m='2026-07';const s
 
 ## 公開モード（auto / review）と AI表記
 
-`AUTO_COLUMN_MODE`（Variables）で運用を切り替えます。未設定なら `auto`。
+`AUTO_COLUMN_MODE`（Variables）で運用を切り替えます。GitHub Actions では未設定なら `review`（ワークフローで既定値を指定）、ローカル実行では未設定なら `auto`。
 
 - **auto**：品質検証を通過した記事を自動公開します。著者は「株式会社ウィラン 編集部」名義で、
   「承認済みの求人データと公式情報をもとにAIを補助的に利用して作成」と表示します

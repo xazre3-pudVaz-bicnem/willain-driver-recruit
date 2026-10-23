@@ -40,8 +40,11 @@ export type ColumnTopic = {
 };
 
 export const columnTopics: ColumnTopic[] = [
-  // 注力エリア（葛西）を短期的に強化するため、キュー先頭に配置
-  { id: "kasai-search", title: "葛西・江戸川区で軽貨物ドライバー求人を探すときに確認したいこと", slugHint: "kasai-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "江戸川区 軽貨物 求人", subKeywords: ["葛西 宅配", "江戸川区 配送 業務委託"], searchIntent: "葛西・江戸川区で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "kasai" },
+  // 注力エリア（品川・船橋）を強化するため、キュー先頭に配置。
+  // area を指定すると lib/jobs.ts の拠点の確認済み情報（集合場所・配送エリア・1日の流れ）が記事に渡る。
+  // 求人ページ（「品川 軽貨物 求人」など）と検索意図を分けるため、記事は配送エリアと仕事の実態を主題にする。
+  { id: "shinagawa-search", title: "品川・港区・中央区の軽貨物配送はどんな仕事？配送エリアと1日の流れ", slugHint: "shinagawa-delivery-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "品川 軽貨物 配送", subKeywords: ["港区 宅配 ドライバー", "中央区 軽貨物 配送", "品川 宅配 業務委託"], searchIntent: "品川区・港区・中央区で軽貨物配送をするときの配送エリアの特徴、1日の流れ、大変な点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "shinagawa" },
+  { id: "funabashi-search", title: "船橋・市川・江戸川区の軽貨物配送はどんな仕事？配送エリアと1日の流れ", slugHint: "funabashi-delivery-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "船橋 軽貨物 配送", subKeywords: ["市川 宅配 ドライバー", "南船橋 配送 仕事", "船橋 宅配 業務委託"], searchIntent: "船橋市・市川市・江戸川区・千葉市で軽貨物配送をするときの配送エリアの特徴、1日の流れ、荷物量を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "funabashi" },
   // 1. 仕事内容
   { id: "job-overview", title: "軽貨物ドライバーの仕事内容とは", slugHint: "light-cargo-job-overview", category: "仕事内容", theme: "軽貨物ドライバーの仕事内容", mainKeyword: "軽貨物ドライバー 仕事内容", subKeywords: ["軽貨物 一日", "宅配 業務委託"], searchIntent: "軽貨物ドライバーが実際にどんな作業をするのかを知りたい", imageCategory: "driver", needsSources: false, sourceIds: [] },
   // 2. 未経験者向け
@@ -108,12 +111,10 @@ export const columnTopics: ColumnTopic[] = [
   { id: "compare-jobs", title: "軽貨物求人を比較するときのポイント", slugHint: "compare-job-listings", category: "働き方・契約", theme: "応募・面談", mainKeyword: "軽貨物 求人 比較", subKeywords: ["軽貨物 求人 選び方", "宅配 求人 見極め"], searchIntent: "複数の軽貨物求人をどう比較すればよいかを知りたい", imageCategory: "city", needsSources: false, sourceIds: [] },
   // 33. 地域別
   { id: "tokyo-search", title: "東京で軽貨物ドライバー求人を探す際の確認事項", slugHint: "tokyo-job-search-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "東京 軽貨物 求人 探し方", subKeywords: ["東京 軽貨物 ドライバー", "都内 宅配 求人"], searchIntent: "東京で軽貨物求人を探すときに確認すべき点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [] },
-  // 34. 地域別（品川）
-  { id: "shinagawa-search", title: "品川区で軽貨物ドライバー求人を探す際の確認事項", slugHint: "shinagawa-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "品川区 軽貨物 求人", subKeywords: ["品川 宅配 ドライバー", "品川区 配送 業務委託"], searchIntent: "品川区で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "shinagawa" },
   // 35. 地域別（江東）
   { id: "koto-search", title: "江東区で軽貨物ドライバー求人を探す際の確認事項", slugHint: "koto-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "江東区 軽貨物 求人", subKeywords: ["江東区 宅配", "豊洲 亀戸 配送"], searchIntent: "江東区で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "koto" },
-  // 37. 地域別（船橋）
-  { id: "funabashi-search", title: "船橋市で軽貨物ドライバー求人を探す際の確認事項", slugHint: "funabashi-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "船橋市 軽貨物 求人", subKeywords: ["船橋 宅配", "千葉 配送 業務委託"], searchIntent: "船橋市で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "funabashi" },
+  // 36. 地域別（葛西）
+  { id: "kasai-search", title: "葛西・江戸川区で軽貨物ドライバー求人を探すときに確認したいこと", slugHint: "kasai-job-guide", category: "仕事内容", theme: "地域別求人", mainKeyword: "江戸川区 軽貨物 求人", subKeywords: ["葛西 宅配", "江戸川区 配送 業務委託"], searchIntent: "葛西・江戸川区で軽貨物求人を探すときの地域事情と確認点を知りたい", imageCategory: "city", needsSources: false, sourceIds: [], area: "kasai" },
   // 38. 独立
   { id: "independence-path", title: "軽貨物ドライバーから独立するまでの流れ", slugHint: "path-to-independence", category: "独立・キャリア", theme: "独立・確定申告", mainKeyword: "軽貨物 独立", subKeywords: ["軽貨物 個人事業主 独立", "配送 独立 流れ"], searchIntent: "軽貨物ドライバーとして独立するまでの一般的な流れを知りたい", imageCategory: "driver", needsSources: false, sourceIds: [] },
   // 39. 独立

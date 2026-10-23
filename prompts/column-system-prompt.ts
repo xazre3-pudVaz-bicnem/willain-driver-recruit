@@ -8,7 +8,7 @@
 
 export const COLUMN_JSON_SHAPE = `{
   "title": "18〜32文字程度の記事タイトル（サイト名は付けない・記号や【】は使わない）",
-  "description": "100〜160文字の説明文。検索意図に沿い、地域・軽貨物・業務委託などを自然に含める",
+  "description": "70〜120文字の説明文。検索意図に沿い、地域・軽貨物・業務委託などを自然に含める",
   "tags": ["3〜5個のタグ"],
   "introduction": "導入文。最初の1〜2文で結論を述べる。2〜4文程度",
   "sections": [
@@ -120,6 +120,8 @@ export type UserPromptContext = {
   articleOptions: InternalLinkOption[];
   jobAreaOptions: { slug: string; label: string }[];
   sourceOptions: SourceOption[];
+  /** エリア記事のとき：そのエリアの拠点について確認済みの事実（集合場所・配送エリア・1日の流れなど） */
+  areaFacts?: { name: string; lines: string[] };
   minLength: number;
   maxLength: number;
 };
@@ -144,6 +146,14 @@ export function buildUserPrompt(ctx: UserPromptContext): string {
         .map((s) => `  - id: ${s.id}｜${s.name}（${s.scope}）`)
         .join("\n")
     : "  （このテーマでは出典指定は不要です。sourceIdsは空配列にしてください）";
+
+  const areaBlock = ctx.areaFacts
+    ? `
+# このテーマの拠点の確認済み情報（${ctx.areaFacts.name}。事実として使ってよい。ここにない地名・数字・施設名は作らない）
+${ctx.areaFacts.lines.map((l) => `- ${l}`).join("\n")}
+※記事の中心はこの拠点の実情報にする。ドライバー個人の発言としては書かない。
+`
+    : "";
 
   const sourceRule = ctx.needsSources
     ? `このテーマは制度・税務・法務に関わります。sourceIds には上記の出典IDから関係するものを1つ以上選び、本文は「詳細は各機関や税理士に確認する」トーンにしてください。具体的な税率・金額・期限・要件を確定情報として断定しないでください。`
@@ -174,7 +184,7 @@ export function buildUserPrompt(ctx: UserPromptContext): string {
 - 応募方法：${f.applyText}
 - 募集中エリアと報酬：
 ${areaLines}
-
+${areaBlock}
 # 内部リンク候補（この中からslugを選ぶ。本文にURLは書かない）
 ## 関連する既存記事（relatedArticleSlugs に2〜4個）
 ${articleLines}
@@ -200,3 +210,10 @@ JSONオブジェクトだけを出力してください。`;
 /** JSONパースに失敗したときの修正依頼（1回だけ使う） */
 export const JSON_FIX_INSTRUCTION =
   "直前の出力は正しいJSONとしてパースできませんでした。説明やコードフェンスを付けず、指定したキー構成の有効なJSONオブジェクトだけを、もう一度出力してください。";
+
+/** 品質検証で不合格になったときの修正依頼（1回だけ使う） */
+export function buildValidationFixInstruction(errors: string[]): string {
+  return `直前の記事は、次の品質検証で不合格になりました。
+${errors.map((e) => `- ${e}`).join("\n")}
+指摘された箇所だけを直し、テーマ・構成・ほかの内容はできるだけそのまま保ってください。説明やコードフェンスを付けず、指定したキー構成の有効なJSONオブジェクトだけを、もう一度出力してください。`;
+}

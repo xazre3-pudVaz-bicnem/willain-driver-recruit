@@ -191,19 +191,40 @@ export function getColumnImage(path: string): ColumnImage | undefined {
   return imageByPath.get(path);
 }
 
+/** エリア写真（/images/photos/area-<slug>.webp）のエリアslug。エリア写真でなければ null */
+function imageArea(path: string): string | null {
+  return path.match(/\/area-([a-z0-9-]+)\.webp$/)?.[1] ?? null;
+}
+
 /**
  * 直近使用を避けて画像を1枚選ぶ。
  * @param recentlyUsedPaths 直近に使った画像パス（新しい順・先頭5件を回避対象にする）
  * @param preferred 優先カテゴリ（該当がなければ全体から選ぶ）
+ * @param areaSlug エリア記事のとき：そのエリアの写真を優先し、ほかのエリアの写真は使わない
+ *                 （品川の記事に「船橋市の並木道」の写真が付くのを防ぐ）
  */
 export function pickColumnImage(
   recentlyUsedPaths: string[],
   preferred?: ColumnImageCategory,
+  areaSlug?: string,
 ): ColumnImage {
   const avoid = new Set(recentlyUsedPaths.slice(0, 5));
+  const candidates = areaSlug
+    ? columnImages.filter((img) => {
+        const a = imageArea(img.path);
+        return a === null || a === areaSlug;
+      })
+    : columnImages;
 
-  const notRecent = columnImages.filter((img) => !avoid.has(img.path));
-  const pool = notRecent.length > 0 ? notRecent : columnImages;
+  if (areaSlug) {
+    const own = candidates.find(
+      (img) => imageArea(img.path) === areaSlug && !avoid.has(img.path),
+    );
+    if (own) return own;
+  }
+
+  const notRecent = candidates.filter((img) => !avoid.has(img.path));
+  const pool = notRecent.length > 0 ? notRecent : candidates;
 
   // カテゴリ優先（直近回避を満たす範囲で）
   if (preferred) {

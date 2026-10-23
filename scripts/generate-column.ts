@@ -6,7 +6,9 @@
  *   npm run column:validate       … APIを使わず、コーパス健全性＋組み立てパイプラインを自己テスト
  *
  * 失敗時（APIエラー・JSON2回失敗・書き込み失敗など）は exit 1。
- * スキップ（未使用テーマなし・重複・同日投稿済みなど）は正常終了 exit 0。
+ * 人の対応が必要なスキップ（品質検証NG・重複・未使用テーマなし）も exit 1 にして、
+ * GitHub Actions の失敗通知が届くようにする（「正常終了」のまま公開ゼロが続くのを防ぐ）。
+ * 停止中・同日投稿済み・上限到達のスキップは正常終了 exit 0。
  */
 
 import { promises as fs } from "node:fs";
@@ -75,6 +77,9 @@ function printUsage(usage?: { model: string; input: number; output: number }, ti
 
 /* ------------------------------ 結果表示 ------------------------------ */
 
+/** 記事が作れず、人の対応（テーマ追加・検証ルールの見直しなど）が必要なスキップ */
+const ACTION_REQUIRED_SKIPS = new Set(["validation", "duplicate", "no-topic"]);
+
 function reportResult(result: GenerationResult): number {
   if (result.outcome === "skipped") {
     line(`⏭  スキップ: ${result.reason}${result.detail ? ` — ${result.detail}` : ""}`);
@@ -83,7 +88,11 @@ function reportResult(result: GenerationResult): number {
       for (const e of result.errors) line(`   - ${e}`);
     }
     printUsage(result.usage);
-    return 0; // スキップは失敗ではない
+    if (ACTION_REQUIRED_SKIPS.has(result.reason)) {
+      console.error("✖ 記事を作成できませんでした。上の理由を確認してください（失敗として通知します）。");
+      return 1;
+    }
+    return 0; // 停止中・同日投稿済みなどは失敗ではない
   }
 
   // generated

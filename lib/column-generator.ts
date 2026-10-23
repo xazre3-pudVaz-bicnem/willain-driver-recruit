@@ -15,7 +15,7 @@ import crypto from "node:crypto";
 
 import type { ColumnArticle, ColumnBlock } from "@/lib/column";
 import { columnArticles } from "@/content/column";
-import { jobCommon, getActiveAreas, getJobArea } from "@/lib/jobs";
+import { jobCommon, getActiveAreas, getJobArea, type JobArea } from "@/lib/jobs";
 import { columnTopics, type ColumnTopic } from "@/data/column-topics";
 import { getSource, SOURCE_DISCLAIMER } from "@/data/official-sources";
 import { pickColumnImage, type ColumnImage } from "@/data/column-images";
@@ -32,6 +32,7 @@ import {
   COLUMN_SYSTEM_PROMPT,
   buildUserPrompt,
   JSON_FIX_INSTRUCTION,
+  buildValidationFixInstruction,
   type JobFacts,
   type UserPromptContext,
 } from "@/prompts/column-system-prompt";
@@ -226,7 +227,8 @@ function toParagraphs(text: string): string[] {
 
 /* ------------------------------ 求人ファクト ------------------------------ */
 
-export function buildJobFacts(): JobFacts {
+/** area を渡すと、そのエリアに拠点の勤務時間の実例があればそちらを使う */
+export function buildJobFacts(area?: JobArea): JobFacts {
   const areas = getActiveAreas().map((a) => ({
     slug: a.slug,
     name: a.areaName,
@@ -241,7 +243,7 @@ export function buildJobFacts(): JobFacts {
     payLabel: jobCommon.payLabel,
     paySupplement: jobCommon.paySupplement,
     leasePrice: jobCommon.leasePrice,
-    workHours: jobCommon.workHours,
+    workHours: area?.workHours ?? jobCommon.workHours,
     workDays: jobCommon.workDays,
     startLeadTime: jobCommon.startLeadTime,
     support: [...jobCommon.support],
@@ -251,10 +253,41 @@ export function buildJobFacts(): JobFacts {
   };
 }
 
+/** エリア記事に渡す、拠点の確認済み情報（lib/jobs.ts の拠点データから組み立てる） */
+function buildAreaFacts(area: JobArea): UserPromptContext["areaFacts"] {
+  const lines: string[] = [];
+  if (area.base) {
+    lines.push(
+      `集合場所：${area.base.address}（${area.base.access}）。詳しい住所は面談で案内する`,
+    );
+  }
+  if (area.deliveryAreas?.length) {
+    lines.push(
+      `主な配送エリア：${area.deliveryAreas
+        .map((d) => `${d.city}（${d.towns.join("・")}など）`)
+        .join("、")}`,
+    );
+  }
+  if (area.workHours) lines.push(`勤務時間：${area.workHours}`);
+  if (area.schedule?.length) {
+    lines.push(
+      `1日の流れ：${area.schedule.map((s) => `${s.time} ${s.title}（${s.text}）`).join(" → ")}`,
+    );
+  }
+  if (area.team) {
+    lines.push(
+      `稼働状況（${area.team.asOf}時点）：${area.team.activeDrivers}名が稼働中、新たに${area.team.openings}名を募集`,
+    );
+  }
+  if (lines.length === 0) return undefined;
+  return { name: area.base?.name ?? area.areaName, lines };
+}
+
 export function buildPromptContext(
   topic: ColumnTopic,
   opts: { minLength: number; maxLength: number },
 ): UserPromptContext {
+  const area = topic.area ? getJobArea(topic.area) : undefined;
   return {
     topicTitle: topic.title,
     category: topic.category,
@@ -263,7 +296,8 @@ export function buildPromptContext(
     subKeywords: topic.subKeywords,
     searchIntent: topic.searchIntent,
     needsSources: topic.needsSources,
-    jobFacts: buildJobFacts(),
+    jobFacts: buildJobFacts(area),
+    areaFacts: area ? buildAreaFacts(area) : undefined,
     articleOptions: columnArticles.map((a) => ({
       slug: a.slug,
       title: a.title,
@@ -392,7 +426,7 @@ export function assembleArticle(
   const recentImages = corpus.history
     .map((h) => h.image)
     .filter((p): p is string => Boolean(p));
-  const image = pickColumnImage(recentImages, topic.imageCategory);
+  const image = pickColumnImage(recentImages, topic.imageCategory, topic.area);
 
   // 7) 内部リンクの確定（存在・募集中を保証）
   const primaryAreaSlug =
@@ -532,6 +566,7 @@ export async function runGeneration(
   const model = resolveModel();
 
   let gen: GeneratedColumn | null = null;
+  let genText = "";
   for (let attempt = 0; attempt < 2 && !gen; attempt++) {
     log(attempt === 0 ? "記事を生成中…" : "JSONを修正依頼中…");
     const res = await createMessage({
@@ -545,6 +580,7 @@ export async function runGeneration(
 
     try {
       gen = parseColumnJson(res.text);
+      genText = res.text;
     } catch (e) {
       if (!(e instanceof ColumnParseError)) throw e;
       if (attempt === 0) {
@@ -557,11 +593,34 @@ export async function runGeneration(
   }
   if (!gen) throw new ColumnParseError("JSON生成に2回失敗しました。");
 
+  // 4〜9) 検証・重複・画像・リンク・ブロック（API不使用）
+  let assembled = assembleArticle(gen, topic, corpus, opts);
+
+  // 品質検証NGは、指摘を渡して1回だけ修正を依頼する（文字数・見出し数・禁止表現など直せる指摘が多いため）
+  if (!assembled.ok && assembled.reason === "validation" && assembled.errors?.length) {
+    log(`検証エラーの修正を依頼中…（${assembled.errors.length}件）`);
+    messages.push({ role: "assistant", content: genText });
+    messages.push({ role: "user", content: buildValidationFixInstruction(assembled.errors) });
+    const res = await createMessage({
+      system: COLUMN_SYSTEM_PROMPT,
+      messages,
+      maxTokens: 8000,
+      temperature: 0.6,
+    });
+    usageInput += res.usage.input_tokens;
+    usageOutput += res.usage.output_tokens;
+    try {
+      const fixed = parseColumnJson(res.text);
+      assembled = assembleArticle(fixed, topic, corpus, opts);
+    } catch (e) {
+      if (!(e instanceof ColumnParseError)) throw e;
+      // 修正版が壊れていた場合は、最初の検証エラーをそのまま返す
+    }
+  }
+
   const usage = { model, input: usageInput, output: usageOutput };
   log(`生成完了（in:${usageInput} / out:${usageOutput} tokens）`);
 
-  // 4〜9) 検証・重複・画像・リンク・ブロック（API不使用）
-  const assembled = assembleArticle(gen, topic, corpus, opts);
   if (!assembled.ok) {
     return {
       outcome: "skipped",

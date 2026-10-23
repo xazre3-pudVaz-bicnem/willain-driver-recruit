@@ -187,10 +187,13 @@ export function validateGenerated(
     errors.push("titleが既存記事と完全一致しています。");
   }
 
-  // description
+  // description（検索結果の表示幅に合わせて目安70〜120。極端な場合のみエラー）
+  // 以前の「100〜160でエラー」は生成結果（実測62〜93字）がほぼ毎回外れ、公開ゼロの原因になった
   const descLen = [...gen.description].length;
-  if (descLen < 100 || descLen > 160) {
-    errors.push(`descriptionの文字数が範囲外です（${descLen}／目安100〜160）。`);
+  if (descLen < 50 || descLen > 160) {
+    errors.push(`descriptionの文字数が範囲外です（${descLen}／許容50〜160・目安70〜120）。`);
+  } else if (descLen < 70 || descLen > 120) {
+    warnings.push(`descriptionの文字数が目安(70〜120)から外れています（${descLen}）。`);
   }
 
   // 本文量
