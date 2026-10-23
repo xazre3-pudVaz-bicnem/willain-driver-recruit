@@ -232,6 +232,8 @@ export function jobPostingJsonLd(area: JobArea) {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
+        // 拠点の町名（公開してよい範囲）。詳しい住所は面談で案内する
+        ...(area.base ? { streetAddress: area.base.streetAddress } : {}),
         addressLocality: area.addressLocality,
         addressRegion: area.addressRegion,
         addressCountry: "JP",
@@ -250,7 +252,7 @@ export function jobPostingJsonLd(area: JobArea) {
     // 以下はすべて画面（募集要項テーブル）に表示している内容と一致させる
     occupationalCategory: "軽貨物配送ドライバー",
     industry: "軽貨物運送業",
-    workHours: jobCommon.workHours,
+    workHours: area.workHours ?? jobCommon.workHours,
     responsibilities: jobCommon.jobDescription.join("／"),
     qualifications: jobCommon.requirements.join("／"),
     jobBenefits: jobCommon.support.join("／"),

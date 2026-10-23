@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { jobAreas, getJobArea, jobCommon } from "@/lib/jobs";
+import { jobAreas, getJobArea, jobCommon, spotlightMessage } from "@/lib/jobs";
 import { getArticle } from "@/content/column";
 import { jobPostingJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -15,6 +15,9 @@ import { PayExamples } from "@/components/job/PayExamples";
 import { AreaCards } from "@/components/job/AreaCards";
 import { CtaSection } from "@/components/job/CtaSection";
 import { JobViewTracker } from "@/components/job/JobViewTracker";
+import { AreaBase } from "@/components/job/AreaBase";
+import { BaseSchedule } from "@/components/job/BaseSchedule";
+import { DriverVoices } from "@/components/job/DriverVoices";
 
 type Props = { params: Promise<{ area: string }> };
 
@@ -114,13 +117,13 @@ export default async function JobAreaPage({ params }: Props) {
               ))}
             </div>
           </Reveal>
-          {area.spotlight && area.spotlightNote && (
+          {area.spotlight && spotlightMessage(area) && (
             <Reveal className="mt-8">
               <div className="rounded-2xl border-2 border-primary/30 bg-mint px-6 py-5">
                 <span className="inline-block rounded-full bg-primary-dark px-3 py-1 text-xs font-black tracking-wider text-white">
                   今月の注力エリア
                 </span>
-                <p className="mt-2 leading-relaxed text-ink">{area.spotlightNote}</p>
+                <p className="mt-2 leading-relaxed text-ink">{spotlightMessage(area)}</p>
                 <Link
                   href={`/apply?area=${area.slug}`}
                   className="mt-3 inline-flex items-center gap-1 font-bold text-primary-dark underline-offset-4 hover:underline"
@@ -142,6 +145,9 @@ export default async function JobAreaPage({ params }: Props) {
         </div>
       </div>
 
+      {/* 拠点（集合場所）・稼働状況・主な配送エリア（拠点データがあるエリアのみ） */}
+      <AreaBase area={area} />
+
       {/* エリアの特徴：罫線区切りの番号付きリスト（カードなし） */}
       <section className="border-t border-line bg-white">
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
@@ -151,7 +157,9 @@ export default async function JobAreaPage({ params }: Props) {
           </Reveal>
           <Reveal>
             <p className="mb-10 max-w-2xl text-[0.95rem] leading-relaxed text-ink-sub">
-              以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の一般的な傾向です。担当エリアや配送先の詳細、集合場所は、応募後の面談でご案内します。
+              {area.base
+                ? `以下は、株式会社ウィランが${area.base.name}の配送業務をもとにまとめた特徴です。担当エリアの詳細は、応募後の面談でご案内します。`
+                : "以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の一般的な傾向です。担当エリアや配送先の詳細、集合場所は、応募後の面談でご案内します。"}
             </p>
           </Reveal>
           <div className="grid gap-x-14 md:grid-cols-3">
@@ -174,6 +182,32 @@ export default async function JobAreaPage({ params }: Props) {
         </div>
       </section>
 
+      {/* 拠点の1日の流れ（時刻つきの実例があるエリアのみ） */}
+      {area.schedule && area.schedule.length > 0 && (
+        <section className="border-t border-line bg-paper">
+          <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+            <Kicker animate>{`${area.base?.name ?? area.shortName}の1日`}</Kicker>
+            <Reveal>
+              <h2 className="h-section mb-10 text-ink">{`${area.schedule[0].time}集合から、帰るまで。`}</h2>
+            </Reveal>
+            <BaseSchedule items={area.schedule} />
+          </div>
+        </section>
+      )}
+
+      {/* ドライバーの声（本人に確認済みの実際の声があるエリアのみ） */}
+      {area.voices && area.voices.length > 0 && (
+        <section className="border-t border-line bg-white">
+          <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+            <Kicker animate>ドライバーの声</Kicker>
+            <Reveal>
+              <h2 className="h-section mb-10 text-ink">大変さも、面白さも。</h2>
+            </Reveal>
+            <DriverVoices voices={area.voices} />
+          </div>
+        </section>
+      )}
+
       {/* 募集要項（画面表示＝構造化データ） */}
       <section className="border-t border-line bg-paper">
         <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
@@ -186,11 +220,16 @@ export default async function JobAreaPage({ params }: Props) {
               areaName={area.areaName}
               payLabel={area.dailyPayLabel}
               paySupplement={`${area.areaName}の日額保証（規定あり）・週払い可能（規定あり）`}
+              workHoursDetail={area.workHoursDetail}
+              meetingPlace={area.base ? `${area.base.address}（${area.base.access}）` : undefined}
+              deliveryCities={area.deliveryAreas?.map((d) => d.city).join("・")}
             />
           </Reveal>
           <p className="mt-5 border-l-2 border-primary/40 pl-4 text-sm leading-relaxed text-ink-sub">
             {jobCommon.meetingNote}
-            配送センターの所在地や担当エリアの詳細は、応募後の面談で確認できます。
+            {area.base
+              ? "集合場所の詳しい住所や担当エリアの詳細は、応募後の面談で確認できます。"
+              : "配送センターの所在地や担当エリアの詳細は、応募後の面談で確認できます。"}
           </p>
         </div>
       </section>
@@ -215,7 +254,9 @@ export default async function JobAreaPage({ params }: Props) {
           </Reveal>
           <Reveal>
             <p className="mb-8 max-w-2xl leading-relaxed text-ink-sub">
-              {area.areaName}の報酬・勤務条件は上の募集要項のとおりです。1日の流れ・車両・研修・応募の手順は全エリア共通のため、専用ページでくわしく確認できます。
+              {area.schedule
+                ? `${area.areaName}の報酬・勤務条件は上の募集要項のとおりです。車両・研修・応募の手順は全エリア共通のため、専用ページでくわしく確認できます。`
+                : `${area.areaName}の報酬・勤務条件は上の募集要項のとおりです。1日の流れ・車両・研修・応募の手順は全エリア共通のため、専用ページでくわしく確認できます。`}
             </p>
           </Reveal>
           <Reveal>

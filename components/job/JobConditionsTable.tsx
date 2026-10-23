@@ -4,15 +4,22 @@ import { jobCommon } from "@/lib/jobs";
  * 募集要項テーブル。
  * lib/jobs.ts の共通データから描画するため、JobPosting構造化データと必ず一致する。
  * エリア詳細ページでは payLabel / paySupplement にそのエリアの日額を渡す。
+ * 拠点の実例があるエリアは、勤務時間・集合場所・配送エリアもそのエリアの値を渡す。
  */
 export function JobConditionsTable({
   areaName,
   payLabel = jobCommon.payLabel,
   paySupplement = jobCommon.paySupplement,
+  workHoursDetail = jobCommon.workHoursDetail,
+  meetingPlace,
+  deliveryCities,
 }: {
   areaName?: string;
   payLabel?: string;
   paySupplement?: string;
+  workHoursDetail?: readonly string[];
+  meetingPlace?: string;
+  deliveryCities?: string;
 }) {
   const rows: { th: string; td: React.ReactNode }[] = [
     { th: "職種", td: jobCommon.title },
@@ -41,7 +48,7 @@ export function JobConditionsTable({
       th: "勤務時間",
       td: (
         <ul className="list-disc space-y-1 pl-5">
-          {jobCommon.workHoursDetail.map((d) => (
+          {workHoursDetail.map((d) => (
             <li key={d}>{d}</li>
           ))}
         </ul>
@@ -79,6 +86,8 @@ export function JobConditionsTable({
       ),
     },
     ...(areaName ? [{ th: "募集エリア", td: areaName }] : []),
+    ...(deliveryCities ? [{ th: "主な配送エリア", td: deliveryCities }] : []),
+    ...(meetingPlace ? [{ th: "集合場所", td: meetingPlace }] : []),
     { th: "備考", td: jobCommon.meetingNote },
   ];
 
