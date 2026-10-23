@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物の宅配・企業配送・スポット便の違いを比較。個人宅へのラストワンマイル、BtoB定期便、単発チャーターの仕事内容・収入の安定性・時間帯・難易度の傾向を中立に整理し、宅配中心の求人例も紹介します。",
   category: "仕事内容",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: [
     "what-is-light-cargo-driver",
     "tokyo-job-comparison",

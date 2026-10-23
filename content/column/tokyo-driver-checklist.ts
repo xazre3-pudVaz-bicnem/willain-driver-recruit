@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "東京で軽貨物ドライバーとして働く前に確認したいポイントを解説。配達先の密度や駐車環境など都内配送の特徴、報酬や週払いなど契約条件の確認項目、品川区・江東区・葛西のエリア選びの考え方を紹介します。",
   category: "仕事内容",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: [
     "driver-daily-schedule",
     "weekly-payment-jobs",

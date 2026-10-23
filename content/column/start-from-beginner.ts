@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "未経験から軽貨物ドライバーを始める流れを、応募・面談・契約と車両準備・横乗り研修・稼働開始の5ステップで解説。黒ナンバー手続きや、つまずきやすい点の対策も紹介します。",
   category: "仕事内容",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: [
     "what-is-light-cargo-driver",
     "license-requirements",

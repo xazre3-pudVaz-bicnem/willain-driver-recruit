@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーは週3日から働けるのかを解説。業務委託で稼働日数を調整しやすい理由と、副業・Wワークで始める前に確認したい本業の就業規則・確定申告・体力配分の3点をまとめました。",
   category: "働き方・契約",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: [
     "weekly-payment-jobs",
     "start-from-beginner",

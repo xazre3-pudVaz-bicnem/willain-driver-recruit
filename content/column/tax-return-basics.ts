@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "業務委託の軽貨物ドライバーに確定申告が必要とされる理由、経費になり得る項目の例、帳簿・領収書の保管、青色申告と白色申告の概要を初心者向けに整理。申告前に確認したいポイントをまとめました。",
   category: "お金・報酬",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: ["gyomu-itaku-basics", "daily-guarantee-vs-piecework", "independence-guide"],
   blocks: [
     {

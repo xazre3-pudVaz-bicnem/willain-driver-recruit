@@ -79,10 +79,34 @@ export const siteConfig = {
   siteName: "株式会社ウィラン 採用サイト",
 
   /**
-   * サイト全体の最終更新日（sitemapのlastmodに使用）。
+   * サイト全体の最終更新日（下の pageLastModified に無いページの sitemap lastmod・RSSの予備に使用）。
    * ビルド日時で自動更新せず、実際にコンテンツを更新した日に手動で変更する。
    */
-  siteLastModified: "2026-07-25",
+  siteLastModified: "2026-10-23",
+
+  /**
+   * 固定ページごとの最終更新日（sitemapのlastmod）。
+   * そのページの内容（共通の求人条件の表示を含む）を実質的に変えた日だけ更新する。
+   * 日付だけを新しくする更新はしない（Googleのガイドラインで避けるべき例とされている）。
+   */
+  pageLastModified: {
+    "/": "2026-10-23",
+    "/jobs": "2026-10-23",
+    "/work": "2026-08-08",
+    "/benefits": "2026-08-08",
+    "/beginner": "2026-08-08",
+    "/independence-support": "2026-08-08",
+    "/faq": "2026-08-08",
+    "/glossary": "2026-09-02",
+    "/tools/reward-simulator": "2026-09-02",
+    "/company": "2026-07-28",
+    "/apply": "2026-08-08",
+    "/recruitment-policy": "2026-07-28",
+    "/editorial-policy": "2026-07-30",
+    "/privacy": "2026-07-25",
+    "/column": "2026-08-08",
+    "/column/category": "2026-09-02",
+  } as Record<string, string>,
 } as const;
 
 /** 絶対URLを生成する（canonical・OG・構造化データ用） */

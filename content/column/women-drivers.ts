@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーは女性でも働けるのか、力仕事のイメージと実際の荷物の重さ、AT限定可・週3日から相談可などの条件、服装や安全面の確認ポイント、未経験からの始め方を事実ベースで解説します。",
   category: "仕事内容",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: [
     "start-from-beginner",
     "license-requirements",

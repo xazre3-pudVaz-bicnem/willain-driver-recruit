@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "40代・50代から軽貨物ドライバーを始められるかを解説。年齢は応募条件ではなく、普通免許（AT限定可）・学歴不問・未経験歓迎で始めやすい理由、軽バンの荷物と体力、始める前の健康チェックまで中立的に紹介します。",
   category: "仕事内容",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: ["start-from-beginner", "suited-or-not", "license-requirements"],
   blocks: [
     {

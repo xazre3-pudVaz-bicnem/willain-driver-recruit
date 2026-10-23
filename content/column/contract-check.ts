@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物の業務委託契約書で確認したい9項目を、報酬体系・支払いサイクル・経費負担・業務範囲・契約期間・解除条件・違約金・保険・秘密保持に分けて解説。解約予告期間や口頭と書面の一致の確かめ方も紹介します。",
   category: "働き方・契約",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: ["interview-checklist", "gyomu-itaku-basics", "insurance-basics"],
   blocks: [
     {

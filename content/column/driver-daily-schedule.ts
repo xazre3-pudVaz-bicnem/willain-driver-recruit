@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーの1日の流れを、配送センター到着から積み込み、午前・午後の配送、直帰までの8工程で解説。各工程で効率を上げるコツも紹介します。",
   category: "仕事内容",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: [
     "what-is-light-cargo-driver",
     "start-from-beginner",

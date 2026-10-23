@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物の業務委託とは何か、雇用契約との違いを報酬・経費・社会保険・確定申告・自由度の5つの視点で整理。メリットと注意点、開業届などの手続きも初心者向けにわかりやすく解説します。",
   category: "働き方・契約",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: [
     "what-is-light-cargo-driver",
     "daily-guarantee-vs-piecework",

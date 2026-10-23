@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーの面談で確認すべき10項目をチェックリスト形式で解説。報酬や支払いサイクル、経費負担、契約解除条件などの聞き方の例文も紹介します。",
   category: "働き方・契約",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: ["weekly-payment-jobs", "tokyo-driver-checklist", "start-from-beginner"],
   blocks: [
     {

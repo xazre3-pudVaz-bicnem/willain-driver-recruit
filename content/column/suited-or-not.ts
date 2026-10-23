@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーに向いている人・向いていない人の特徴をチェックリストで整理。一人で黙々と働ける人や自分でペース管理できる人の傾向と、対面接客や固定給の安定を求める人が事前に知りたい点を中立的に解説します。",
   category: "仕事内容",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: [
     "what-is-light-cargo-driver",
     "driver-daily-schedule",

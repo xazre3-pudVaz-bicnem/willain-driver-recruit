@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーとは、軽バンで小型の荷物を届ける配送の仕事です。宅配・企業配送・スポット便の違いやEC需要との関係、向いている人、必要な免許や車両まで、未経験者向けにわかりやすく解説します。",
   category: "仕事内容",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: ["gyomu-itaku-basics", "start-from-beginner", "driver-daily-schedule"],
   blocks: [
     {

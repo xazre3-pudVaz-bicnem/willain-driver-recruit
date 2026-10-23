@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "週払い対応の軽貨物求人の選び方を解説。週払いの仕組みとキャッシュフロー面のメリット、手数料や締め日など応募前に確認すべき規定のチェックリストを紹介します。",
   category: "お金・報酬",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: [
     "daily-guarantee-vs-piecework",
     "gyomu-itaku-basics",

@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "東京の軽貨物ドライバー求人を比較するときの視点を整理。報酬体系・支払いサイクル・経費負担・担当エリア・荷量・研修・車両・契約解除条件など、確認したい項目を比較表と手順で解説します。",
   category: "お金・報酬",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: [
     "tokyo-driver-checklist",
     "daily-guarantee-vs-piecework",

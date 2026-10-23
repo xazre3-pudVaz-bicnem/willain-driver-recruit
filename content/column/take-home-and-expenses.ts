@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーの業務委託は日額が額面で、ガソリン代や車両費、保険、税金などの経費を引いた残りが手取り。日額20,500円〜の見方と、経費項目、手取りを把握するチェックリストを解説します。",
   category: "お金・報酬",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: [
     "daily-guarantee-vs-piecework",
     "tax-return-basics",

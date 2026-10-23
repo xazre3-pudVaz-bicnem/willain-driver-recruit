@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーに必要な免許は普通自動車免許のみで、AT限定でも働けます。特別な資格が不要な理由、黒ナンバーとの関係、運転ブランクがある場合の始め方まで未経験の方向けに解説します。",
   category: "仕事内容",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: [
     "start-from-beginner",
     "vehicle-lease-vs-own",

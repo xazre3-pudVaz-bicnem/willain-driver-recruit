@@ -6,7 +6,7 @@ export const article: ColumnArticle = {
   description: "軽貨物ドライバーから独立・開業する一般的なステップを解説。業務委託で経験を積み、収支を安定させ、チーム化や法人化へ進む流れと、独立前に身につけたい力を紹介します。",
   category: "独立・キャリア",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: ["gyomu-itaku-basics", "vehicle-lease-vs-own", "tax-return-basics"],
   blocks: [
     {

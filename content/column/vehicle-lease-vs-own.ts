@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーの車両持ち込みとリースの違いを、初期費用・月々の費用・維持管理の3点で比較。どちらが向いているかの判断基準と、月額30,000円のリース制度も紹介します。",
   category: "働き方・契約",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: ["license-requirements", "start-from-beginner", "independence-guide"],
   blocks: [
     {

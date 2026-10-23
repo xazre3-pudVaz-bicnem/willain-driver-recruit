@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "黒ナンバー（貨物軽自動車運送事業の事業用軽自動車）とは何か、なぜ必要かを解説。運輸支局への届出やナンバー変更など一般的な取得の流れ、車両の準備方法までわかります。手続きの詳細は公的機関で確認を。",
   category: "働き方・契約",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: ["license-requirements", "vehicle-lease-vs-own", "start-from-beginner"],
   blocks: [
     {

@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "業務委託の軽貨物ドライバーはガソリン代を原則自分で負担するのが一般的。負担の考え方、走行距離と燃費で金額が変わる仕組み、経費計上のポイント、燃費とルートで抑える工夫を整理して解説します。",
   category: "お金・報酬",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: [
     "take-home-and-expenses",
     "tax-return-basics",

@@ -6,7 +6,7 @@ export const article: ColumnArticle = {
   description: "軽貨物ドライバーの日額保証と出来高制の違いを解説。それぞれの仕組みと向き不向き、未経験期に日額保証が収入を安定させやすい理由、契約前に確認すべきポイントを中立的に紹介します。",
   category: "お金・報酬",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-07-25",
+  updatedAt: "2026-08-08",
   related: ["gyomu-itaku-basics", "weekly-payment-jobs", "tax-return-basics"],
   blocks: [
     {

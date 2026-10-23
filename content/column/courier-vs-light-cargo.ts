@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "「宅配便ドライバー」と「軽貨物ドライバー」は何が違うのか。言葉が指す範囲・雇用と業務委託・2t車と軽バン・契約形態・報酬の考え方の一般的な違いを比較表で整理し、これから配送で働く人向けに解説します。",
   category: "仕事内容",
   publishedAt: "2026-07-28",
-  updatedAt: "2026-07-28",
+  updatedAt: "2026-08-08",
   related: ["what-is-light-cargo-driver", "gyomu-itaku-basics", "driver-daily-schedule"],
   blocks: [
     {
