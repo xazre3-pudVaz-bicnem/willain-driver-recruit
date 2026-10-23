@@ -126,6 +126,18 @@ export default function IndependenceSupportPage() {
             </li>
           ))}
         </ol>
+        <Reveal>
+          <p className="mt-8 text-sm leading-relaxed text-ink-sub">
+            すでに個人事業主として配送している方や、ドライバーのチームを持つ方は、
+            <Link
+              href="/partner"
+              className="font-bold text-primary-dark underline underline-offset-4"
+            >
+              協力会社・パートナー・フランチャイズ募集
+            </Link>
+            もご覧ください。
+          </p>
+        </Reveal>
       </section>
 
       {/* サポート内容：濃色背景・半透明罫線 */}

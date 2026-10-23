@@ -10,6 +10,7 @@ const siteLinks = [
   { href: "/benefits", label: "ウィランで働くメリット" },
   { href: "/beginner", label: "未経験の方へ" },
   { href: "/independence-support", label: "独立・開業サポート" },
+  { href: "/partner", label: "協力会社・パートナー募集" },
   { href: "/tools/reward-simulator", label: "報酬・経費シミュレーター" },
   { href: "/glossary", label: "軽貨物ドライバー用語集" },
   { href: "/faq", label: "よくある質問" },

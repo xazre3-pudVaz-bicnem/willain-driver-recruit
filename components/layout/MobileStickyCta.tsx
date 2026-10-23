@@ -10,10 +10,12 @@ import { trackEvent } from "@/lib/analytics";
  * スマートフォン用の画面下部追従CTA。
  * 応募フォーム系ページでは非表示。safe-area対応・コンテンツを隠さないよう
  * body側にpadding-bottomを付与する（globals.cssの.has-sticky-cta）。
+ * 協力会社・パートナー募集（/partner）では、ドライバー応募ではなくページ内の問い合わせフォームへ誘導する。
  */
 export function MobileStickyCta() {
   const pathname = usePathname();
-  const hidden = pathname.startsWith("/apply");
+  const isPartner = pathname.startsWith("/partner");
+  const hidden = pathname.startsWith("/apply") || pathname.startsWith("/partner/thanks");
 
   useEffect(() => {
     document.body.classList.toggle("has-sticky-cta", !hidden);
@@ -45,14 +47,25 @@ export function MobileStickyCta() {
           </svg>
           電話で相談
         </a>
-        <Link
-          href="/apply"
-          onClick={() => trackEvent("apply_click", { place: "sticky_cta" })}
-          data-event="apply_click"
-          className="flex items-center justify-center rounded-full bg-primary-dark py-3 text-sm font-bold text-white shadow-card"
-        >
-          WEB応募（60秒）
-        </Link>
+        {isPartner ? (
+          <a
+            href="#contact"
+            onClick={() => trackEvent("partner_contact_click", { place: "sticky_cta" })}
+            data-event="partner_contact_click"
+            className="flex items-center justify-center rounded-full bg-primary-dark py-3 text-sm font-bold text-white shadow-card"
+          >
+            お問い合わせ
+          </a>
+        ) : (
+          <Link
+            href="/apply"
+            onClick={() => trackEvent("apply_click", { place: "sticky_cta" })}
+            data-event="apply_click"
+            className="flex items-center justify-center rounded-full bg-primary-dark py-3 text-sm font-bold text-white shadow-card"
+          >
+            WEB応募（60秒）
+          </Link>
+        )}
       </div>
     </div>
   );

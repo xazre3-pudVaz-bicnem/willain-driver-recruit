@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import { jobAreas } from "@/lib/jobs";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -57,6 +58,12 @@ export default function CompanyPage() {
     [
       "採用エリア",
       "東京都品川区・江東区・江戸川区（葛西エリア）、千葉県船橋市",
+    ],
+    [
+      "協力会社・パートナー募集",
+      <Link key="partner" href="/partner" className="font-bold text-primary-dark">
+        協力会社・パートナー・フランチャイズ募集
+      </Link>,
     ],
     [
       "公式Instagram",
