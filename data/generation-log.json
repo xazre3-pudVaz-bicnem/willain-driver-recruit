@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "date": "2026-10-26",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "品川・港区・中央区の軽貨物配送の仕事内容と1日の流れ",
+    "slug": "shinagawa-delivery-guide",
+    "inputTokens": 5096,
+    "outputTokens": 4392,
+    "status": "draft",
+    "errorType": null,
+    "qualityScore": 100
+  }
+]
