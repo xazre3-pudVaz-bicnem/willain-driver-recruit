@@ -25,7 +25,8 @@ export type AnthropicErrorType =
   | "max_tokens"
   | "bad_stop"
   | "empty"
-  | "bad_request";
+  | "bad_request"
+  | "parse";
 
 export class AnthropicError extends Error {
   type: AnthropicErrorType;

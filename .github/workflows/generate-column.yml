@@ -1,13 +1,20 @@
 name: Auto Publish Column
 
-# 採用コラムを週2回、下書きとして自動生成する（担当者が確認してから公開。週1〜2本の運用）。
+# 採用コラムを週2回、自動生成する（週1〜2本の運用）。
+# - 既定は ai-review：生成（Haiku）→ 品質検証 → AI校閲（Opus 5.5）で確認済みの事実と照合 → 合格した記事だけ公開
+#   保留・失敗した記事と制度テーマは下書きで保存し、commit 後にジョブを失敗させて通知する
 # - schedule: 日・水のUTC20:00 = 日本時間 月・木の05:00
-# - workflow_dispatch: GitHub Actions画面から手動実行も可能
-# - 記事を作れなかった場合（品質検証NG・重複・テーマ切れ）はジョブを失敗させ、GitHubの失敗通知で気づけるようにする
+# - workflow_dispatch: GitHub Actions画面から手動実行も可能（dry_run で保存・公開せずに試せる）
+# - 記事を作れなかった場合（品質検証NG・重複・テーマ切れ）もジョブを失敗させ、GitHubの失敗通知で気づけるようにする
 on:
   schedule:
     - cron: "0 20 * * 0,3"
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "試し実行（生成とAI確認だけ行い、保存・公開はしない）"
+        type: boolean
+        default: false
 
 # 同時実行を防ぐ（二重投稿・push競合の回避）
 concurrency:
@@ -39,17 +46,20 @@ jobs:
       # 記事生成（テーマ選定→生成→検証→重複→画像→保存）。
       # スキップ時は変更なしで正常終了。APIキー/レスポンス全文はログに出さない。
       - name: 採用コラムを生成
+        id: generate
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           # モデルは Secret でも Variable でも指定可（未設定なら claude-haiku-4-5-20251001）
           ANTHROPIC_MODEL: ${{ secrets.ANTHROPIC_MODEL || vars.ANTHROPIC_MODEL }}
+          # AI校閲のモデル（未設定なら claude-opus-5-5）
+          ANTHROPIC_REVIEW_MODEL: ${{ vars.ANTHROPIC_REVIEW_MODEL }}
           AUTO_COLUMN_ENABLED: ${{ vars.AUTO_COLUMN_ENABLED }}
-          # 既定は review（下書き保存 → 担当者が確認して公開）。自動公開に戻す場合のみ Variables で auto を指定
-          AUTO_COLUMN_MODE: ${{ vars.AUTO_COLUMN_MODE || 'review' }}
+          # 既定は ai-review（AI校閲に合格した記事だけ公開）。人が確認してから公開するなら Variables で review を指定
+          AUTO_COLUMN_MODE: ${{ vars.AUTO_COLUMN_MODE || 'ai-review' }}
           AUTO_COLUMN_MAX_PER_DAY: ${{ vars.AUTO_COLUMN_MAX_PER_DAY }}
           AUTO_COLUMN_MIN_LENGTH: ${{ vars.AUTO_COLUMN_MIN_LENGTH }}
           AUTO_COLUMN_MAX_LENGTH: ${{ vars.AUTO_COLUMN_MAX_LENGTH }}
-        run: npm run column:generate
+        run: npm run ${{ inputs.dry_run && 'column:generate:dry' || 'column:generate' }}
 
       # 生成物に変更があるか判定（なければ以降をスキップ）
       - name: 変更の有無を確認
@@ -86,3 +96,13 @@ jobs:
           # リモートの更新を取り込む（競合時はforceせず失敗させる）
           git pull --rebase origin "${{ github.ref_name }}"
           git push origin "HEAD:${{ github.ref_name }}"
+
+      # AI確認で保留・失敗した記事は下書きで保存したうえで、ジョブを失敗させて通知する
+      # （理由にはAIの出力が含まれるため、run に直接埋め込まず環境変数で渡す）
+      - name: 要確認の通知
+        if: steps.generate.outputs.needs_attention == 'true'
+        env:
+          REASON: ${{ steps.generate.outputs.attention_reason }}
+        run: |
+          echo "::error title=採用コラムの要確認::$REASON"
+          exit 1

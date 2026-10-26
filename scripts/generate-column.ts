@@ -11,7 +11,7 @@
  * 停止中・同日投稿済み・上限到達のスキップは正常終了 exit 0。
  */
 
-import { promises as fs } from "node:fs";
+import { promises as fs, appendFileSync } from "node:fs";
 import path from "node:path";
 
 import { publishedColumnArticles, columnArticles } from "@/content/column";
@@ -27,8 +27,10 @@ import {
   selectTopic,
   assembleArticle,
   renderArticleFile,
+  type ColumnMode,
   type GenerationResult,
 } from "@/lib/column-generator";
+import { applyReviewFixes } from "@/lib/column-reviewer";
 import { AnthropicError } from "@/lib/anthropic";
 
 /* ------------------------------ 設定・引数 ------------------------------ */
@@ -51,9 +53,11 @@ const ENABLED = envFlag("AUTO_COLUMN_ENABLED", true);
 const MAX_PER_DAY = envInt("AUTO_COLUMN_MAX_PER_DAY", 1);
 const MIN_LENGTH = envInt("AUTO_COLUMN_MIN_LENGTH", 2500);
 const MAX_LENGTH = envInt("AUTO_COLUMN_MAX_LENGTH", 4500);
-// auto=品質検証後に自動公開 / review=下書き保存し人間確認後に公開
-const MODE: "auto" | "review" =
-  process.env.AUTO_COLUMN_MODE?.trim().toLowerCase() === "review" ? "review" : "auto";
+// auto=品質検証後に自動公開 / review=下書き保存し人間確認後に公開 /
+// ai-review=品質検証後にAI校閲し、合格したものだけ自動公開（不合格は下書き＋失敗通知）
+const MODE_INPUT = process.env.AUTO_COLUMN_MODE?.trim().toLowerCase();
+const MODE: ColumnMode =
+  MODE_INPUT === "review" || MODE_INPUT === "ai-review" ? MODE_INPUT : "auto";
 
 function todayJst(): string {
   const now = new Date();
@@ -118,9 +122,52 @@ function reportResult(result: GenerationResult): number {
     line("  警告:");
     for (const w of result.warnings) line(`   - ${w}`);
   }
+  if (result.review) {
+    const r = result.review;
+    line(`  AI確認:    ${r.verdict}（${r.model}）`);
+    if (r.summary) line(`    ${r.summary}`);
+    for (const f of r.appliedFixes) line(`   - 修正 ${f.field}：${f.reason}`);
+    for (const f of r.failed) line(`   - 未適用 ${f.field}：${f.why}`);
+    for (const h of r.holdReasons) line(`   - 保留理由：${h}`);
+    if (r.usage) line(`    review tokens: in ${r.usage.input} / out ${r.usage.output}`);
+  }
+  if (result.needsAttention) line(`⚠  要確認: ${result.needsAttention}`);
   if (!result.dryRun) line(`  ファイル:  ${result.filePath}`);
   printUsage(result.usage, a.title);
+  if (!result.dryRun) writeActionsOutputs(result);
   return 0;
+}
+
+/**
+ * GitHub Actions に結果を渡す（ローカル実行では何もしない）。
+ * 要確認のときは needs_attention=true を出力し、ワークフローが commit 後にジョブを失敗させて通知する。
+ */
+function writeActionsOutputs(result: Extract<GenerationResult, { outcome: "generated" }>) {
+  const out = process.env.GITHUB_OUTPUT;
+  const summaryFile = process.env.GITHUB_STEP_SUMMARY;
+  if (out && result.needsAttention) {
+    appendFileSync(
+      out,
+      `needs_attention=true\nattention_reason=${result.needsAttention.replace(/[\r\n]+/g, " ")}\n`,
+    );
+  }
+  if (summaryFile) {
+    const r = result.review;
+    const lines = [
+      `### 採用コラム：${result.status === "published" ? "公開" : "下書き"}`,
+      `- タイトル：${result.article.title}`,
+      `- slug：\`${result.article.slug}\``,
+      ...(r
+        ? [
+            `- AI確認：${r.verdict}（${r.model}）／修正 ${r.applied}件${r.failed.length ? `・未適用 ${r.failed.length}件` : ""}`,
+            ...(r.summary ? [`- 確認メモ：${r.summary}`] : []),
+          ]
+        : []),
+      ...(result.needsAttention ? [`- **要確認**：${result.needsAttention}`] : []),
+      "",
+    ];
+    appendFileSync(summaryFile, lines.join("\n"));
+  }
 }
 
 /* ------------------------------ generate / dry-run ------------------------------ */
@@ -345,6 +392,28 @@ async function runValidateMode(): Promise<number> {
     if (assembled.warnings.length) {
       for (const w of assembled.warnings) line(`     ⚠ ${w}`);
     }
+  }
+  line("");
+
+  // 5) AI校閲の修正適用（フィクスチャ・APIは呼ばない）
+  line("■ AI校閲の修正適用（フィクスチャ）");
+  const intro = fixture.introduction;
+  const target = intro.slice(0, Math.min(12, intro.length));
+  const applied = applyReviewFixes(fixture, [
+    { field: "introduction", find: target, replace: "【置換テスト】", reason: "一致する箇所の置換" },
+    { field: "sections[99].content", find: "x", replace: "y", reason: "存在しないフィールド" },
+    { field: "introduction", find: "存在しない文字列のテスト", replace: "", reason: "一致しない文字列" },
+  ]);
+  const applyOk =
+    applied.applied === 1 &&
+    applied.failed.length === 2 &&
+    applied.gen.introduction.startsWith("【置換テスト】") &&
+    fixture.introduction === intro;
+  if (applyOk) {
+    line("  OK 一致した修正だけを適用し、元の記事は変更しない");
+  } else {
+    failed = true;
+    line(`  ✖ 想定外の結果（適用 ${applied.applied}件／未適用 ${applied.failed.length}件）`);
   }
   line("");
 

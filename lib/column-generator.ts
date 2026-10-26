@@ -42,6 +42,9 @@ import {
   type JobFacts,
   type UserPromptContext,
 } from "@/prompts/column-system-prompt";
+import type { ReviewPromptContext } from "@/prompts/column-review-prompt";
+import { applyReviewFixes, resolveReviewModel, reviewGeneratedColumn } from "@/lib/column-reviewer";
+import { AnthropicError } from "@/lib/anthropic";
 
 /* ------------------------------ パス ------------------------------ */
 
@@ -77,6 +80,26 @@ export type LogEntry = {
   status: "published" | "draft" | "skipped" | "error";
   errorType: string | null;
   qualityScore?: number;
+  /** AI校閲（ai-review モード） */
+  reviewModel?: string;
+  reviewVerdict?: "publish" | "hold" | "error";
+  reviewFixesApplied?: number;
+  reviewInputTokens?: number;
+  reviewOutputTokens?: number;
+};
+
+/** AI校閲の結果（ai-review モード） */
+export type ReviewOutcome = {
+  verdict: "publish" | "hold" | "error";
+  model: string;
+  summary: string;
+  holdReasons: string[];
+  applied: number;
+  failed: { field: string; why: string }[];
+  /** 適用した修正（ログ・ジョブサマリー用。記事全文は含めない） */
+  appliedFixes: { field: string; reason: string }[];
+  usage?: { input: number; output: number };
+  errorType?: string;
 };
 
 export type SkipReason =
@@ -99,6 +122,10 @@ export type GenerationResult =
       topicId: string;
       status: "published" | "draft";
       qualityScore: number;
+      /** ai-review モードの校閲結果 */
+      review?: ReviewOutcome;
+      /** 下書き止まりで人の確認が必要なとき、その理由（ワークフローが失敗通知を出す） */
+      needsAttention?: string;
     }
   | {
       outcome: "skipped";
@@ -128,7 +155,11 @@ export type Corpus = {
   history: HistoryEntry[];
 };
 
-export type ColumnMode = "auto" | "review";
+/**
+ * auto=品質検証後に自動公開 / review=下書き保存し人間確認後に公開 /
+ * ai-review=品質検証後にAI校閲を行い、合格したものだけ自動公開（不合格・制度テーマは下書き＋失敗通知）
+ */
+export type ColumnMode = "auto" | "review" | "ai-review";
 
 export type AssembleOptions = {
   today: string;
@@ -260,7 +291,7 @@ export function buildJobFacts(area?: JobArea): JobFacts {
 }
 
 /** エリア記事に渡す、拠点の確認済み情報（lib/jobs.ts の拠点データから組み立てる） */
-function buildAreaFacts(area: JobArea): UserPromptContext["areaFacts"] {
+function buildAreaFacts(area: JobArea): NonNullable<UserPromptContext["areaFacts"]> {
   const lines: string[] = [];
   if (area.base) {
     lines.push(
@@ -274,7 +305,8 @@ function buildAreaFacts(area: JobArea): UserPromptContext["areaFacts"] {
         .join("、")}`,
     );
   }
-  if (area.workHours) lines.push(`勤務時間：${area.workHours}`);
+  lines.push(`報酬：${area.dailyPayLabel}（日額保証・規定あり）`);
+  lines.push(`勤務時間：${area.workHours ?? jobCommon.workHours}`);
   if (area.schedule?.length) {
     lines.push(
       `1日の流れ：${area.schedule.map((s) => `${s.time} ${s.title}（${s.text}）`).join(" → ")}`,
@@ -285,8 +317,27 @@ function buildAreaFacts(area: JobArea): UserPromptContext["areaFacts"] {
       `稼働状況（${area.team.asOf}時点）：${area.team.activeDrivers}名が稼働中、新たに${area.team.openings}名を募集`,
     );
   }
-  if (lines.length === 0) return undefined;
-  return { name: area.base?.name ?? area.areaName, lines };
+  return { name: area.base ? `${area.base.name}（${area.areaName}）` : area.areaName, lines };
+}
+
+/** AI校閲に渡す文脈。確認済みの事実は lib/jobs.ts から組み立て、記事のエリアを先頭に並べる */
+export function buildReviewContext(
+  topic: ColumnTopic,
+  article: GeneratedColumn,
+): ReviewPromptContext {
+  const topicArea = topic.area ? getJobArea(topic.area) : undefined;
+  const areas = getActiveAreas().sort(
+    (a, b) => Number(b.slug === topic.area) - Number(a.slug === topic.area),
+  );
+  return {
+    topicTitle: topic.title,
+    mainKeyword: topic.mainKeyword,
+    searchIntent: topic.searchIntent,
+    jobFacts: buildJobFacts(topicArea),
+    areaFacts: areas.map((a) => buildAreaFacts(a)),
+    topicAreaName: topicArea ? buildAreaFacts(topicArea).name : undefined,
+    article,
+  };
 }
 
 export function buildPromptContext(
@@ -600,6 +651,7 @@ export async function runGeneration(
   if (!gen) throw new ColumnParseError("JSON生成に2回失敗しました。");
 
   // 4〜9) 検証・重複・画像・リンク・ブロック（API不使用）
+  let assembledGen: GeneratedColumn = gen;
   let assembled = assembleArticle(gen, topic, corpus, opts);
 
   // 品質検証NGは、指摘を渡して1回だけ修正を依頼する（文字数・見出し数・禁止表現など直せる指摘が多いため）
@@ -618,6 +670,7 @@ export async function runGeneration(
     try {
       const fixed = parseColumnJson(res.text);
       assembled = assembleArticle(fixed, topic, corpus, opts);
+      if (assembled.ok) assembledGen = fixed;
     } catch (e) {
       if (!(e instanceof ColumnParseError)) throw e;
       // 修正版が壊れていた場合は、最初の検証エラーをそのまま返す
@@ -638,6 +691,16 @@ export async function runGeneration(
     };
   }
 
+  // 10) AI校閲（ai-review）：確認済みの事実と照合し、修正を適用してから公開か下書きかを決める
+  let review: ReviewOutcome | undefined;
+  let needsAttention: string | undefined;
+  if (opts.mode === "ai-review") {
+    const reviewed = await runAiReview(assembledGen, assembled, topic, corpus, opts, log);
+    assembled = reviewed.assembled;
+    review = reviewed.review;
+    needsAttention = reviewed.needsAttention;
+  }
+
   const { article, image, primaryAreaSlug, contentHash, qualityScore, status } =
     assembled;
   const filePath = path.join(GENERATED_DIR, `${topic.slugHint}.ts`);
@@ -654,6 +717,8 @@ export async function runGeneration(
       topicId: topic.id,
       status,
       qualityScore,
+      review,
+      needsAttention,
     };
   }
 
@@ -685,6 +750,15 @@ export async function runGeneration(
     status,
     errorType: null,
     qualityScore,
+    ...(review
+      ? {
+          reviewModel: review.model,
+          reviewVerdict: review.verdict,
+          reviewFixesApplied: review.applied,
+          reviewInputTokens: review.usage?.input,
+          reviewOutputTokens: review.usage?.output,
+        }
+      : {}),
   });
   await writeJson(LOG_PATH, genLog);
 
@@ -699,6 +773,113 @@ export async function runGeneration(
     topicId: topic.id,
     status,
     qualityScore,
+    review,
+    needsAttention,
+  };
+}
+
+/* ------------------------------ AI校閲（ai-review） ------------------------------ */
+
+type AssembledOk = Extract<AssembleResult, { ok: true }>;
+
+function asDraft(a: AssembledOk): AssembledOk {
+  return { ...a, status: "draft", article: { ...a.article, status: "draft" } };
+}
+
+/**
+ * 品質検証を通った記事をAIで校閲し、修正を適用して公開可否を決める。
+ * 公開するのは「校閲が publish・修正をすべて適用できた・修正後も品質検証を通った・制度テーマではない」場合だけ。
+ * それ以外は下書きで保存し、needsAttention に理由を入れる（ワークフローが失敗通知を出す）。
+ */
+async function runAiReview(
+  gen: GeneratedColumn,
+  original: AssembledOk,
+  topic: ColumnTopic,
+  corpus: Corpus,
+  opts: AssembleOptions,
+  log: (msg: string) => void,
+): Promise<{ assembled: AssembledOk; review: ReviewOutcome; needsAttention?: string }> {
+  const reviewModel = resolveReviewModel();
+  log(`AIで内容を確認中…（${reviewModel}）`);
+
+  let r: Awaited<ReturnType<typeof reviewGeneratedColumn>>;
+  try {
+    r = await reviewGeneratedColumn(buildReviewContext(topic, gen));
+  } catch (e) {
+    const type = e instanceof AnthropicError ? e.type : "unknown";
+    log(`AI確認に失敗しました（${type}）。下書きで保存します。`);
+    return {
+      assembled: asDraft(original),
+      review: {
+        verdict: "error",
+        model: reviewModel,
+        summary: "",
+        holdReasons: [],
+        applied: 0,
+        failed: [],
+        appliedFixes: [],
+        errorType: type,
+      },
+      needsAttention: `AI確認に失敗したため下書きで保存しました（${type}）`,
+    };
+  }
+
+  const fixed = applyReviewFixes(gen, r.fixes);
+  const failedFixes = new Set(fixed.failed.map((f) => f.fix));
+  const review: ReviewOutcome = {
+    verdict: r.verdict,
+    model: r.model,
+    summary: r.summary,
+    holdReasons: r.holdReasons,
+    applied: fixed.applied,
+    failed: fixed.failed.map((f) => ({ field: f.fix.field, why: f.why })),
+    appliedFixes: r.fixes
+      .filter((f) => !failedFixes.has(f))
+      .map((f) => ({ field: f.field, reason: f.reason })),
+    usage: r.usage,
+  };
+  log(
+    `AI確認：${r.verdict}（修正 ${fixed.applied}件を適用${fixed.failed.length ? `・${fixed.failed.length}件は適用できず` : ""}）`,
+  );
+
+  // 修正後の記事で、品質検証・重複判定・ブロック変換をやり直す
+  const reassembled = fixed.applied > 0 ? assembleArticle(fixed.gen, topic, corpus, opts) : original;
+  const best: AssembledOk = reassembled.ok ? reassembled : original;
+  const reviewedArticle = {
+    ...best.article,
+    aiReviewed: true,
+    aiReviewedBy: r.model,
+    aiReviewedAt: opts.today,
+  };
+
+  const problems: string[] = [];
+  if (r.verdict === "hold") {
+    problems.push(`AI確認で保留（${r.holdReasons.join("／") || r.summary}）`);
+  }
+  if (fixed.failed.length > 0) {
+    problems.push(`修正指示 ${fixed.failed.length}件を適用できませんでした`);
+  }
+  if (!reassembled.ok) {
+    problems.push(`修正後の記事が品質検証を通りませんでした（${reassembled.reason}）`);
+  }
+  if (topic.needsSources) {
+    problems.push("制度・税務・法務に関わるテーマのため、担当者の確認が必要です");
+  }
+
+  if (problems.length > 0) {
+    return {
+      assembled: asDraft({ ...best, article: reviewedArticle }),
+      review,
+      needsAttention: `${problems.join("。")}。下書きで保存しました`,
+    };
+  }
+  return {
+    assembled: {
+      ...best,
+      status: "published",
+      article: { ...reviewedArticle, status: "published" },
+    },
+    review,
   };
 }
 

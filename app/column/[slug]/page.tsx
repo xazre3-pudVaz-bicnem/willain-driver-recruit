@@ -230,7 +230,9 @@ export default async function ColumnArticlePage({ params }: Props) {
           </div>
           {aiAssisted && !reviewed && (
             <p className="mt-3 rounded-lg bg-mint/50 px-4 py-2.5 text-xs leading-relaxed text-ink-sub">
-              この記事は、承認済みの求人データと公式情報をもとに、AIを補助的に利用して作成しています（担当者による内容確認前の記事です）。制度・数値は各
+              {article.aiReviewed
+                ? "この記事は、承認済みの求人データと公式情報をもとに、AIを補助的に利用して作成し、公開前にAIで求人データ・拠点情報との照合を行っています（担当者による内容確認前の記事です）。制度・数値は各"
+                : "この記事は、承認済みの求人データと公式情報をもとに、AIを補助的に利用して作成しています（担当者による内容確認前の記事です）。制度・数値は各"}
               <Link href="/editorial-policy" className="font-bold text-primary-dark underline underline-offset-2">
                 編集方針
               </Link>

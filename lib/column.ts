@@ -63,6 +63,12 @@ export type ColumnArticle = {
   reviewedBy?: string;
   /** 確認日（YYYY-MM-DD） */
   reviewedAt?: string;
+  /** 公開前にAIで求人データ・拠点情報と照合したか（人による確認ではない。humanReviewed とは別） */
+  aiReviewed?: boolean;
+  /** 照合に使ったモデル（内部管理・画面非表示） */
+  aiReviewedBy?: string;
+  /** 照合日（YYYY-MM-DD） */
+  aiReviewedAt?: string;
   /** 品質スコア（0〜100・内部管理） */
   qualityScore?: number;
   /** メインキーワード（カニバリ判定用） */

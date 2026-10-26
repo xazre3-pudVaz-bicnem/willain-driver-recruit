@@ -102,7 +102,7 @@ export const siteConfig = {
     "/company": "2026-07-28",
     "/apply": "2026-08-08",
     "/recruitment-policy": "2026-07-28",
-    "/editorial-policy": "2026-07-30",
+    "/editorial-policy": "2026-10-26",
     "/privacy": "2026-07-25",
     "/column": "2026-10-26",
     "/column/category": "2026-09-02",

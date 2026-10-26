@@ -28,6 +28,9 @@ export const article: ColumnArticle = {
   "generatedBy": "claude-haiku-4-5-20251001",
   "generatedWithAI": true,
   "humanReviewed": false,
+  "aiReviewed": true,
+  "aiReviewedBy": "claude-opus-5-5",
+  "aiReviewedAt": "2026-10-26",
   "qualityScore": 100,
   "mainKeyword": "品川 軽貨物 配送",
   "subKeywords": [

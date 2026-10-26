@@ -1,11 +1,11 @@
 # 採用コラム自動投稿システム 運用ガイド
 
-株式会社ウィランの採用サイトに、Claude Haiku API で採用コラムを週2回（月・木）下書きとして自動生成し、担当者が確認してから公開する仕組みです（2026-10-23〜。ウィランと合意した「確認済みの記事を週1〜2本」の運用）。WordPressは使いません。生成記事は既存のコラム実装（Next.js / App Router / TypeScriptデータ）に統合され、一覧・詳細・カテゴリ・関連記事・sitemap・RSSへ自動反映されます。
+株式会社ウィランの採用サイトに、Claude Haiku API で採用コラムを週2回（月・木）自動生成し、Claude Opus 5.5 によるAI校閲（確認済みの求人データ・拠点情報との照合）に合格した記事だけを自動公開する仕組みです（2026-10-26〜。それまでは下書き＋担当者確認の運用）。WordPressは使いません。生成記事は既存のコラム実装（Next.js / App Router / TypeScriptデータ）に統合され、一覧・詳細・カテゴリ・関連記事・sitemap・RSSへ自動反映されます。
 
 - 記事の保存先: `content/column/generated/<slug>.ts`（`ColumnArticle` 形式）
-- 使用モデル: `claude-haiku-4-5-20251001`（環境変数で変更可・Sonnet/Opus/Fableは使いません）
+- 使用モデル: 生成は `claude-haiku-4-5-20251001`（`ANTHROPIC_MODEL` で変更可）、AI校閲は `claude-opus-5-5`（`ANTHROPIC_REVIEW_MODEL` で変更可）
 - 実行: GitHub Actions（週2回 / 手動）
-- 既定の公開モード: `review`（下書き保存 → 担当者が確認して公開）
+- 既定の公開モード: `ai-review`（AI校閲に合格した記事だけ公開。保留・失敗・制度テーマは下書き＋失敗通知）
 - ローカル確認: `npm run column:validate`（API不要）/ `npm run column:generate:dry`（API必要）
 
 ---
@@ -41,7 +41,8 @@
 1. リポジトリ → **Actions** タブ
 2. 左メニュー **Auto Publish Column** を選択
 3. **Run workflow** → ブランチ `main` を選んで実行
-4. 生成に成功すると `Auto publish column: 記事タイトル` というコミットが自動で作成され、Vercelが再デプロイします
+4. 生成に成功すると `Auto publish column: 記事タイトル`（下書きなら `Auto draft column: …`）というコミットが自動で作成され、Vercelが再デプロイします
+5. **dry_run** にチェックを入れて実行すると、生成とAI校閲だけを行い、保存・公開はしません（ログとジョブサマリーで結果を確認できます）
 
 > 同じ日にすでに自動投稿済みの場合は、二重投稿されません（`data/generation-log.json` で判定）。
 
@@ -121,6 +122,7 @@ npm run column:validate
 - **要対応（ジョブ失敗＝GitHubから失敗通知が届く・commitなし）**: 品質検証NG（1回だけ自動で修正を依頼し、それでもNGの場合）/ 重複超過 / 未使用テーマなし。
   - 2026-07-29〜10-22 は品質検証NGが「正常終了」扱いだったため、86回すべて不合格でも気づけなかった。その再発防止。
   - 失敗通知は、ワークフローの `cron` を最後に変更したGitHubユーザーに届く（GitHubの通知設定で Actions の失敗通知を有効にしておく）。
+- **要確認の下書き（commit してからジョブ失敗＝通知）**: AI校閲で保留 / 修正を適用できない / 修正後に品質検証NG / AI校閲のAPIエラー / 制度テーマ。下書きを確認して直し、`status:"published"` にすれば公開されます。
 - **スキップ**（正常終了・commitなし）: 同日投稿済み / 上限到達 / `AUTO_COLUMN_ENABLED=false`。
 - **失敗**（ジョブがfail) : APIエラー（429/5xxは最大3回リトライ後）、JSON2回失敗、build/lint/型/SEO検証NG。**失敗時はmainへ不完全な記事をpushしません。**
 - **エラー履歴**: `data/generation-log.json` に `status: "error"` と `errorType` が残ります（保存できた場合）。
@@ -179,9 +181,19 @@ node -e "const l=require('./data/generation-log.json');const m='2026-07';const s
 
 ---
 
-## 公開モード（auto / review）と AI表記
+## 公開モード（ai-review / review / auto）と AI表記
 
-`AUTO_COLUMN_MODE`（Variables）で運用を切り替えます。GitHub Actions では未設定なら `review`（ワークフローで既定値を指定）、ローカル実行では未設定なら `auto`。
+`AUTO_COLUMN_MODE`（Variables）で運用を切り替えます。GitHub Actions では未設定なら `ai-review`（ワークフローで既定値を指定）、ローカル実行では未設定なら `auto`。
+
+- **ai-review**（既定）：品質検証を通過した記事を、別モデル（既定 `claude-opus-5-5`）が確認済みの事実と照合します。
+  - 校閲は「対象フィールド・一字一句同じ抜き出し・置き換え文」の組で修正を返し、プログラムが機械的に適用します（一致しない・複数一致する修正は適用しない）。
+  - 修正後の記事で品質検証・重複判定をやり直します。
+  - 公開するのは「校閲が publish・修正をすべて適用できた・修正後も品質検証を通った・制度テーマではない」記事だけです。
+  - それ以外は下書きで保存し、ジョブを失敗させて通知します（理由はジョブの注釈とサマリーに出ます）。
+  - 公開記事は「株式会社ウィラン 編集部」名義で、「AIを補助的に利用して作成し、公開前にAIで求人データ・拠点情報との照合を行っています（担当者による内容確認前の記事です）」と表示します。
+    人が確認したわけではないので「採用担当が確認」とは表示しません。
+  - 校閲の判定基準（サイトとして確認済みの方針）は `prompts/column-review-prompt.ts` の `CONFIRMED_SITE_POLICIES` で管理します。求人条件や方針が変わったら合わせて更新してください。
+  - 費用の目安：校閲1回あたり約0.1〜0.2ドル（Opus 5.5・effort high）。週2回で月1〜2ドル程度。
 
 - **auto**：品質検証を通過した記事を自動公開します。著者は「株式会社ウィラン 編集部」名義で、
   「承認済みの求人データと公式情報をもとにAIを補助的に利用して作成」と表示します
@@ -199,7 +211,9 @@ node -e "const l=require('./data/generation-log.json');const m='2026-07';const s
 
 ## コスト・安全設計の要点
 
-- 1回の実行でAPIは記事生成1回（JSON修正が必要な場合のみ+1回、最大2回）。
+- 1回の実行でAPIは記事生成1回（JSON修正・品質検証NGの修正が必要な場合のみ追加）＋ ai-review ではAI校閲1回。
+- AI校閲は公式SDK（`@anthropic-ai/sdk`・API version 2026-10-21）で呼びます。temperature は送らず、`effort: high`、JSONスキーマ（structured outputs）で応答を受け取り、安全分類で断られた場合はサーバー側の推奨モデルへ自動で切り替えます（`fallbacks: "default"`）。
+- 記事生成は従来どおり `lib/anthropic.ts`（fetch・API version 2023-06-01・`temperature: 0.6`）。新しいAPIバージョンでは temperature が使えないため、生成側を移行するときは temperature をやめるかどうかを決める必要があります。
 - `temperature: 0.6` のみ指定（top_pは併用しない）。`max_tokens: 8000`。extended thinkingは不使用。
 - `stop_reason` が `refusal` / `max_tokens` / 想定外のときは保存せずエラー。
 - 429・5xxは指数バックオフ（5s→15s→45s）で最大3回リトライ。
