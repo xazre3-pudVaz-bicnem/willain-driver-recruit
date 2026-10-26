@@ -1,13 +1,16 @@
 import { ImageResponse } from "next/og";
-import { columnArticles, getArticle } from "@/content/column";
+import { publishedColumnArticles, getArticle } from "@/content/column";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "採用コラム｜株式会社ウィラン";
 
+// 公開中の記事だけ（下書きのタイトルがOG画像として公開URLに出ないようにする）
 export function generateStaticParams() {
-  return columnArticles.map((a) => ({ slug: a.slug }));
+  return publishedColumnArticles.map((a) => ({ slug: a.slug }));
 }
+
+export const dynamicParams = false;
 
 /** 記事ごとの固有OG画像（タイトルとカテゴリを表示） */
 export default async function Image({
