@@ -17,6 +17,8 @@ import type { ColumnArticle, ColumnBlock } from "@/lib/column";
 import { columnArticles } from "@/content/column";
 import {
   jobCommon,
+  dayFlow,
+  trainingFacts,
   getActiveAreas,
   getJobArea,
   baseLocationLabel,
@@ -320,6 +322,11 @@ function buildAreaFacts(area: JobArea): NonNullable<UserPromptContext["areaFacts
   return { name: area.base ? `${area.base.name}（${area.areaName}）` : area.areaName, lines };
 }
 
+/** 仕事の流れ・研修の確認済みの内容（生成とAI校閲の両方に渡す） */
+function buildWorkFlowFacts(): string[] {
+  return [...dayFlow.map((s) => `${s.step}：${s.text}`), ...trainingFacts];
+}
+
 /** AI校閲に渡す文脈。確認済みの事実は lib/jobs.ts から組み立て、記事のエリアを先頭に並べる */
 export function buildReviewContext(
   topic: ColumnTopic,
@@ -336,6 +343,7 @@ export function buildReviewContext(
     jobFacts: buildJobFacts(topicArea),
     areaFacts: areas.map((a) => buildAreaFacts(a)),
     topicAreaName: topicArea ? buildAreaFacts(topicArea).name : undefined,
+    workFlow: buildWorkFlowFacts(),
     article,
   };
 }
@@ -355,6 +363,7 @@ export function buildPromptContext(
     needsSources: topic.needsSources,
     jobFacts: buildJobFacts(area),
     areaFacts: area ? buildAreaFacts(area) : undefined,
+    workFlow: buildWorkFlowFacts(),
     articleOptions: columnArticles.map((a) => ({
       slug: a.slug,
       title: a.title,

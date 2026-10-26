@@ -122,6 +122,8 @@ export type UserPromptContext = {
   sourceOptions: SourceOption[];
   /** エリア記事のとき：そのエリアの拠点について確認済みの事実（集合場所・配送エリア・1日の流れなど） */
   areaFacts?: { name: string; lines: string[] };
+  /** 仕事の流れ・研修の確認済みの内容（lib/jobs.ts の dayFlow・trainingFacts） */
+  workFlow?: string[];
   minLength: number;
   maxLength: number;
 };
@@ -184,7 +186,7 @@ ${ctx.areaFacts.lines.map((l) => `- ${l}`).join("\n")}
 - 応募方法：${f.applyText}
 - 募集中エリアと報酬：
 ${areaLines}
-${areaBlock}
+${ctx.workFlow?.length ? `\n# 仕事の流れ・研修（確認済み。ここにない研修内容や手順は作らない）\n${ctx.workFlow.map((l) => `- ${l}`).join("\n")}\n` : ""}${areaBlock}
 # 内部リンク候補（この中からslugを選ぶ。本文にURLは書かない）
 ## 関連する既存記事（relatedArticleSlugs に2〜4個）
 ${articleLines}

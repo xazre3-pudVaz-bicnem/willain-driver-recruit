@@ -88,6 +88,8 @@ export type ReviewPromptContext = {
   areaFacts: { name: string; lines: string[] }[];
   /** 記事が特定エリアのものなら、そのエリア名 */
   topicAreaName?: string;
+  /** 仕事の流れ・研修の確認済みの内容（lib/jobs.ts の dayFlow・trainingFacts） */
+  workFlow: string[];
   article: GeneratedColumn;
 };
 
@@ -121,6 +123,9 @@ ${areaPay}
 - 稼働開始まで：${f.startLeadTime}
 - サポート：${f.support.join("、")}
 - 応募方法：${f.applyText}
+
+# 確認済みの事実：仕事の流れ・研修
+${ctx.workFlow.map((l) => `- ${l}`).join("\n")}
 
 # 確認済みの事実：拠点・配送エリア・1日の流れ
 ${areaBlocks}
