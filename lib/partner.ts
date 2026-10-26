@@ -7,13 +7,13 @@ import type { ApplyFormState } from "@/lib/apply-form";
  *
  * 【公開前確認事項】
  * - 掲載内容は株式会社ウィランから受領した回答（2026-10-23）のみ。架空の数字・事例・声は追加しない。
- * - 加盟金・ロイヤリティの金額は未受領のため掲載しない（面接時に書面で説明する旨のみ記載）。
+ * - 加盟金・ロイヤリティの金額、お支払い期日は契約ごとに決めるため掲載しない（2026-10-26 ウィラン指示）。
  * - 収入・売上の見込みや「稼げる」「儲かる」「確実」「保証」などの表現は使わない（特にフランチャイズ）。
  * - Amazonの公式パートナーと誤解させる表現・ロゴは使わない（サイト既存の「Amazon関連」表記に合わせる）。
  */
 
 /** ページの最終更新日（sitemap・WebPage構造化データに使用。内容を変えた日に手動で更新する） */
-export const partnerPageUpdatedAt = "2026-10-23";
+export const partnerPageUpdatedAt = "2026-10-26";
 
 export const partnerSeo = {
   /** titleタグ（layoutのテンプレートで「｜株式会社ウィラン」が付く） */
@@ -45,8 +45,17 @@ export const partnerHeroImage = {
 /** 実績の基準時点（数字を更新したら合わせて変更する） */
 export const partnerStatsAsOf = "2026年10月時点";
 
+/** 稼働中の拠点と開設予定の拠点（開設したら移す。予定の拠点を稼働拠点の数に含めない） */
+export const partnerActiveBases = "品川・江東・江戸川・船橋";
+export const partnerPlannedBases = "足立・横浜";
+
 export const partnerStats = {
-  bases: { label: "稼働拠点", value: "6", unit: "拠点", note: "今後、全国に拡大予定" },
+  bases: {
+    label: "稼働拠点",
+    value: "4",
+    unit: "拠点",
+    note: `${partnerPlannedBases}に開設予定。今後、全国に拡大予定`,
+  },
   companies: { label: "協力会社", value: "3", unit: "社" },
   vehicles: { label: "稼働台数", value: "約20", unit: "台" },
 } as const;
@@ -73,8 +82,8 @@ export const partnerTypes: PartnerType[] = [
     target: "「ウィラン」の名前で、軽貨物配送の事業に取り組みたい方",
     summary: "「ウィラン」の名前を使って営業していただけます。",
     points: [
-      "加盟金・ロイヤリティがあります",
-      "金額・算定方法・契約期間・解約条件などは、面接時に書面でご説明します",
+      "加盟金・ロイヤリティがかかります",
+      "金額は契約内容に応じて、面談時に書面でご説明します",
     ],
   },
   {
@@ -103,11 +112,10 @@ export const partnerTypes: PartnerType[] = [
 /* ---------------- 案件と報酬 ---------------- */
 
 /**
- * お支払い条件（ページ・FAQはこの定数だけを参照する）。
- * 【公開前確認事項】フリーランス新法の支払期日（60日以内）と再委託の例外に照らして要確認。
- * 個人事業主のパートナーさまは同法の対象になり得るため、条件を確定・変更したらここを更新する。
+ * お支払い条件（ページ・FAQはこの定数だけを参照する。全募集共通）。
+ * 期日は契約ごとに決めるため、具体的な日付は載せない（2026-10-26 ウィラン指示。法律面はウィランが顧問に確認）。
  */
-export const partnerPaymentTerms = "月末締め・翌々月5日払い";
+export const partnerPaymentTerms = "お支払い条件は契約内容に応じて、ご契約前に書面でご案内します";
 
 export const partnerConditions: { th: string; td: string }[] = [
   {
@@ -174,7 +182,7 @@ export const partnerFlow: { step: string; text: string }[] = [
   },
   {
     step: "契約",
-    text: "条件にご納得いただけたら、ご契約です。最短即日で契約できます。",
+    text: "条件にご納得いただけたら、ご契約です。協力会社・パートナーは最短即日で契約できます。フランチャイズは、書面で条件をご説明したうえでのご契約になります。",
   },
 ];
 
@@ -187,7 +195,7 @@ const { bases } = partnerStats;
 export const partnerFaq: FaqItem[] = [
   {
     q: "フランチャイズに加盟金やロイヤリティはありますか？",
-    a: "あります。金額・算定方法・契約期間・解約条件などは、面接時に書面でご説明します。",
+    a: "加盟金・ロイヤリティがかかります。金額は契約内容に応じて、面談時に書面でご説明します。",
   },
   {
     q: "フランチャイズに加盟すると「ウィラン」の名前を使えますか？",
@@ -202,8 +210,8 @@ export const partnerFaq: FaqItem[] = [
     a: "1台1日あたりの日額でお支払いします。金額は会社さま・個人さまごとに、ご相談のうえ決めます。",
   },
   {
-    q: "報酬の支払いサイクルを教えてください。",
-    a: `${partnerPaymentTerms}です。`,
+    q: "報酬の支払い条件を教えてください。",
+    a: `${partnerPaymentTerms}。`,
   },
   {
     q: "黒ナンバーを持っていなくても始められますか？",
@@ -219,11 +227,11 @@ export const partnerFaq: FaqItem[] = [
   },
   {
     q: "どのエリアで稼働できますか？",
-    a: `${partnerStatsAsOf}で${bases.value}${bases.unit}が稼働しており、今後は全国への拡大を予定しています。ご希望のエリアで稼働できるかは、面接時にご案内します。`,
+    a: `${partnerStatsAsOf}で、${partnerActiveBases}の${bases.value}${bases.unit}が稼働しています。${partnerPlannedBases}にも拠点を開設する予定で、今後は全国への拡大を予定しています。ご希望のエリアで稼働できるかは、面接時にご案内します。`,
   },
   {
     q: "問い合わせから契約まで、どのくらいかかりますか？",
-    a: "お問い合わせ、面接、契約の順に進み、最短即日で契約できます。契約条件は書面でご説明します。",
+    a: "お問い合わせ、面接、契約の順に進みます。協力会社・パートナーは最短即日で契約できます。フランチャイズは、書面で条件をご説明したうえでのご契約になります。いずれも契約条件は書面でご説明します。",
   },
 ];
 
