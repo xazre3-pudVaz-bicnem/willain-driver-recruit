@@ -15,7 +15,13 @@ import crypto from "node:crypto";
 
 import type { ColumnArticle, ColumnBlock } from "@/lib/column";
 import { columnArticles } from "@/content/column";
-import { jobCommon, getActiveAreas, getJobArea, type JobArea } from "@/lib/jobs";
+import {
+  jobCommon,
+  getActiveAreas,
+  getJobArea,
+  baseLocationLabel,
+  type JobArea,
+} from "@/lib/jobs";
 import { columnTopics, type ColumnTopic } from "@/data/column-topics";
 import { getSource, SOURCE_DISCLAIMER } from "@/data/official-sources";
 import { pickColumnImage, type ColumnImage } from "@/data/column-images";
@@ -258,7 +264,7 @@ function buildAreaFacts(area: JobArea): UserPromptContext["areaFacts"] {
   const lines: string[] = [];
   if (area.base) {
     lines.push(
-      `集合場所：${area.base.address}（${area.base.access}）。詳しい住所は面談で案内する`,
+      `集合場所：${baseLocationLabel(area.base)}。詳しい住所は面談で案内する`,
     );
   }
   if (area.deliveryAreas?.length) {

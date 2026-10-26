@@ -29,7 +29,9 @@ export function AreaBase({ area }: { area: JobArea }) {
               <div className="py-5">
                 <dt className="text-xs font-black tracking-wider text-primary-dark">集合場所</dt>
                 <dd className="mt-1.5 text-lg font-black text-ink">{base.address}</dd>
-                <dd className="mt-1 text-[0.95rem] leading-relaxed text-ink-sub">{base.access}</dd>
+                {base.access && (
+                  <dd className="mt-1 text-[0.95rem] leading-relaxed text-ink-sub">{base.access}</dd>
+                )}
               </div>
               {startTime && (
                 <div className="py-5">

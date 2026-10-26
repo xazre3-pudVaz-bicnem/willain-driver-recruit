@@ -7,7 +7,7 @@ export const article: ColumnArticle = {
     "軽貨物ドライバーとは、軽バンで小型の荷物を届ける配送の仕事です。宅配・企業配送・スポット便の違いやEC需要との関係、向いている人、必要な免許や車両まで、未経験者向けにわかりやすく解説します。",
   category: "仕事内容",
   publishedAt: "2026-07-25",
-  updatedAt: "2026-08-08",
+  updatedAt: "2026-10-26",
   related: ["gyomu-itaku-basics", "start-from-beginner", "driver-daily-schedule"],
   blocks: [
     {
@@ -64,7 +64,7 @@ export const article: ColumnArticle = {
     {
       type: "ul",
       items: [
-        "勤務時間は7:00〜20:00頃の間で実働8〜10時間程度",
+        "勤務時間は8:00集合・19:00〜21:00頃終了が目安（葛西拠点は9:00集合・20:00〜22:00頃）",
         "配送完了後は直帰可能。深夜の配送は原則なし",
         "勤務日数は週3日〜週6日で相談できる",
         "報酬はエリアにより日額20,500〜22,000円の日額保証。週払いにも対応（規定あり）",

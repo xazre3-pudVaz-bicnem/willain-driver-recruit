@@ -290,7 +290,7 @@ export default function HomePage() {
                   "主にAmazon関連の宅配案件",
                   "軽バンで運べる小さな荷物が中心",
                   "担当エリア制。道を覚えるほど効率が上がる",
-                  "7〜20時頃で実働8〜10時間程度・直帰OK",
+                  "8時集合・19〜21時頃終了・直帰OK（葛西は9時集合・20〜22時頃終了）",
                 ].map((t) => (
                   <li key={t} className="flex gap-3">
                     <span

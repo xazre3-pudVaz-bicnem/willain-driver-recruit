@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { jobAreas, getJobArea, jobCommon, spotlightMessage } from "@/lib/jobs";
+import {
+  jobAreas,
+  getJobArea,
+  jobCommon,
+  spotlightMessage,
+  baseLocationLabel,
+} from "@/lib/jobs";
 import { getArticle } from "@/content/column";
 import { jobPostingJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -158,7 +164,7 @@ export default async function JobAreaPage({ params }: Props) {
           <Reveal>
             <p className="mb-10 max-w-2xl text-[0.95rem] leading-relaxed text-ink-sub">
               {area.base
-                ? `以下は、株式会社ウィランが${area.base.name}の配送業務をもとにまとめた特徴です。担当エリアの詳細は、応募後の面談でご案内します。`
+                ? "以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の特徴です。担当エリアの詳細は、応募後の面談でご案内します。"
                 : "以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の一般的な傾向です。担当エリアや配送先の詳細、集合場所は、応募後の面談でご案内します。"}
             </p>
           </Reveal>
@@ -221,7 +227,7 @@ export default async function JobAreaPage({ params }: Props) {
               payLabel={area.dailyPayLabel}
               paySupplement={`${area.areaName}の日額保証（規定あり）・週払い可能（規定あり）`}
               workHoursDetail={area.workHoursDetail}
-              meetingPlace={area.base ? `${area.base.address}（${area.base.access}）` : undefined}
+              meetingPlace={area.base ? baseLocationLabel(area.base) : undefined}
               deliveryCities={area.deliveryAreas?.map((d) => d.city).join("・")}
             />
           </Reveal>
