@@ -9,5 +9,21 @@
     "status": "draft",
     "errorType": null,
     "qualityScore": 100
+  },
+  {
+    "date": "2026-10-29",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "船橋・市川・江戸川区の軽貨物配送の仕事内容と1日の流れ",
+    "slug": "funabashi-delivery-guide",
+    "inputTokens": 5801,
+    "outputTokens": 4371,
+    "status": "draft",
+    "errorType": null,
+    "qualityScore": 92,
+    "reviewModel": "claude-opus-5-5",
+    "reviewVerdict": "publish",
+    "reviewFixesApplied": 12,
+    "reviewInputTokens": 9933,
+    "reviewOutputTokens": 4692
   }
 ]

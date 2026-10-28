@@ -11,5 +11,18 @@
     "relatedJob": "shinagawa",
     "contentHash": "1f2012d1bb6a7299",
     "image": "/images/photos/area-shinagawa.webp"
+  },
+  {
+    "id": "funabashi-search",
+    "title": "船橋・市川・江戸川区の軽貨物配送の仕事内容と1日の流れ",
+    "slug": "funabashi-delivery-guide",
+    "mainKeyword": "船橋 軽貨物 配送",
+    "searchIntent": "船橋市・市川市・江戸川区・千葉市で軽貨物配送をするときの配送エリアの特徴、1日の流れ、荷物量を知りたい",
+    "category": "仕事内容",
+    "publishedAt": "2026-10-29",
+    "summary": "船橋市・市川市・江戸川区で軽貨物配送ドライバーとして働く場合の配送エリア、1日のスケジュール、荷物量、報酬条件を具体的に解説します。",
+    "relatedJob": "funabashi",
+    "contentHash": "aac5c66a7c0f9312",
+    "image": "/images/photos/area-funabashi.webp"
   }
 ]
