@@ -15,7 +15,7 @@ import { promises as fs, appendFileSync } from "node:fs";
 import path from "node:path";
 
 import { publishedColumnArticles, columnArticles } from "@/content/column";
-import { getActiveAreas } from "@/lib/jobs";
+import { getActiveAreas, recruitRegionsLabel } from "@/lib/jobs";
 import { registeredSourceIds } from "@/data/official-sources";
 import { columnImages } from "@/data/column-images";
 import type { GeneratedColumn } from "@/lib/column-validator";
@@ -298,7 +298,7 @@ function buildFixture(topicTitle: string, mainKeyword: string, needsSourceIds: s
     title: topicTitle,
     description:
       `${topicTitle}について、応募前に知っておきたい基本と確認点を、業務委託の軽貨物ドライバーの視点から具体的に整理して解説します。報酬や車両リース、面談での確認事項もあわせて紹介し、初めての方にもわかりやすくまとめました。`,
-    tags: ["軽貨物ドライバー", "業務委託", "東京・千葉"],
+    tags: ["軽貨物ドライバー", "業務委託", recruitRegionsLabel()],
     introduction:
       `結論として、${topicTitle.replace(/とは.*$/, "")}はポイントを押さえれば無理なく理解できます。この記事では、基本の考え方から実際の手順、注意点までを順番に確認していきます。`,
     sections: [

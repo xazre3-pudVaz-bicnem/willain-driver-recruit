@@ -22,6 +22,8 @@ import {
   getActiveAreas,
   getJobArea,
   baseLocationLabel,
+  recruitAreasShortLabel,
+  recruitRegionsLabel,
   type JobArea,
 } from "@/lib/jobs";
 import { columnTopics, type ColumnTopic } from "@/data/column-topics";
@@ -297,7 +299,9 @@ function buildAreaFacts(area: JobArea): NonNullable<UserPromptContext["areaFacts
   const lines: string[] = [];
   if (area.base) {
     lines.push(
-      `集合場所：${baseLocationLabel(area.base)}。詳しい住所は面談で案内する`,
+      area.base.exactAddress
+        ? `集合場所：${baseLocationLabel(area.base)}`
+        : `集合場所：${baseLocationLabel(area.base)}。詳しい住所は面談で案内する`,
     );
   }
   if (area.deliveryAreas?.length) {
@@ -306,6 +310,8 @@ function buildAreaFacts(area: JobArea): NonNullable<UserPromptContext["areaFacts
         .map((d) => `${d.city}（${d.towns.join("・")}など）`)
         .join("、")}`,
     );
+  } else if (area.opening) {
+    lines.push("主な配送エリア：未定（決まりしだい掲載する。町名や配送先の地域を書かない）");
   }
   lines.push(`報酬：${area.dailyPayLabel}（日額保証・規定あり）`);
   lines.push(`勤務時間：${area.workHours ?? jobCommon.workHours}`);
@@ -316,7 +322,9 @@ function buildAreaFacts(area: JobArea): NonNullable<UserPromptContext["areaFacts
   }
   if (area.team) {
     lines.push(
-      `稼働状況（${area.team.asOf}時点）：${area.team.activeDrivers}名が稼働中、新たに${area.team.openings}名を募集`,
+      area.opening
+        ? `稼働状況（${area.team.asOf}時点）：新しく開設した拠点で、稼働中のドライバーはまだいない。オープニングメンバーとして${area.team.openings}名を募集`
+        : `稼働状況（${area.team.asOf}時点）：${area.team.activeDrivers}名が稼働中、新たに${area.team.openings}名を募集`,
     );
   }
   return { name: area.base ? `${area.base.name}（${area.areaName}）` : area.areaName, lines };
@@ -854,12 +862,14 @@ async function runAiReview(
   // 修正後の記事で、品質検証・重複判定・ブロック変換をやり直す
   const reassembled = fixed.applied > 0 ? assembleArticle(fixed.gen, topic, corpus, opts) : original;
   const best: AssembledOk = reassembled.ok ? reassembled : original;
-  const reviewedArticle = {
-    ...best.article,
-    aiReviewed: true,
-    aiReviewedBy: r.model,
-    aiReviewedAt: opts.today,
-  };
+  // 修正後の記事が検証を通らないときは、修正前の記事を保存する。その記事はAIの修正が入っていないため「AIで確認済み」にしない
+  const reviewedArticle = reassembled.ok
+    ? { ...best.article, aiReviewed: true, aiReviewedBy: r.model, aiReviewedAt: opts.today }
+    : best.article;
+  const reassemblyDetail = reassembled.ok
+    ? ""
+    : (reassembled.errors?.join("／") ?? reassembled.detail ?? "");
+  if (!reassembled.ok && reassemblyDetail) log(`修正後の記事の検証エラー：${reassemblyDetail}`);
 
   const problems: string[] = [];
   if (r.verdict === "hold") {
@@ -869,7 +879,9 @@ async function runAiReview(
     problems.push(`修正指示 ${fixed.failed.length}件を適用できませんでした`);
   }
   if (!reassembled.ok) {
-    problems.push(`修正後の記事が品質検証を通りませんでした（${reassembled.reason}）`);
+    problems.push(
+      `修正後の記事が品質検証を通らなかったため、修正前の記事を保存しました（${reassembled.reason}${reassemblyDetail ? `：${reassemblyDetail}` : ""}）`,
+    );
   }
   if (topic.needsSources) {
     problems.push("制度・税務・法務に関わるテーマのため、担当者の確認が必要です");
@@ -937,15 +949,23 @@ function buildBlocks(
   related: string[],
 ): ColumnBlock[] {
   const blocks: ColumnBlock[] = [];
+  // 本文はプレーンテキストで表示するため、Markdownの太字（**）は残さない。
+  // 「**8時：集合**」のように太字だけの段落は、見出し（H3）として扱う
+  const paragraph = (text: string): ColumnBlock => {
+    const heading = text.match(/^\*\*([^*]+)\*\*$/);
+    return heading
+      ? { type: "h3", text: heading[1].trim() }
+      : { type: "p", text: text.replace(/\*\*/g, "") };
+  };
 
-  for (const p of toParagraphs(gen.introduction)) blocks.push({ type: "p", text: p });
+  for (const p of toParagraphs(gen.introduction)) blocks.push(paragraph(p));
 
   for (const s of gen.sections) {
     blocks.push({ type: "h2", text: s.heading.trim() });
-    for (const p of toParagraphs(s.content)) blocks.push({ type: "p", text: p });
+    for (const p of toParagraphs(s.content)) blocks.push(paragraph(p));
     for (const sub of s.subsections ?? []) {
       blocks.push({ type: "h3", text: sub.heading.trim() });
-      for (const p of toParagraphs(sub.content)) blocks.push({ type: "p", text: p });
+      for (const p of toParagraphs(sub.content)) blocks.push(paragraph(p));
     }
   }
 
@@ -960,7 +980,7 @@ function buildBlocks(
     blocks.push({ type: "h2", text: "よくある質問" });
     for (const f of faq) {
       blocks.push({ type: "h3", text: f.question.trim() });
-      blocks.push({ type: "p", text: f.answer.trim() });
+      blocks.push({ type: "p", text: f.answer.trim().replace(/\*\*/g, "") });
     }
   }
 
@@ -968,8 +988,8 @@ function buildBlocks(
   blocks.push({
     type: "cta",
     href: "/jobs",
-    label: "東京・千葉の軽貨物ドライバー求人一覧を見る",
-    text: "品川・江東・葛西・船橋で軽貨物ドライバー（業務委託）を募集しています。報酬・勤務条件はエリアにより異なります。",
+    label: `${recruitRegionsLabel()}の軽貨物ドライバー求人一覧を見る`,
+    text: `${recruitAreasShortLabel()}で軽貨物ドライバー（業務委託）を募集しています。報酬・勤務条件はエリアにより異なります。`,
   });
   if (primaryAreaSlug) {
     const area = getJobArea(primaryAreaSlug);
