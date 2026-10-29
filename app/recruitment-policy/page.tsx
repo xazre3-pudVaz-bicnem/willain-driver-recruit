@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
+import { recruitRegionsLabel } from "@/lib/jobs";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/ui/PageHero";
 import { Kicker } from "@/components/ui/Kicker";
@@ -26,7 +27,7 @@ const sections: { heading: string; body: React.ReactNode }[] = [
     body: (
       <>
         <p>
-          本サイトは、東京・千葉エリアで軽貨物配送事業（宅配・企業配送）を行う
+          本サイトは、{recruitRegionsLabel()}エリアで軽貨物配送事業（宅配・企業配送）を行う
           {siteConfig.companyName}（{siteConfig.brandName}）が、
           自社の軽貨物ドライバー（業務委託）採用のために運営しています。
         </p>

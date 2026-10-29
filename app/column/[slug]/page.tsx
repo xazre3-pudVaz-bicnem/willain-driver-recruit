@@ -9,6 +9,7 @@ import {
 } from "@/content/column";
 import type { ColumnBlock } from "@/lib/column";
 import { siteConfig } from "@/lib/site-config";
+import { recruitAreasShortLabel, recruitRegionsLabel } from "@/lib/jobs";
 import { articleJsonLd, webPageJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -289,7 +290,7 @@ export default async function ColumnArticlePage({ params }: Props) {
         <footer className="mt-12 rounded-2xl bg-mint/60 px-6 py-5 text-sm leading-relaxed text-ink-sub">
           <p className="font-bold text-ink">この記事の運営者</p>
           <p className="mt-1">
-            {siteConfig.companyName}（{siteConfig.brandName}）／東京・千葉エリアの軽貨物配送事業。品川区・江東区・江戸川区葛西エリア・船橋市で軽貨物ドライバー（業務委託）を募集しています。
+            {siteConfig.companyName}（{siteConfig.brandName}）／{recruitRegionsLabel()}エリアの軽貨物配送事業。{recruitAreasShortLabel()}で軽貨物ドライバー（業務委託）を募集しています。
           </p>
         </footer>
       </article>

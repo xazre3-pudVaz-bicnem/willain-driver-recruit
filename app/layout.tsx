@@ -3,6 +3,7 @@ import { Noto_Sans_JP } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { siteConfig } from "@/lib/site-config";
+import { recruitAreasShortLabel, recruitRegionsLabel } from "@/lib/jobs";
 import { organizationJsonLd, siteNavigationJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Header } from "@/components/layout/Header";
@@ -19,11 +20,11 @@ const notoSansJp = Noto_Sans_JP({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
-    default: `東京・千葉の軽貨物ドライバー求人｜${siteConfig.companyName}`,
+    default: `${recruitRegionsLabel()}の軽貨物ドライバー求人｜${siteConfig.companyName}`,
     template: `%s｜${siteConfig.companyName}`,
   },
   description:
-    "東京・品川・江東・葛西・船橋で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額20,500円〜（エリアにより異なる）、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。",
+    `${recruitAreasShortLabel()}で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額20,500円〜（エリアにより異なる）、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。`,
   applicationName: siteConfig.siteName,
   formatDetection: { telephone: false },
   alternates: {

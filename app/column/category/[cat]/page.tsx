@@ -4,6 +4,7 @@ import Link from "next/link";
 import { publishedColumnArticles } from "@/content/column";
 import type { ColumnCategory } from "@/lib/column";
 import { absoluteUrl } from "@/lib/site-config";
+import { recruitRegionsLabel } from "@/lib/jobs";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { PageHero } from "@/components/ui/PageHero";
@@ -50,7 +51,7 @@ const HUBS: Hub[] = [
     ],
     relatedPages: [
       { href: "/work", label: "軽貨物ドライバーの仕事内容ページを見る" },
-      { href: "/jobs", label: "東京・千葉の軽貨物ドライバー求人一覧を見る" },
+      { href: "/jobs", label: `${recruitRegionsLabel()}の軽貨物ドライバー求人一覧を見る` },
     ],
   },
   {

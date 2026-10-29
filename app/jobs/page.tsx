@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { getActiveAreas } from "@/lib/jobs";
+import {
+  getActiveAreas,
+  recruitAreasLongLabel,
+  recruitAreasShortLabel,
+  recruitRegionsLabel,
+} from "@/lib/jobs";
 import { jobsItemListJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -12,14 +17,14 @@ import { JobConditionsTable } from "@/components/job/JobConditionsTable";
 import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
-  title: "軽貨物ドライバー求人一覧｜品川・江東・葛西・船橋",
+  title: `軽貨物ドライバー求人一覧｜${recruitAreasShortLabel()}`,
   description:
-    "株式会社ウィランの軽貨物ドライバー求人一覧です。東京都品川区・江東区・江戸川区葛西エリア・千葉県船橋市で業務委託ドライバーを募集中。日額20,500円〜・週払い可・未経験歓迎・車両リースあり。エリアごとの日額を比較できます。",
+    `株式会社ウィランの軽貨物ドライバー求人一覧です。${recruitRegionsLabel()}の${getActiveAreas().length}エリア（${recruitAreasShortLabel()}）で業務委託ドライバーを募集中。日額20,500円〜・週払い可・未経験歓迎。エリアごとの日額を比較できます。`,
   alternates: { canonical: "/jobs" },
   openGraph: {
     title: "軽貨物ドライバー求人一覧｜株式会社ウィラン",
     description:
-      "東京都品川区・江東区・葛西エリア・千葉県船橋市で軽貨物ドライバー（業務委託）を募集中。日額20,500円〜・週払い可・未経験歓迎。",
+      `${recruitRegionsLabel()}の${getActiveAreas().length}エリアで軽貨物ドライバー（業務委託）を募集中。日額20,500円〜・週払い可・未経験歓迎。`,
     url: "/jobs",
     type: "website",
   },
@@ -39,8 +44,8 @@ export default function JobsPage() {
 
       <PageHero
         kicker="募集エリア・求人一覧"
-        title="東京3エリアと、千葉・船橋。"
-        lead="東京都の品川区・江東区・江戸川区（葛西エリア）と、千葉県船橋市の合計4エリアで軽貨物ドライバー（業務委託）を募集しています。日額はエリアにより異なり、待遇・研修は共通です。お住まいや希望に合わせて各エリアの求人詳細をご覧ください。"
+        title={`${recruitRegionsLabel()}の${areas.length}エリア。`}
+        lead={`${recruitAreasLongLabel()}の合計${areas.length}エリアで軽貨物ドライバー（業務委託）を募集しています。日額はエリアにより異なり、待遇・研修は共通です。お住まいや希望に合わせて各エリアの求人詳細をご覧ください。`}
       />
 
       <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">

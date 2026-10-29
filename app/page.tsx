@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
-import { jobAreas, jobCommon } from "@/lib/jobs";
+import {
+  jobAreas,
+  jobCommon,
+  getActiveAreas,
+  recruitAreasLongLabel,
+  recruitAreasShortLabel,
+  recruitRegionsLabel,
+} from "@/lib/jobs";
 import { faqCategories } from "@/lib/faq";
 import { webSiteJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -19,21 +26,27 @@ import { CtaSection } from "@/components/job/CtaSection";
 
 export const metadata: Metadata = {
   title: {
-    absolute: `東京・千葉の軽貨物ドライバー求人｜${siteConfig.companyName}`,
+    absolute: `${recruitRegionsLabel()}の軽貨物ドライバー求人｜${siteConfig.companyName}`,
   },
   description:
-    "東京・品川・江東・葛西・船橋で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額20,500円〜（エリアにより異なる）、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。",
+    `${recruitAreasShortLabel()}で軽貨物ドライバーを募集する株式会社ウィランの採用サイトです。日額20,500円〜（エリアにより異なる）、週払い対応、未経験歓迎、車両リース・独立支援制度を用意しています。`,
   alternates: { canonical: "/" },
   openGraph: {
-    title: `東京・千葉の軽貨物ドライバー求人｜${siteConfig.companyName}`,
+    title: `${recruitRegionsLabel()}の軽貨物ドライバー求人｜${siteConfig.companyName}`,
     description:
-      "日額20,500円〜・週払い対応・未経験歓迎。品川・江東・葛西・船橋で軽貨物ドライバー（業務委託）を募集中です。",
+      `日額20,500円〜・週払い対応・未経験歓迎。${recruitAreasShortLabel()}で軽貨物ドライバー（業務委託）を募集中です。`,
     url: "/",
     type: "website",
   },
 };
 
 export default function HomePage() {
+  const activeAreas = getActiveAreas();
+  const tokyoAreaCount = activeAreas.filter((a) => a.addressRegion === "東京都").length;
+  const areasOutsideTokyo = activeAreas
+    .filter((a) => a.addressRegion !== "東京都")
+    .map((a) => a.shortName)
+    .join("・");
   const topFaqs = faqCategories.flatMap((c) => c.items).slice(0, 5);
 
   return (
@@ -47,14 +60,14 @@ export default function HomePage() {
       <section className="border-b border-line bg-white">
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
           <Reveal>
-            <Kicker>東京・千葉の軽貨物ドライバー求人</Kicker>
+            <Kicker>{`${recruitRegionsLabel()}の軽貨物ドライバー求人`}</Kicker>
           </Reveal>
           <div className="grid gap-8 md:grid-cols-2 md:gap-14">
             <Reveal>
               <p className="text-[1.0625rem] leading-[1.95] text-ink">
                 軽貨物ドライバーとは、軽バンを使って通販商品などの小型の荷物を個人宅や企業へ届ける配送の仕事です。株式会社ウィランでは、
                 <strong className="font-bold">
-                  東京都品川区・江東区・江戸川区葛西エリアと千葉県船橋市
+                  {recruitAreasLongLabel()}
                 </strong>
                 で、業務委託の軽貨物ドライバーを募集しています。案件は主にAmazon関連の宅配で、普通自動車免許（AT限定可）があれば未経験からでも始められます。
               </p>
@@ -74,7 +87,7 @@ export default function HomePage() {
                   { t: "研修", d: "横乗り研修・未経験者向け研修" },
                   {
                     t: "募集地域",
-                    d: "品川区・江東区・葛西（江戸川区）・船橋市",
+                    d: recruitAreasShortLabel(),
                   },
                 ].map((row) => (
                   <div
@@ -345,12 +358,12 @@ export default function HomePage() {
           </Reveal>
           <Reveal>
             <h2 className="h-section mb-4 text-ink">
-              東京都内3エリアと、千葉県船橋市。
+              {`東京都内${tokyoAreaCount}エリアと、${areasOutsideTokyo}。`}
             </h2>
           </Reveal>
           <Reveal>
             <p className="mb-8 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
-              東京都の品川区・江東区・江戸川区（葛西エリア）と、千葉県船橋市で募集中。日額はエリアにより異なり、待遇と研修は共通です。
+              {`${recruitAreasLongLabel()}で募集中。日額はエリアにより異なり、待遇と研修は共通です。`}
             </p>
           </Reveal>
           <Reveal>
@@ -398,7 +411,7 @@ export default function HomePage() {
               {
                 href: "/jobs",
                 t: "エリアから探したい",
-                d: "品川・江東・葛西・船橋の日額比較",
+                d: `${activeAreas.length}エリアの日額比較`,
               },
               {
                 href: "/independence-support",

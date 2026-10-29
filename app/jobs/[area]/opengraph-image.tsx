@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { jobAreas, getJobArea } from "@/lib/jobs";
+import { jobAreas, getJobArea, recruitRegionsLabel } from "@/lib/jobs";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -17,7 +17,7 @@ export default async function Image({
 }) {
   const { area: slug } = await params;
   const area = getJobArea(slug);
-  const areaName = area?.areaName ?? "東京・千葉";
+  const areaName = area?.areaName ?? recruitRegionsLabel();
   const pay = area?.dailyPayLabel ?? "日額20,500円〜";
 
   return new ImageResponse(

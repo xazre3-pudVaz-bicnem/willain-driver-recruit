@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getActiveAreas, jobCommon } from "@/lib/jobs";
+import { getActiveAreas, jobCommon, recruitRegionsLabel } from "@/lib/jobs";
 import { siteConfig, absoluteUrl } from "@/lib/site-config";
 import { webPageJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -149,7 +149,7 @@ export default function RewardSimulatorPage() {
             <ul className="mt-3 grid gap-3 sm:grid-cols-2">
               {[
                 { href: "/benefits", t: "日額保証・週払い・車両リースを確認する" },
-                { href: "/jobs", t: "東京・千葉の軽貨物ドライバー求人一覧を見る" },
+                { href: "/jobs", t: `${recruitRegionsLabel()}の軽貨物ドライバー求人一覧を見る` },
                 { href: "/column/take-home-and-expenses", t: "手取りと経費の考え方を読む" },
                 { href: "/column/gasoline-cost", t: "ガソリン代の考え方を読む" },
               ].map((l) => (

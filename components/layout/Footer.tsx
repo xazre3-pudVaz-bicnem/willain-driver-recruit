@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
-import { jobAreas } from "@/lib/jobs";
+import { jobAreas, recruitRegionsLabel } from "@/lib/jobs";
 import { publishedColumnArticles } from "@/content/column";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Logo } from "@/components/layout/Header";
@@ -45,7 +45,7 @@ export function Footer() {
           <div>
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-ink-sub">
-              東京・千葉エリアで軽貨物ドライバー（業務委託）を募集しています。日額20,500円〜・週払い対応（いずれも規定あり）・未経験歓迎。
+              {recruitRegionsLabel()}エリアで軽貨物ドライバー（業務委託）を募集しています。日額20,500円〜・週払い対応（いずれも規定あり）・未経験歓迎。
             </p>
             <p className="mt-4 text-sm text-ink-sub">
               採用直通：

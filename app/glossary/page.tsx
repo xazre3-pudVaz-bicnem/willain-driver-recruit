@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { absoluteUrl } from "@/lib/site-config";
+import { recruitRegionsLabel } from "@/lib/jobs";
 import { webPageJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -286,7 +287,7 @@ export default function GlossaryPage() {
           <p className="text-sm font-bold text-ink">関連ページ</p>
           <ul className="mt-3 grid gap-3 sm:grid-cols-2">
             {[
-              { href: "/jobs", t: "東京・千葉の軽貨物ドライバー求人一覧を見る" },
+              { href: "/jobs", t: `${recruitRegionsLabel()}の軽貨物ドライバー求人一覧を見る` },
               { href: "/beginner", t: "未経験者向けの始め方・研修を見る" },
               { href: "/column", t: "採用コラムをテーマ別に読む" },
               { href: "/tools/reward-simulator", t: "報酬・経費シミュレーターで試算する" },

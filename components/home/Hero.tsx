@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { hasPublicFile } from "@/lib/assets";
+import { recruitAreasShortLabel, recruitRegionsLabel } from "@/lib/jobs";
 
 /**
  * ヒーロー。1枚の写真を画面全面に敷き、左下にコピーを重ねる。
@@ -34,21 +35,21 @@ export function Hero() {
           <div className="max-w-2xl">
             {/* H1：地域・職種・求人を自然に含む（ページ内で1つだけ） */}
             <h1 className="text-xs font-bold tracking-[0.2em] text-white/90 md:text-sm">
-              東京・千葉の軽貨物ドライバー求人
+              {recruitRegionsLabel()}の軽貨物ドライバー求人
               <span className="mx-2 text-white/40">｜</span>
               <span className="font-medium">業務委託・未経験歓迎</span>
             </h1>
 
             {/* 視覚的なメインコピー（デザイン維持） */}
             <p className="h-hero mt-5 text-white">
-              東京・千葉で、
+              首都圏で、
               <br />
               自分らしく
               <span className="text-primary-light">稼ぐ</span>。
             </p>
 
             <p className="mt-6 max-w-md text-base leading-relaxed text-white/85 md:text-lg">
-              品川・江東・葛西・船橋で軽貨物ドライバーを募集。
+              {recruitAreasShortLabel()}で軽貨物ドライバーを募集。
               <br className="hidden sm:block" />
               普通免許から始められる、新しい働き方。
             </p>

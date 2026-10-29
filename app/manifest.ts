@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
+import { recruitRegionsLabel } from "@/lib/jobs";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: siteConfig.siteName,
     short_name: siteConfig.brandName,
     description:
-      "東京・千葉で軽貨物ドライバーを募集する株式会社ウィランの採用サイト",
+      `${recruitRegionsLabel()}で軽貨物ドライバーを募集する株式会社ウィランの採用サイト`,
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

@@ -3,7 +3,7 @@
  * AIO対応：最初の1〜2文で質問に直接回答する形式を徹底する。
  * 勤務日数などの求人条件は lib/jobs.ts の jobCommon を参照し、二重管理を避ける。
  */
-import { jobCommon } from "@/lib/jobs";
+import { jobCommon, payBreakdownLabel } from "@/lib/jobs";
 
 export type FaqItem = { q: string; a: string };
 export type FaqCategory = { category: string; items: FaqItem[] };
@@ -39,7 +39,7 @@ export const faqCategories: FaqCategory[] = [
     items: [
       {
         q: "報酬はいくらですか？",
-        a: "エリアにより日額20,500〜22,000円です（品川区22,000円〜、江東区・葛西20,500円〜、船橋市21,000円〜）。日額保証があるため、配送に慣れていない期間も収入の見通しを立てやすくなっています。業務委託契約のため、給与ではなく報酬としてのお支払いです。",
+        a: `エリアにより日額20,500〜22,000円です（${payBreakdownLabel()}）。日額保証があるため、配送に慣れていない期間も収入の見通しを立てやすくなっています。業務委託契約のため、給与ではなく報酬としてのお支払いです。`,
       },
       {
         q: "週払いはできますか？",

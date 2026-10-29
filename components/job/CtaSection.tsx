@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { siteConfig } from "@/lib/site-config";
+import { recruitAreasShortLabel } from "@/lib/jobs";
 import { TrackedLink } from "@/components/ui/TrackedLink";
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -8,7 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
  */
 export function CtaSection({
   title = "まずは、希望の働き方を聞かせてください。",
-  text = "品川・江東・葛西・船橋で募集中。面談時に担当エリアや稼働条件をご案内します。",
+  text = `${recruitAreasShortLabel()}で募集中。面談時に担当エリアや稼働条件をご案内します。`,
   place,
   /** エリア詳細から呼ぶ場合、応募フォームの希望エリアを自動選択する（?area=slug） */
   area,

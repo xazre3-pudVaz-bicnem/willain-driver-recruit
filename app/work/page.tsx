@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { jobCommon, jobAreas } from "@/lib/jobs";
+import { jobCommon, jobAreas, recruitRegionsLabel } from "@/lib/jobs";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Reveal } from "@/components/ui/Reveal";
 import { Photo } from "@/components/ui/Photo";
@@ -12,7 +12,7 @@ import { CtaSection } from "@/components/job/CtaSection";
 import { FirstPartyNotes } from "@/components/content/FirstPartyNotes";
 
 export const metadata: Metadata = {
-  title: "軽貨物ドライバーの仕事内容｜東京・千葉の宅配求人",
+  title: `軽貨物ドライバーの仕事内容｜${recruitRegionsLabel()}の宅配求人`,
   description:
     "株式会社ウィランの軽貨物ドライバーの仕事内容を紹介します。Amazon関連のインターネット通販商品を個人宅へ配送。軽バンで運べる軽い荷物中心・配送完了後は直帰可・深夜の配送は原則なし。",
   alternates: { canonical: "/work" },

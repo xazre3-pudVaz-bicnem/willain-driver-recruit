@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { recruitRegionsLabel } from "@/lib/jobs";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Reveal } from "@/components/ui/Reveal";
@@ -15,7 +16,7 @@ import { FirstPartyNotes } from "@/components/content/FirstPartyNotes";
 export const metadata: Metadata = {
   title: "未経験から始める軽貨物ドライバー｜研修・車両リース",
   description:
-    "軽貨物ドライバーが初めての方へ。株式会社ウィランは横乗り研修・未経験者向け研修・日額20,500円〜の日額保証で未経験からのスタートを支えます。必要なのは普通免許（AT限定可）だけ。東京・千葉で募集中。",
+    `軽貨物ドライバーが初めての方へ。株式会社ウィランは横乗り研修・未経験者向け研修・日額20,500円〜の日額保証で未経験からのスタートを支えます。必要なのは普通免許（AT限定可）だけ。${recruitRegionsLabel()}で募集中。`,
   alternates: { canonical: "/beginner" },
   openGraph: {
     title: "未経験から始める軽貨物ドライバー｜株式会社ウィラン",

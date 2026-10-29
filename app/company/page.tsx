@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
-import { jobAreas } from "@/lib/jobs";
+import {
+  jobAreas,
+  recruitAreasLongLabel,
+  recruitAreasShortLabel,
+  recruitRegionsLabel,
+} from "@/lib/jobs";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Reveal } from "@/components/ui/Reveal";
 import { Photo } from "@/components/ui/Photo";
@@ -14,12 +19,12 @@ import { CtaSection } from "@/components/job/CtaSection";
 export const metadata: Metadata = {
   title: "会社情報",
   description:
-    "株式会社ウィラン（Willain）の会社情報です。東京・千葉エリアで軽貨物配送事業を展開し、品川区・江東区・江戸川区葛西・船橋市で業務委託の軽貨物ドライバーを募集しています。",
+    `株式会社ウィラン（Willain）の会社情報です。${recruitRegionsLabel()}エリアで軽貨物配送事業を展開し、${recruitAreasShortLabel()}で業務委託の軽貨物ドライバーを募集しています。`,
   alternates: { canonical: "/company" },
   openGraph: {
     title: "会社情報｜株式会社ウィラン",
     description:
-      "東京・千葉で軽貨物配送事業を展開する株式会社ウィランの会社情報です。",
+      `${recruitRegionsLabel()}で軽貨物配送事業を展開する株式会社ウィランの会社情報です。`,
     url: "/company",
     type: "website",
   },
@@ -57,7 +62,7 @@ export default function CompanyPage() {
     ["事業内容", siteConfig.business],
     [
       "採用エリア",
-      "東京都品川区・江東区・江戸川区（葛西エリア）、千葉県船橋市",
+      recruitAreasLongLabel(),
     ],
     [
       "協力会社・パートナー募集",
@@ -85,8 +90,8 @@ export default function CompanyPage() {
 
       <PageHero
         kicker="会社情報"
-        title="東京・千葉の軽貨物配送。"
-        lead="株式会社ウィラン（Willain）は、東京・千葉エリアでインターネット通販商品の宅配を中心とした軽貨物配送事業を展開しています。ドライバー一人ひとりが安定して稼働し、成長できる環境づくりを大切にしています。"
+        title={`${recruitRegionsLabel()}の軽貨物配送。`}
+        lead={`株式会社ウィラン（Willain）は、${recruitRegionsLabel()}エリアでインターネット通販商品の宅配を中心とした軽貨物配送事業を展開しています。ドライバー一人ひとりが安定して稼働し、成長できる環境づくりを大切にしています。`}
       />
 
       <section className="mx-auto max-w-6xl px-6 pt-14 md:pt-16">
