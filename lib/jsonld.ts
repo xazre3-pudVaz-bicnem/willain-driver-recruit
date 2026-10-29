@@ -1,5 +1,11 @@
 import { siteConfig, absoluteUrl } from "@/lib/site-config";
-import { jobCommon, buildJobDescriptionText, getActiveAreas, type JobArea } from "@/lib/jobs";
+import {
+  jobCommon,
+  buildJobDescriptionText,
+  getActiveAreas,
+  recruitAreasLongLabel,
+  type JobArea,
+} from "@/lib/jobs";
 
 /**
  * JSON-LDをXSS対策済みの文字列に変換する。
@@ -26,8 +32,7 @@ export function organizationJsonLd() {
     alternateName: siteConfig.brandName,
     url: siteConfig.siteUrl,
     logo: absoluteUrl("/icons/icon.svg"),
-    description:
-      "東京都（品川区・江東区・江戸川区葛西エリア）と千葉県船橋市で、軽貨物ドライバー（業務委託）を募集する軽貨物配送事業。未経験者向けの横乗り研修、車両リース、独立支援に対応。",
+    description: `${recruitAreasLongLabel()}で、軽貨物ドライバー（業務委託）を募集する軽貨物配送事業。未経験者向けの横乗り研修、車両リース、独立支援に対応。`,
     knowsAbout: [
       "軽貨物配送",
       "宅配便の配送",
@@ -232,8 +237,9 @@ export function jobPostingJsonLd(area: JobArea) {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
-        // 拠点の町名（公開してよい範囲）。詳しい住所は面談で案内する
+        // 拠点の住所（公開してよい範囲。多くの拠点は町名まで、番地まで公開している拠点はその住所）
         ...(area.base ? { streetAddress: area.base.streetAddress } : {}),
+        ...(area.base?.postalCode ? { postalCode: area.base.postalCode } : {}),
         addressLocality: area.addressLocality,
         addressRegion: area.addressRegion,
         addressCountry: "JP",
@@ -253,7 +259,7 @@ export function jobPostingJsonLd(area: JobArea) {
     occupationalCategory: "軽貨物配送ドライバー",
     industry: "軽貨物運送業",
     workHours: area.workHours ?? jobCommon.workHours,
-    responsibilities: jobCommon.jobDescription.join("／"),
+    responsibilities: (area.jobDescription ?? jobCommon.jobDescription).join("／"),
     qualifications: jobCommon.requirements.join("／"),
     jobBenefits: jobCommon.support.join("／"),
     incentiveCompensation: "稼働開始祝金（規定あり）・紹介報奨金（条件あり）",

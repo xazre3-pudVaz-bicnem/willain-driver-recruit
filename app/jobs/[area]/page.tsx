@@ -4,9 +4,9 @@ import Link from "next/link";
 import {
   jobAreas,
   getJobArea,
-  jobCommon,
   spotlightMessage,
   baseLocationLabel,
+  meetingNoteFor,
 } from "@/lib/jobs";
 import { getArticle } from "@/content/column";
 import { jobPostingJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/jsonld";
@@ -24,6 +24,7 @@ import { JobViewTracker } from "@/components/job/JobViewTracker";
 import { AreaBase } from "@/components/job/AreaBase";
 import { BaseSchedule } from "@/components/job/BaseSchedule";
 import { DriverVoices } from "@/components/job/DriverVoices";
+import { BicycleStaff } from "@/components/job/BicycleStaff";
 
 type Props = { params: Promise<{ area: string }> };
 
@@ -85,19 +86,29 @@ export default async function JobAreaPage({ params }: Props) {
         <div className="mx-auto max-w-4xl px-6 py-14 md:py-20">
           <Reveal>
             <p className="inline-block rounded-full bg-primary-dark px-4 py-1.5 text-xs font-bold tracking-wider text-white">
-              募集中｜業務委託
+              {area.opening ? "オープニングメンバー募集｜業務委託" : "募集中｜業務委託"}
             </p>
             <h1 className="mt-5 text-3xl leading-tight font-black text-ink md:text-4xl">
               {area.h1}
             </h1>
             <ul className="mt-5 flex flex-wrap gap-2" aria-label="待遇のポイント">
-              {[
-                area.dailyPayLabel,
-                "週払い可（規定あり）",
-                "未経験歓迎",
-                "車両リース月額30,000円",
-                "最短5日で稼働可",
-              ].map((badge) => (
+              {/* 新しい拠点は稼働開始の時期を確認できるまで「最短5日で稼働可」を出さない */}
+              {(area.opening
+                ? [
+                    area.dailyPayLabel,
+                    "オープニングメンバー募集",
+                    "週払い可（規定あり）",
+                    "未経験歓迎",
+                    "車両リース月額30,000円",
+                  ]
+                : [
+                    area.dailyPayLabel,
+                    "週払い可（規定あり）",
+                    "未経験歓迎",
+                    "車両リース月額30,000円",
+                    "最短5日で稼働可",
+                  ]
+              ).map((badge) => (
                 <li
                   key={badge}
                   className="rounded-full border border-primary/30 bg-white px-3.5 py-1.5 text-xs font-bold text-primary-dark"
@@ -123,6 +134,35 @@ export default async function JobAreaPage({ params }: Props) {
               ))}
             </div>
           </Reveal>
+          {area.bicycleStaff && (
+            <Reveal className="mt-6">
+              <a
+                href="#bicycle"
+                className="group flex items-center justify-between gap-3 rounded-xl border border-primary/30 bg-mint/60 px-5 py-4 transition-colors hover:border-primary-dark"
+              >
+                <span>
+                  <span className="block font-black text-ink">自転車での配送スタッフも募集中</span>
+                  <span className="mt-0.5 block text-sm text-ink-sub">
+                    {`運転免許不要・${area.bicycleStaff.dailyPayLabel}・電動アシスト自転車を無料で貸し出し`}
+                  </span>
+                </span>
+                <svg
+                  aria-hidden="true"
+                  className="h-4 w-4 shrink-0 rotate-90 text-primary-dark"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M6 3.5L10.5 8L6 12.5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+            </Reveal>
+          )}
           {area.spotlight && spotlightMessage(area) && (
             <Reveal className="mt-8">
               <div className="rounded-2xl border-2 border-primary/30 bg-mint px-6 py-5">
@@ -159,13 +199,17 @@ export default async function JobAreaPage({ params }: Props) {
         <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
           <Kicker animate>{`${area.addressLocality}で働く`}</Kicker>
           <Reveal>
-            <h2 className="h-section mb-4 text-ink">このエリアの特徴。</h2>
+            <h2 className="h-section mb-4 text-ink">
+              {area.opening ? "この拠点の特徴。" : "このエリアの特徴。"}
+            </h2>
           </Reveal>
           <Reveal>
             <p className="mb-10 max-w-2xl text-[0.95rem] leading-relaxed text-ink-sub">
-              {area.base
-                ? "以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の特徴です。担当エリアの詳細は、応募後の面談でご案内します。"
-                : "以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の一般的な傾向です。担当エリアや配送先の詳細、集合場所は、応募後の面談でご案内します。"}
+              {area.opening
+                ? "新しく開設した拠点のため、ここでは確認できている拠点の情報と条件をまとめています。配送エリアの特徴は、稼働が始まりしだい追加します。"
+                : area.base
+                  ? "以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の特徴です。担当エリアの詳細は、応募後の面談でご案内します。"
+                  : "以下は、株式会社ウィランが配送業務や公開情報から把握している範囲の一般的な傾向です。担当エリアや配送先の詳細、集合場所は、応募後の面談でご案内します。"}
             </p>
           </Reveal>
           <div className="grid gap-x-14 md:grid-cols-3">
@@ -227,14 +271,18 @@ export default async function JobAreaPage({ params }: Props) {
               payLabel={area.dailyPayLabel}
               paySupplement={`${area.areaName}の日額保証（規定あり）・週払い可能（規定あり）`}
               workHoursDetail={area.workHoursDetail}
+              jobDescription={area.jobDescription}
               meetingPlace={area.base ? baseLocationLabel(area.base) : undefined}
               deliveryCities={area.deliveryAreas?.map((d) => d.city).join("・")}
+              note={meetingNoteFor(area)}
             />
           </Reveal>
           <p className="mt-5 border-l-2 border-primary/40 pl-4 text-sm leading-relaxed text-ink-sub">
-            {jobCommon.meetingNote}
+            {meetingNoteFor(area)}
             {area.base
-              ? "集合場所の詳しい住所や担当エリアの詳細は、応募後の面談で確認できます。"
+              ? area.base.exactAddress
+                ? ""
+                : "集合場所の詳しい住所や担当エリアの詳細は、応募後の面談で確認できます。"
               : "配送センターの所在地や担当エリアの詳細は、応募後の面談で確認できます。"}
           </p>
         </div>
@@ -250,6 +298,9 @@ export default async function JobAreaPage({ params }: Props) {
           <PayExamples daily={area.dailyPay} />
         </div>
       </section>
+
+      {/* 自転車での配送スタッフ（募集がある拠点のみ。軽貨物ドライバーとは別の募集） */}
+      <BicycleStaff area={area} />
 
       {/* 共通のご案内：仕事内容・車両・研修・応募（全エリア共通は専用ページへ集約し重複を避ける） */}
       <section className="border-t border-line bg-white">

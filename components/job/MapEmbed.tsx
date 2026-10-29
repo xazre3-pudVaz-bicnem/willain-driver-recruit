@@ -5,7 +5,7 @@ import { useState } from "react";
 /**
  * Googleマップの埋め込み。初期表示では読み込まず、ボタンを押したときだけ iframe を読み込む
  * （第三者Cookieと読み込み負荷で Core Web Vitals・Lighthouse を落とさないため）。
- * 表示するのは公開してよい範囲（町名）までの地図。
+ * 表示するのは公開してよい範囲の地図（多くの拠点は町名まで。番地まで公開している拠点はその住所）。
  */
 export function MapEmbed({ query, title }: { query: string; title: string }) {
   const [open, setOpen] = useState(false);

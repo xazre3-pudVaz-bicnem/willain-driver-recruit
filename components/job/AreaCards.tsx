@@ -10,6 +10,9 @@ const romaji: Record<string, string> = {
   shinagawa: "SHINAGAWA",
   koto: "KOTO",
   kasai: "KASAI",
+  setagaya: "SETAGAYA",
+  chofu: "CHOFU",
+  yokohama: "YOKOHAMA",
   funabashi: "FUNABASHI",
 };
 
@@ -17,6 +20,9 @@ const shortLabel: Record<string, string> = {
   shinagawa: "品川区",
   koto: "江東区",
   kasai: "葛西・江戸川区",
+  setagaya: "世田谷区",
+  chofu: "調布市",
+  yokohama: "横浜市神奈川区",
   funabashi: "船橋市",
 };
 
@@ -29,11 +35,14 @@ type AreaInput = Pick<
   | "addressRegion"
   | "dailyPayLabel"
   | "spotlight"
+  | "opening"
 >;
 
 /**
  * 募集エリア。写真を敷いた濃色タイルに地名を大きく重ねる。
  * 均一な白カードは使わない。注力エリア（spotlight）は先頭に並べ、バッジを表示する。
+ * 新しく開設した拠点（opening）には「オープニング募集」のバッジを付ける。
+ * 枚数が奇数のときは、最後の1枚を横幅いっぱいにして段の欠けを作らない。
  */
 export function AreaCards({
   areas,
@@ -61,7 +70,7 @@ export function AreaCards({
           data-event="area_job_click"
           data-area={area.slug}
           aria-label={`${area.areaName}の軽貨物ドライバー求人（${area.dailyPayLabel}）を見る`}
-          className="group relative flex min-h-[220px] items-end overflow-hidden rounded-md md:min-h-[260px]"
+          className="group relative flex min-h-[220px] items-end overflow-hidden rounded-md sm:last:odd:col-span-2 md:min-h-[260px]"
         >
           <Image
             src={area.image}
@@ -71,9 +80,9 @@ export function AreaCards({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-emerald-ink/85 via-emerald-ink/40 to-emerald-ink/10" />
-          {area.spotlight && (
+          {(area.spotlight || area.opening) && (
             <span className="absolute top-4 left-4 z-10 rounded-full bg-primary-light px-3 py-1 text-xs font-black tracking-wider text-emerald-ink shadow">
-              今月の注力エリア
+              {area.spotlight ? "今月の注力エリア" : "オープニング募集"}
             </span>
           )}
           <div className="relative w-full p-6">
