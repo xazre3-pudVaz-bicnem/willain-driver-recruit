@@ -10,6 +10,7 @@ import {
   partnerStats,
   partnerStatsAsOf,
   partnerActiveBases,
+  partnerOpeningBases,
   partnerPlannedBases,
   partnerTypes,
   partnerConditions,
@@ -104,7 +105,7 @@ export default function PartnerPage() {
                 全国への拡大に向けて、一緒に伸ばしていける仲間を探しています。
               </p>
               <p className="mt-5 text-[1.0625rem] leading-[1.9] text-ink-sub">
-                {`株式会社ウィランは、主にAmazon関連の個人宅配送を行う軽貨物配送の会社です。現在${partnerActiveBases}の${partnerStats.bases.value}${partnerStats.bases.unit}で稼働しており、${partnerPlannedBases}への開設、さらに全国への拡大を予定しています。案件のご紹介から、車両・黒ナンバーの手続き、研修、事務まで、ウィランがサポートします。`}
+                {`株式会社ウィランは、主にAmazon関連の個人宅配送を行う軽貨物配送の会社です。現在${partnerActiveBases}の${partnerStats.bases.value}${partnerStats.bases.unit}で稼働しており、${partnerOpeningBases}には新しい拠点を開設しました。${partnerPlannedBases}への開設、さらに全国への拡大も予定しています。案件のご紹介から、車両・黒ナンバーの手続き、研修、事務まで、ウィランがサポートします。`}
               </p>
             </Reveal>
             <Reveal delay={0.15}>

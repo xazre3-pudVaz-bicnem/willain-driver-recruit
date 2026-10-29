@@ -13,7 +13,7 @@ import type { ApplyFormState } from "@/lib/apply-form";
  */
 
 /** ページの最終更新日（sitemap・WebPage構造化データに使用。内容を変えた日に手動で更新する） */
-export const partnerPageUpdatedAt = "2026-10-26";
+export const partnerPageUpdatedAt = "2026-10-29";
 
 export const partnerSeo = {
   /** titleタグ（layoutのテンプレートで「｜株式会社ウィラン」が付く） */
@@ -45,16 +45,21 @@ export const partnerHeroImage = {
 /** 実績の基準時点（数字を更新したら合わせて変更する） */
 export const partnerStatsAsOf = "2026年10月時点";
 
-/** 稼働中の拠点と開設予定の拠点（開設したら移す。予定の拠点を稼働拠点の数に含めない） */
+/**
+ * 稼働中の拠点・新しく開設した拠点・開設予定の拠点。
+ * 稼働拠点の数には、ドライバーが稼働している拠点だけを数える（開設したばかりの拠点・予定の拠点は含めない）。
+ */
 export const partnerActiveBases = "品川・江東・江戸川・船橋";
-export const partnerPlannedBases = "足立・横浜";
+/** 開設済みで、ドライバーの募集を始めた拠点（2026-10-29 ウィラン確認。稼働が始まったら partnerActiveBases へ移す） */
+export const partnerOpeningBases = "世田谷・調布・横浜";
+export const partnerPlannedBases = "足立";
 
 export const partnerStats = {
   bases: {
     label: "稼働拠点",
     value: "4",
     unit: "拠点",
-    note: `${partnerPlannedBases}に開設予定。今後、全国に拡大予定`,
+    note: `${partnerOpeningBases}で新規開設、${partnerPlannedBases}に開設予定。今後、全国に拡大予定`,
   },
   companies: { label: "協力会社", value: "3", unit: "社" },
   vehicles: { label: "稼働台数", value: "約20", unit: "台" },
@@ -227,7 +232,7 @@ export const partnerFaq: FaqItem[] = [
   },
   {
     q: "どのエリアで稼働できますか？",
-    a: `${partnerStatsAsOf}で、${partnerActiveBases}の${bases.value}${bases.unit}が稼働しています。${partnerPlannedBases}にも拠点を開設する予定で、今後は全国への拡大を予定しています。ご希望のエリアで稼働できるかは、面接時にご案内します。`,
+    a: `${partnerStatsAsOf}で、${partnerActiveBases}の${bases.value}${bases.unit}が稼働しています。${partnerOpeningBases}には新しい拠点を開設し、ドライバーの募集を始めました。${partnerPlannedBases}にも拠点を開設する予定で、今後は全国への拡大を予定しています。ご希望のエリアで稼働できるかは、面接時にご案内します。`,
   },
   {
     q: "問い合わせから契約まで、どのくらいかかりますか？",
