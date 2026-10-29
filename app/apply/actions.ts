@@ -9,6 +9,7 @@ import {
   VEHICLE_VALUES,
   WORKDAYS_VALUES,
   START_VALUES,
+  isBicycleArea,
 } from "@/lib/apply-form";
 
 /* ---------------- スパム対策 ---------------- */
@@ -232,12 +233,15 @@ export async function submitApplication(
     )
     .join("")}</table>`;
 
+  // 自転車での配送スタッフは軽貨物ドライバーとは別の募集のため、件名・お礼メールの職種名を分ける
+  const jobLabel = isBicycleArea(area) ? "自転車での配送スタッフ" : "軽貨物ドライバー";
+
   // ① 採用担当への通知メール（必須）。失敗したら応募エラーにする。
   const notifyResult = await sendResendEmail(apiKey, {
     from: fromEmail,
     to: [toEmail],
     reply_to: email, // 担当者が返信すると応募者に届く
-    subject: `【応募】軽貨物ドライバー（${area}希望）${name}様`,
+    subject: `【応募】${jobLabel}（${area}希望）${name}様`,
     text: textBody,
     html: htmlBody,
   });
@@ -254,7 +258,7 @@ export async function submitApplication(
   const ackText = [
     `${name} 様`,
     "",
-    "この度は、株式会社ウィランの軽貨物ドライバー求人にご応募いただき、誠にありがとうございます。",
+    `この度は、株式会社ウィランの${jobLabel}求人にご応募いただき、誠にありがとうございます。`,
     "以下の内容で応募を受け付けました。担当者より順次ご連絡いたしますので、少々お待ちください。",
     "",
     ...rows.map(([k, v]) => `■ ${k}\n${v}`),
@@ -268,7 +272,7 @@ export async function submitApplication(
   ].join("\n");
 
   const ackHtml = `<p>${escapeHtml(name)} 様</p>
-<p>この度は、株式会社ウィランの軽貨物ドライバー求人にご応募いただき、誠にありがとうございます。<br>
+<p>この度は、株式会社ウィランの${jobLabel}求人にご応募いただき、誠にありがとうございます。<br>
 以下の内容で応募を受け付けました。担当者より順次ご連絡いたしますので、少々お待ちください。</p>
 <table border="1" cellpadding="8" cellspacing="0">${rows
     .map(

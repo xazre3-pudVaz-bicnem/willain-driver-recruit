@@ -16,15 +16,34 @@ export type ApplyFormState = {
 
 export const initialApplyFormState: ApplyFormState = { errors: {}, values: {} };
 
+/**
+ * 自転車での配送スタッフ（募集がある拠点のみ）。軽貨物ドライバーとは別の募集として選べるようにする。
+ * ?area=[slug]-bicycle（例: chofu-bicycle）で選択済みにできる。
+ */
+const bicycleOptions = jobAreas
+  .filter((a) => a.bicycleStaff)
+  .map((a) => ({
+    slug: `${a.slug}-bicycle`,
+    value: `${a.shortName}（自転車）`,
+    label: `${a.areaName}（自転車での配送スタッフ）`,
+  }));
+
 export const areaOptions = [
   ...jobAreas.map((a) => ({ value: a.shortName, label: a.areaName })),
+  ...bicycleOptions.map(({ value, label }) => ({ value, label })),
   { value: "その他", label: "その他・相談したい" },
 ];
 
+/** 自転車での配送スタッフの希望か（応募通知の件名を分けるため） */
+export function isBicycleArea(value: string): boolean {
+  return bicycleOptions.some((o) => o.value === value);
+}
+
 /** URLの ?area=slug（例: shinagawa）→ フォームの選択肢値（shortName）へ変換 */
-const slugToShortName: Record<string, string> = Object.fromEntries(
-  jobAreas.map((a) => [a.slug, a.shortName])
-);
+const slugToShortName: Record<string, string> = Object.fromEntries([
+  ...jobAreas.map((a) => [a.slug, a.shortName]),
+  ...bicycleOptions.map((o) => [o.slug, o.value]),
+]);
 
 /** ?area= の値（slug or shortName）を有効な選択肢値に正規化する。無効なら空文字。 */
 export function resolveAreaParam(param: string | null | undefined): string {
