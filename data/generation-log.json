@@ -25,5 +25,21 @@
     "reviewFixesApplied": 12,
     "reviewInputTokens": 9933,
     "reviewOutputTokens": 4692
+  },
+  {
+    "date": "2026-11-02",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "軽貨物ドライバーの横乗り研修とは｜実務を学ぶ流れと期間",
+    "slug": "ride-along-training",
+    "inputTokens": 5268,
+    "outputTokens": 3322,
+    "status": "published",
+    "errorType": null,
+    "qualityScore": 100,
+    "reviewModel": "claude-opus-5-5",
+    "reviewVerdict": "publish",
+    "reviewFixesApplied": 4,
+    "reviewInputTokens": 10916,
+    "reviewOutputTokens": 2728
   }
 ]

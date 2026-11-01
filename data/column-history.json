@@ -24,5 +24,18 @@
     "relatedJob": "funabashi",
     "contentHash": "aac5c66a7c0f9312",
     "image": "/images/photos/area-funabashi.webp"
+  },
+  {
+    "id": "ride-along",
+    "title": "軽貨物ドライバーの横乗り研修とは｜実務を学ぶ流れと期間",
+    "slug": "ride-along-training",
+    "mainKeyword": "軽貨物 横乗り研修",
+    "searchIntent": "横乗り研修で何を教わるのか、期間はどれくらいかを知りたい",
+    "category": "仕事内容",
+    "publishedAt": "2026-11-02",
+    "summary": "軽貨物ドライバーの横乗り研修で何を学ぶのか、期間はどのくらいか、実際の配送業務の流れに沿って解説します。未経験者が実務を習得する方法を確認できます。",
+    "relatedJob": "shinagawa",
+    "contentHash": "717ace7a3f2947ff",
+    "image": "/images/photos/training.webp"
   }
 ]
