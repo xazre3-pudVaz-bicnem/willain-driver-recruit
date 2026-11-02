@@ -24,6 +24,7 @@ import {
   baseLocationLabel,
   recruitAreasShortLabel,
   recruitRegionsLabel,
+  supportFor,
   type JobArea,
 } from "@/lib/jobs";
 import { columnTopics, type ColumnTopic } from "@/data/column-topics";
@@ -286,12 +287,25 @@ export function buildJobFacts(area?: JobArea): JobFacts {
     leasePrice: jobCommon.leasePrice,
     workHours: area?.workHours ?? jobCommon.workHours,
     workDays: jobCommon.workDays,
-    startLeadTime: jobCommon.startLeadTime,
-    support: [...jobCommon.support],
+    startLeadTime: startLeadTimeFact(area),
+    support: [...supportFor(area)],
     applyText:
       "応募フォーム（/apply）またはお電話（080-7297-3908）から。面談で条件を最終確認します。",
     areas,
   };
+}
+
+/** 稼働開始までの目安。研修の進め方・稼働開始の時期が未定の拠点は、日数を書かせず「面談で案内」とする */
+function startLeadTimeFact(area?: JobArea): string {
+  if (area?.onboardingUndecided) {
+    return "この拠点は研修の進め方と稼働開始の時期が未定で、面談で案内する（日数を書かない）";
+  }
+  const undecided = getActiveAreas()
+    .filter((a) => a.onboardingUndecided)
+    .map((a) => a.shortName);
+  return !area && undecided.length
+    ? `${jobCommon.startLeadTime}ただし、${undecided.join("・")}の拠点は研修の進め方と稼働開始の時期が未定で、面談で案内する`
+    : jobCommon.startLeadTime;
 }
 
 /** エリア記事に渡す、拠点の確認済み情報（lib/jobs.ts の拠点データから組み立てる） */
@@ -325,6 +339,11 @@ function buildAreaFacts(area: JobArea): NonNullable<UserPromptContext["areaFacts
       area.opening
         ? `稼働状況（${area.team.asOf}時点）：新しく開設した拠点で、稼働中のドライバーはまだいない。オープニングメンバーとして${area.team.openings}名を募集`
         : `稼働状況（${area.team.asOf}時点）：${area.team.activeDrivers}名が稼働中、新たに${area.team.openings}名を募集`,
+    );
+  }
+  if (area.onboardingUndecided) {
+    lines.push(
+      "研修・稼働開始：研修の進め方と稼働開始の時期は未定で、面談で案内する。この拠点について「最短○日」や横乗り研修など、研修の内容・日数を書かない",
     );
   }
   return { name: area.base ? `${area.base.name}（${area.areaName}）` : area.areaName, lines };
