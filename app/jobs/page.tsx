@@ -45,7 +45,7 @@ export default function JobsPage() {
       <PageHero
         kicker="募集エリア・求人一覧"
         title={`${recruitRegionsLabel()}の${areas.length}エリア。`}
-        lead={`${recruitAreasLongLabel()}の合計${areas.length}エリアで軽貨物ドライバー（業務委託）を募集しています。日額はエリアにより異なり、待遇・研修は共通です。お住まいや希望に合わせて各エリアの求人詳細をご覧ください。`}
+        lead={`${recruitAreasLongLabel()}の合計${areas.length}エリアで軽貨物ドライバー（業務委託）を募集しています。日額はエリアにより異なり、待遇は共通です。お住まいや希望に合わせて各エリアの求人詳細をご覧ください。`}
       />
 
       <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">

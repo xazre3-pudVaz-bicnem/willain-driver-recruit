@@ -363,7 +363,7 @@ export default function HomePage() {
           </Reveal>
           <Reveal>
             <p className="mb-8 max-w-2xl text-[1.0625rem] leading-[1.9] text-ink-sub">
-              {`${recruitAreasLongLabel()}で募集中。日額はエリアにより異なり、待遇と研修は共通です。`}
+              {`${recruitAreasLongLabel()}で募集中。日額はエリアにより異なり、待遇は共通です。`}
             </p>
           </Reveal>
           <Reveal>

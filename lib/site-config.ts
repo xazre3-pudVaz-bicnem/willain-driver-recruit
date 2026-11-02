@@ -82,7 +82,7 @@ export const siteConfig = {
    * サイト全体の最終更新日（下の pageLastModified に無いページの sitemap lastmod・RSSの予備に使用）。
    * ビルド日時で自動更新せず、実際にコンテンツを更新した日に手動で変更する。
    */
-  siteLastModified: "2026-10-29",
+  siteLastModified: "2026-11-02",
 
   /**
    * 固定ページごとの最終更新日（sitemapのlastmod）。
@@ -90,11 +90,11 @@ export const siteConfig = {
    * 日付だけを新しくする更新はしない（Googleのガイドラインで避けるべき例とされている）。
    */
   pageLastModified: {
-    "/": "2026-10-29",
-    "/jobs": "2026-10-29",
+    "/": "2026-11-02",
+    "/jobs": "2026-11-02",
     "/work": "2026-10-26",
     "/benefits": "2026-08-08",
-    "/beginner": "2026-08-08",
+    "/beginner": "2026-11-02",
     "/independence-support": "2026-08-08",
     "/faq": "2026-10-29",
     "/glossary": "2026-09-02",

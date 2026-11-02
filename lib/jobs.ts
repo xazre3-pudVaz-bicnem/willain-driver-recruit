@@ -202,6 +202,11 @@ export type JobArea = {
   /** 新しく開設した拠点（稼働中のドライバーがまだいない）。オープニングメンバーの募集として表示する */
   opening?: boolean;
   /**
+   * 研修の進め方と稼働開始の時期がまだ決まっていない拠点（ウィランの指定で「面談でご案内します」とする）。
+   * 「最短5日で稼働可」や横乗り研修などの研修の内容を、この拠点のページ・JobPosting・記事に出さない。
+   */
+  onboardingUndecided?: boolean;
+  /**
    * 拠点（集合場所）。ウィランに確認済みの、公開してよい範囲だけを書く。
    * 多くの拠点は町名・最寄り駅までで、詳しい住所は面談で案内する。
    * ウィランが番地まで知らせてくれた拠点は exactAddress にする（住所を面談案内にしない）。
@@ -226,8 +231,12 @@ export type JobArea = {
    * 軽貨物ドライバーとは別の募集のため、募集要項・JobPosting には含めない。
    */
   bicycleStaff?: {
+    /** 契約形態 */
+    contractType: string;
     dailyPay: number;
     dailyPayLabel: string;
+    /** 勤務日数 */
+    workDays: string;
     /** 運転免許について */
     license: string;
     /** 貸し出す自転車 */
@@ -631,7 +640,8 @@ export const jobAreas: JobArea[] = [
     ],
   },
   // 世田谷・調布・横浜は 2026-10-29 にウィランから届いた新しい拠点（稼働中のドライバーはまだいない）。
-  // 住所は番地までの公開をウィランが指定。配送エリア・ドライバーの声は稼働が始まってから追加する
+  // 住所は番地までの公開をウィランが指定。配送エリア・ドライバーの声は稼働が始まってから追加する。
+  // 研修の進め方と稼働開始の時期は未定のため「面談でご案内します」とする（2026-11-02 ウィラン指定）
   {
     slug: "setagaya",
     areaName: "東京都世田谷区",
@@ -647,6 +657,7 @@ export const jobAreas: JobArea[] = [
     identifier: "willain-driver-setagaya",
     isActive: true,
     opening: true,
+    onboardingUndecided: true,
     base: {
       name: "世田谷拠点",
       address: "東京都世田谷区船橋6-22-2",
@@ -667,7 +678,7 @@ export const jobAreas: JobArea[] = [
     image: "/images/photos/walking.webp",
     imageAlt: "倉庫の前で軽バンのそばを歩く配送ドライバーのイメージ",
     datePosted: "2026-10-29",
-    dateModified: "2026-10-29",
+    dateModified: "2026-11-02",
     lead: [
       "株式会社ウィランでは、世田谷区船橋に新しく開設した拠点で、軽貨物ドライバー（業務委託）のオープニングメンバーを5名募集しています。仕事は主にAmazon関連の通販商品を個人宅へ届ける配送で、報酬は日額21,000円〜（日額保証・規定あり）。週払い（規定あり）にも対応しています。",
       "拠点の所在地は東京都世田谷区船橋6-22-2で、京王線「八幡山駅」から徒歩約19分、小田急線「千歳船橋駅」から徒歩約21分です。集合は朝8:00、終了は19:00〜21:00頃（荷物量や個人差あり）。普通自動車免許（AT限定可）があれば応募でき、車両がない方は月額30,000円のリースや車の購入代行も利用できます。なお、所在地の「船橋」は世田谷区内の地名で、千葉県船橋市の船橋拠点とは別の拠点です。",
@@ -732,6 +743,7 @@ export const jobAreas: JobArea[] = [
     identifier: "willain-driver-chofu",
     isActive: true,
     opening: true,
+    onboardingUndecided: true,
     base: {
       name: "調布拠点",
       address: "東京都調布市緑ケ丘2-67-17",
@@ -748,10 +760,12 @@ export const jobAreas: JobArea[] = [
       parcels: "150〜280個",
       parcelsAsEstimate: true,
     }),
-    // 契約形態・勤務日数などは未確認（2026-10-29 時点）。確認できたら追記する
+    // 契約形態・勤務日数は 2026-11-02 にウィランが回答（軽バンのドライバーと同じく業務委託・週3日〜）
     bicycleStaff: {
+      contractType: "業務委託",
       dailyPay: 15000,
       dailyPayLabel: "日額15,000円〜",
+      workDays: "週3日〜",
       license: "運転免許は不要です（自転車に乗れれば応募できます）",
       bike: "Amazonが導入しているリヤカー付きの電動アシスト自転車を、無料で貸し出します",
       workHours: "9:00〜19:00頃（荷物量や個人差により前後します）",
@@ -760,7 +774,7 @@ export const jobAreas: JobArea[] = [
     image: "/images/photos/warehouse.webp",
     imageAlt: "物流倉庫の前に停まる配送用の白い軽バンと荷物のイメージ",
     datePosted: "2026-10-29",
-    dateModified: "2026-10-29",
+    dateModified: "2026-11-02",
     lead: [
       "株式会社ウィランでは、調布市緑ケ丘に新しく開設した拠点で、軽貨物ドライバー（業務委託）のオープニングメンバーを5名募集しています。仕事は主にAmazon関連の通販商品を個人宅へ届ける配送で、報酬は日額21,000円〜（日額保証・規定あり）。週払い（規定あり）にも対応しています。",
       "拠点の所在地は東京都調布市緑ケ丘2-67-17で、京王線「仙川駅」から徒歩約10分です。集合は朝8:00、終了は19:00〜21:00頃（荷物量や個人差あり）。普通自動車免許（AT限定可）があれば応募でき、車両がない方は月額30,000円のリースや車の購入代行も利用できます。",
@@ -790,7 +804,7 @@ export const jobAreas: JobArea[] = [
       },
       {
         q: "運転免許がなくても働けますか？",
-        a: "自転車での配送スタッフなら、運転免許は不要です（自転車に乗れれば応募できます）。報酬は日額15,000円〜で、リヤカー付きの電動アシスト自転車を無料で貸し出します。勤務時間は9:00〜19:00頃で、荷物量や個人差により前後します。軽バンのドライバーには、普通自動車免許（AT限定可）が必要です。",
+        a: "自転車での配送スタッフなら、運転免許は不要です（自転車に乗れれば応募できます）。契約は軽バンのドライバーと同じ業務委託で、勤務日数は週3日〜です。報酬は日額15,000円〜で、リヤカー付きの電動アシスト自転車を無料で貸し出します。勤務時間は9:00〜19:00頃で、荷物量や個人差により前後します。軽バンのドライバーには、普通自動車免許（AT限定可）が必要です。",
       },
       {
         q: "どのエリアを配送しますか？",
@@ -825,6 +839,7 @@ export const jobAreas: JobArea[] = [
     identifier: "willain-driver-yokohama",
     isActive: true,
     opening: true,
+    onboardingUndecided: true,
     base: {
       name: "横浜拠点",
       address: "神奈川県横浜市神奈川区出田町3-5",
@@ -844,7 +859,7 @@ export const jobAreas: JobArea[] = [
     image: "/images/photos/fleet.webp",
     imageAlt: "物流倉庫の前に並ぶ配送用の白い軽バンのイメージ",
     datePosted: "2026-10-29",
-    dateModified: "2026-10-29",
+    dateModified: "2026-11-02",
     lead: [
       "株式会社ウィランでは、横浜市神奈川区出田町に新しく開設した拠点で、軽貨物ドライバー（業務委託）のオープニングメンバーを5名募集しています。仕事は主にAmazon関連の通販商品を個人宅へ届ける配送で、報酬は日額21,000円〜（日額保証・規定あり）。週払い（規定あり）にも対応しています。",
       "拠点の所在地は神奈川県横浜市神奈川区出田町3-5で、京急本線「神奈川新町駅」から徒歩約14分です。集合は朝8:00、終了は19:00〜21:00頃（荷物量や個人差あり）。普通自動車免許（AT限定可）があれば応募でき、車両がない方は月額30,000円のリースや車の購入代行も利用できます。",
@@ -1022,11 +1037,23 @@ export function baseLocationLabel(base: NonNullable<JobArea["base"]>): string {
   return base.access ? `${base.address}（${base.access}）` : base.address;
 }
 
-/** 面談で案内する内容（住所を番地まで公開している拠点は、住所を面談案内に含めない） */
+/**
+ * 面談で案内する内容。住所を番地まで公開している拠点は住所を含めず、
+ * 研修の進め方・稼働開始の時期が未定の拠点はそれも含める。
+ */
 export function meetingNoteFor(area: JobArea): string {
-  return area.base?.exactAddress
-    ? "担当エリア・案件内容の詳細は面談時にご案内します。"
-    : jobCommon.meetingNote;
+  const items = [
+    area.base?.exactAddress ? "担当エリア・案件内容の詳細" : "詳細な集合場所・担当エリア・案件内容",
+    ...(area.onboardingUndecided ? ["研修の進め方", "稼働開始の時期"] : []),
+  ];
+  return `${items.join("、")}は面談時にご案内します。`;
+}
+
+/** 待遇・サポート（研修の進め方が未定の拠点は研修の項目を出さず、備考で「面談で案内」とする） */
+export function supportFor(area?: JobArea): readonly string[] {
+  return area?.onboardingUndecided
+    ? jobCommon.support.filter((d) => !d.includes("研修"))
+    : jobCommon.support;
 }
 
 const REGION_ORDER = ["東京都", "神奈川県", "埼玉県", "千葉県"];
@@ -1123,7 +1150,7 @@ export function buildJobDescriptionText(area: JobArea): string {
     ...jobCommon.requirements.map((d) => `・${d}`),
     "",
     "【待遇・サポート】",
-    ...jobCommon.support.map((d) => `・${d}`),
+    ...supportFor(area).map((d) => `・${d}`),
     "",
     meetingNoteFor(area),
   ];

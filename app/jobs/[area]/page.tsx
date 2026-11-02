@@ -7,6 +7,7 @@ import {
   spotlightMessage,
   baseLocationLabel,
   meetingNoteFor,
+  supportFor,
 } from "@/lib/jobs";
 import { getArticle } from "@/content/column";
 import { jobPostingJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/jsonld";
@@ -92,23 +93,15 @@ export default async function JobAreaPage({ params }: Props) {
               {area.h1}
             </h1>
             <ul className="mt-5 flex flex-wrap gap-2" aria-label="待遇のポイント">
-              {/* 新しい拠点は稼働開始の時期を確認できるまで「最短5日で稼働可」を出さない */}
-              {(area.opening
-                ? [
-                    area.dailyPayLabel,
-                    "オープニングメンバー募集",
-                    "週払い可（規定あり）",
-                    "未経験歓迎",
-                    "車両リース月額30,000円",
-                  ]
-                : [
-                    area.dailyPayLabel,
-                    "週払い可（規定あり）",
-                    "未経験歓迎",
-                    "車両リース月額30,000円",
-                    "最短5日で稼働可",
-                  ]
-              ).map((badge) => (
+              {/* 稼働開始の時期が未定の拠点は「最短5日で稼働可」を出さない（面談で案内する） */}
+              {[
+                area.dailyPayLabel,
+                ...(area.opening ? ["オープニングメンバー募集"] : []),
+                "週払い可（規定あり）",
+                "未経験歓迎",
+                "車両リース月額30,000円",
+                ...(area.onboardingUndecided ? [] : ["最短5日で稼働可"]),
+              ].map((badge) => (
                 <li
                   key={badge}
                   className="rounded-full border border-primary/30 bg-white px-3.5 py-1.5 text-xs font-bold text-primary-dark"
@@ -274,6 +267,7 @@ export default async function JobAreaPage({ params }: Props) {
               jobDescription={area.jobDescription}
               meetingPlace={area.base ? baseLocationLabel(area.base) : undefined}
               deliveryCities={area.deliveryAreas?.map((d) => d.city).join("・")}
+              support={supportFor(area)}
               note={meetingNoteFor(area)}
             />
           </Reveal>
@@ -311,9 +305,12 @@ export default async function JobAreaPage({ params }: Props) {
           </Reveal>
           <Reveal>
             <p className="mb-8 max-w-2xl leading-relaxed text-ink-sub">
-              {area.schedule
-                ? `${area.areaName}の報酬・勤務条件は上の募集要項のとおりです。車両・研修・応募の手順は全エリア共通のため、専用ページでくわしく確認できます。`
-                : `${area.areaName}の報酬・勤務条件は上の募集要項のとおりです。1日の流れ・車両・研修・応募の手順は全エリア共通のため、専用ページでくわしく確認できます。`}
+              {/* 研修の進め方が未定の拠点は、研修を「全エリア共通」に含めない */}
+              {[
+                `${area.areaName}の報酬・勤務条件は上の募集要項のとおりです。`,
+                `${area.schedule ? "" : "1日の流れ・"}車両・${area.onboardingUndecided ? "" : "研修・"}応募の手順は全エリア共通のため、専用ページでくわしく確認できます。`,
+                area.onboardingUndecided ? "研修の進め方と稼働開始の時期は、面談時にご案内します。" : "",
+              ].join("")}
             </p>
           </Reveal>
           <Reveal>
@@ -329,11 +326,17 @@ export default async function JobAreaPage({ params }: Props) {
                   t: "車両（リース月額30,000円）・報酬・待遇を見る",
                   d: "持ち込み・購入代行・日額保証・週払い",
                 },
-                {
-                  href: "/beginner",
-                  t: "未経験者向けの横乗り研修を見る",
-                  d: "最短5日程度（経験者は最短3日）で稼働開始",
-                },
+                area.onboardingUndecided
+                  ? {
+                      href: "/beginner",
+                      t: "未経験からの始め方を見る",
+                      d: "この拠点の研修・稼働開始の時期は面談でご案内",
+                    }
+                  : {
+                      href: "/beginner",
+                      t: "未経験者向けの横乗り研修を見る",
+                      d: "最短5日程度（経験者は最短3日）で稼働開始",
+                    },
                 {
                   href: "/apply",
                   t: "応募の流れを確認して応募する",
@@ -415,7 +418,12 @@ export default async function JobAreaPage({ params }: Props) {
             <ul className="grid gap-3 sm:grid-cols-2">
               {[
                 { href: "/work", t: "軽貨物ドライバーの仕事内容を見る" },
-                { href: "/beginner", t: "未経験者向けの横乗り研修を確認する" },
+                {
+                  href: "/beginner",
+                  t: area.onboardingUndecided
+                    ? "未経験からの始め方を確認する"
+                    : "未経験者向けの横乗り研修を確認する",
+                },
                 { href: "/benefits", t: "日額保証・週払い・車両リースを確認する" },
                 {
                   href: "/independence-support",

@@ -1,4 +1,4 @@
-import { baseLocationLabel, type JobArea } from "@/lib/jobs";
+import { baseLocationLabel, meetingNoteFor, type JobArea } from "@/lib/jobs";
 import { siteConfig } from "@/lib/site-config";
 import { Reveal } from "@/components/ui/Reveal";
 import { Kicker } from "@/components/ui/Kicker";
@@ -14,10 +14,12 @@ export function BicycleStaff({ area }: { area: JobArea }) {
   if (!bike) return null;
   const applySlug = `${area.slug}-bicycle`;
   const rows = [
+    { t: "契約形態", d: `${bike.contractType}（雇用契約ではありません）` },
     { t: "報酬", d: bike.dailyPayLabel },
+    { t: "勤務時間", d: bike.workHours },
+    { t: "勤務日数", d: bike.workDays },
     { t: "運転免許", d: bike.license },
     { t: "自転車", d: bike.bike },
-    { t: "勤務時間", d: bike.workHours },
     ...(area.base ? [{ t: "集合場所", d: baseLocationLabel(area.base) }] : []),
   ];
 
@@ -51,7 +53,7 @@ export function BicycleStaff({ area }: { area: JobArea }) {
           </dl>
         </Reveal>
         <p className="mt-5 border-l-2 border-primary/40 pl-4 text-sm leading-relaxed text-ink-sub">
-          ここに書いていない条件（契約形態・勤務日数など）は、面談時にご説明します。
+          {meetingNoteFor(area)}
         </p>
         <Reveal className="mt-8">
           <div className="flex flex-col gap-3 sm:flex-row">

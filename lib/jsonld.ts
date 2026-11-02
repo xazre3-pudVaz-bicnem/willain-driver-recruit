@@ -4,6 +4,7 @@ import {
   buildJobDescriptionText,
   getActiveAreas,
   recruitAreasLongLabel,
+  supportFor,
   type JobArea,
 } from "@/lib/jobs";
 
@@ -261,7 +262,7 @@ export function jobPostingJsonLd(area: JobArea) {
     workHours: area.workHours ?? jobCommon.workHours,
     responsibilities: (area.jobDescription ?? jobCommon.jobDescription).join("／"),
     qualifications: jobCommon.requirements.join("／"),
-    jobBenefits: jobCommon.support.join("／"),
+    jobBenefits: supportFor(area).join("／"),
     incentiveCompensation: "稼働開始祝金（規定あり）・紹介報奨金（条件あり）",
     // 未経験歓迎＝必要経験0か月（Googleが認識する形式）
     experienceRequirements: {
