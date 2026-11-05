@@ -41,5 +41,21 @@
     "reviewFixesApplied": 4,
     "reviewInputTokens": 10916,
     "reviewOutputTokens": 2728
+  },
+  {
+    "date": "2026-11-05",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "軽貨物ドライバーが使う配送アプリの基本的な使い方",
+    "slug": "delivery-app-basics",
+    "inputTokens": 5367,
+    "outputTokens": 3111,
+    "status": "published",
+    "errorType": null,
+    "qualityScore": 96,
+    "reviewModel": "claude-opus-5-5",
+    "reviewVerdict": "publish",
+    "reviewFixesApplied": 10,
+    "reviewInputTokens": 11065,
+    "reviewOutputTokens": 5314
   }
 ]

@@ -37,5 +37,18 @@
     "relatedJob": "shinagawa",
     "contentHash": "717ace7a3f2947ff",
     "image": "/images/photos/training.webp"
+  },
+  {
+    "id": "delivery-app",
+    "title": "軽貨物ドライバーが使う配送アプリの基本的な使い方",
+    "slug": "delivery-app-basics",
+    "mainKeyword": "軽貨物 配送アプリ 使い方",
+    "searchIntent": "配送アプリでどんな操作をするのか、使いこなせるか不安を解消したい",
+    "category": "仕事内容",
+    "publishedAt": "2026-11-05",
+    "summary": "軽貨物ドライバーの配送アプリの基本操作を解説。配達ルート確認から配送完了までの流れを、未経験者向けにわかりやすく説明します。",
+    "relatedJob": "shinagawa",
+    "contentHash": "48343462ce3b71d6",
+    "image": "/images/photos/app-scan.webp"
   }
 ]
