@@ -57,5 +57,21 @@
     "reviewFixesApplied": 10,
     "reviewInputTokens": 11065,
     "reviewOutputTokens": 5314
+  },
+  {
+    "date": "2026-11-09",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "軽貨物ドライバーの荷物の積み方｜効率と安全を両立させるコツ",
+    "slug": "how-to-load-parcels",
+    "inputTokens": 5399,
+    "outputTokens": 3535,
+    "status": "published",
+    "errorType": null,
+    "qualityScore": 96,
+    "reviewModel": "claude-opus-5-5",
+    "reviewVerdict": "publish",
+    "reviewFixesApplied": 14,
+    "reviewInputTokens": 11483,
+    "reviewOutputTokens": 4977
   }
 ]

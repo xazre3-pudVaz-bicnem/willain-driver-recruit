@@ -50,5 +50,18 @@
     "relatedJob": "shinagawa",
     "contentHash": "48343462ce3b71d6",
     "image": "/images/photos/app-scan.webp"
+  },
+  {
+    "id": "loading",
+    "title": "軽貨物ドライバーの荷物の積み方｜効率と安全を両立させるコツ",
+    "slug": "how-to-load-parcels",
+    "mainKeyword": "軽貨物 荷物 積み方",
+    "searchIntent": "効率よく安全に荷物を積むコツを知りたい",
+    "category": "仕事内容",
+    "publishedAt": "2026-11-09",
+    "summary": "軽貨物ドライバーが毎日行う荷物の積み込みについて、効率よく安全に積むための基本を解説。配送アプリとの連携や実務での工夫を紹介します。",
+    "relatedJob": "shinagawa",
+    "contentHash": "11f666f8267433b7",
+    "image": "/images/photos/van-interior.webp"
   }
 ]
