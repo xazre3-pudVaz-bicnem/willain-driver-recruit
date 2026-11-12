@@ -73,5 +73,21 @@
     "reviewFixesApplied": 14,
     "reviewInputTokens": 11483,
     "reviewOutputTokens": 4977
+  },
+  {
+    "date": "2026-11-12",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "軽貨物ドライバーの再配達対応の基本と効率化のコツ",
+    "slug": "redelivery-handling",
+    "inputTokens": 5450,
+    "outputTokens": 4302,
+    "status": "published",
+    "errorType": null,
+    "qualityScore": 96,
+    "reviewModel": "claude-opus-5-5",
+    "reviewVerdict": "publish",
+    "reviewFixesApplied": 11,
+    "reviewInputTokens": 12261,
+    "reviewOutputTokens": 6979
   }
 ]
