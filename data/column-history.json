@@ -76,5 +76,18 @@
     "relatedJob": "shinagawa",
     "contentHash": "8fb3fe8e374c91cc",
     "image": "/images/photos/walking.webp"
+  },
+  {
+    "id": "okihai",
+    "title": "置き配と宅配ボックスの基本｜軽貨物ドライバーの対応ルールと注意点",
+    "slug": "okihai-and-delivery-box",
+    "mainKeyword": "置き配 宅配ボックス",
+    "searchIntent": "置き配や宅配ボックスの扱い・注意点を知りたい",
+    "category": "仕事内容",
+    "publishedAt": "2026-11-16",
+    "summary": "軽貨物ドライバーが知っておくべき置き配と宅配ボックスの扱い方を解説。配送実務での対応ルール、トラブル防止のコツ、受け取り側の指示確認まで、実践的な知識を紹介します。",
+    "relatedJob": "shinagawa",
+    "contentHash": "594623a49cc2380d",
+    "image": "/images/photos/walking.webp"
   }
 ]

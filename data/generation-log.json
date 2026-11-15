@@ -89,5 +89,21 @@
     "reviewFixesApplied": 11,
     "reviewInputTokens": 12261,
     "reviewOutputTokens": 6979
+  },
+  {
+    "date": "2026-11-16",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "置き配と宅配ボックスの基本｜軽貨物ドライバーの対応ルールと注意点",
+    "slug": "okihai-and-delivery-box",
+    "inputTokens": 5495,
+    "outputTokens": 3914,
+    "status": "published",
+    "errorType": null,
+    "qualityScore": 100,
+    "reviewModel": "claude-opus-5-5",
+    "reviewVerdict": "publish",
+    "reviewFixesApplied": 8,
+    "reviewInputTokens": 11858,
+    "reviewOutputTokens": 3833
   }
 ]
