@@ -89,5 +89,18 @@
     "relatedJob": "shinagawa",
     "contentHash": "594623a49cc2380d",
     "image": "/images/photos/walking.webp"
+  },
+  {
+    "id": "lease-checkpoints",
+    "title": "軽貨物の車両リースで確認する項目｜料金・保険・契約期間の基礎知識",
+    "slug": "vehicle-lease-checkpoints",
+    "mainKeyword": "軽貨物 車両リース 確認",
+    "searchIntent": "車両リースを使う前に料金・保険・契約期間など何を確認すべきかを知りたい",
+    "category": "働き方・契約",
+    "publishedAt": "2026-11-23",
+    "summary": "軽貨物ドライバーが車両リースを利用する前に確認すべき料金・保険・契約期間・解除条件などを解説。業務委託で働く際のリース制度の実際を知ることができます。",
+    "relatedJob": "funabashi",
+    "contentHash": "cab6f9b9fa0ac78e",
+    "image": "/images/photos/fleet.webp"
   }
 ]

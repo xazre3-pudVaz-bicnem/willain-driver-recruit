@@ -105,5 +105,21 @@
     "reviewFixesApplied": 8,
     "reviewInputTokens": 11858,
     "reviewOutputTokens": 3833
+  },
+  {
+    "date": "2026-11-23",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "軽貨物の車両リースで確認する項目｜料金・保険・契約期間の基礎知識",
+    "slug": "vehicle-lease-checkpoints",
+    "inputTokens": 5568,
+    "outputTokens": 3695,
+    "status": "published",
+    "errorType": null,
+    "qualityScore": 100,
+    "reviewModel": "claude-opus-5-5",
+    "reviewVerdict": "publish",
+    "reviewFixesApplied": 11,
+    "reviewInputTokens": 11661,
+    "reviewOutputTokens": 3978
   }
 ]

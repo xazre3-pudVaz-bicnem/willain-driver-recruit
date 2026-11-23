@@ -8,6 +8,7 @@ import { article as article_okihaiAndDeliveryBox } from "./okihai-and-delivery-b
 import { article as article_redeliveryHandling } from "./redelivery-handling";
 import { article as article_rideAlongTraining } from "./ride-along-training";
 import { article as article_shinagawaDeliveryGuide } from "./shinagawa-delivery-guide";
+import { article as article_vehicleLeaseCheckpoints } from "./vehicle-lease-checkpoints";
 
 export const generatedColumnArticles: ColumnArticle[] = [
   article_deliveryAppBasics,
@@ -17,4 +18,5 @@ export const generatedColumnArticles: ColumnArticle[] = [
   article_redeliveryHandling,
   article_rideAlongTraining,
   article_shinagawaDeliveryGuide,
+  article_vehicleLeaseCheckpoints,
 ];
