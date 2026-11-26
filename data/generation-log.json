@@ -121,5 +121,21 @@
     "reviewFixesApplied": 11,
     "reviewInputTokens": 11661,
     "reviewOutputTokens": 3978
+  },
+  {
+    "date": "2026-11-26",
+    "model": "claude-haiku-4-5-20251001",
+    "title": "車を持っていなくても軽貨物ドライバーを始める方法",
+    "slug": "start-without-own-car",
+    "inputTokens": 16572,
+    "outputTokens": 9669,
+    "status": "published",
+    "errorType": null,
+    "qualityScore": 100,
+    "reviewModel": "claude-opus-5-5",
+    "reviewVerdict": "publish",
+    "reviewFixesApplied": 13,
+    "reviewInputTokens": 12421,
+    "reviewOutputTokens": 6101
   }
 ]

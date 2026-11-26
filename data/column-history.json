@@ -102,5 +102,18 @@
     "relatedJob": "funabashi",
     "contentHash": "cab6f9b9fa0ac78e",
     "image": "/images/photos/fleet.webp"
+  },
+  {
+    "id": "no-car",
+    "title": "車を持っていなくても軽貨物ドライバーを始める方法",
+    "slug": "start-without-own-car",
+    "mainKeyword": "軽貨物 車なし",
+    "searchIntent": "自分の車がなくても始められるのか、方法を知りたい",
+    "category": "働き方・契約",
+    "publishedAt": "2026-11-26",
+    "summary": "自分の車がなくても軽貨物ドライバーとして働く方法を解説。車両リース制度や購入代行、持ち込みの選択肢、契約条件、初期費用の考え方をわかりやすく説明します。",
+    "relatedJob": "shinagawa",
+    "contentHash": "2150b0501ab8aaf8",
+    "image": "/images/photos/van-city.webp"
   }
 ]
